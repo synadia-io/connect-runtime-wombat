@@ -1,0 +1,71 @@
+model_version: "1"
+name: azure_queue_storage
+label: Azure Storage Queue
+kind: sink
+status: stable
+description: >-
+    Publish to an Azure Storage Queue.
+
+fields:
+  - path: storage_account
+    name: storage_account
+    label: Storage Account
+    type: string
+    optional: true
+    description: >-
+      The name of the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
+
+  - path: storage_access_key
+    name: storage_access_key
+    label: Storage Access Key
+    type: string
+    optional: true
+    description: >-
+      The key for the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
+
+  - path: storage_sas_token
+    name: storage_sas_token
+    label: Storage SAS Token
+    type: string
+    optional: true
+    description: >-
+      The SAS token for the Azure Storage Account. This field is ignored if `storage_connection_string` or 
+      `storage_access_key` are set.
+
+  - path: storage_connection_string
+    name: storage_connection_string
+    label: Storage Connection String
+    type: string
+    optional: true
+    description: >-
+      The connection string for the Azure Storage Account. If this field is set, `storage_account`, 
+      `storage_sas_token` and `storage_access_key` are ignored.
+
+  - path: queue_name
+    name: queue_name
+    label: Queue Name
+    type: string
+    description: >-
+      The name of the Azure Storage Queue to publish to.
+
+  - path: ttl
+    name: ttl
+    label: Time-To-Live
+    type: string
+    default: "0"
+    optional: true
+    description: >-
+      The time-to-live for messages in the queue in seconds. If not set, messages will not expire.
+    examples:
+      - "60s"
+      - "5m"
+      - "36h"
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    optional: true
+    default: 64
+    description: >-
+      The maximum number of messages to have in flight at any given time.

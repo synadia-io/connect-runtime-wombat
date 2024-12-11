@@ -1,0 +1,69 @@
+model_version: "1"
+name: generate
+label: Generate
+kind: source
+status: stable
+description: >-
+  Generates messages at a given interval using a Bloblang mapping executed without a context. This allows you to 
+  generate messages for testing your pipeline configs.
+fields:
+  - path: mapping
+    name: mapping
+    label: Mapping
+    type: string
+    render_hint: sourcecode
+    description: >-
+      A Bloblang mapping to use for generating messages.
+    examples:
+      - root = "hello world"
+      - root = {"test":"message","id":uuid_v4()}
+
+  - path: interval
+    name: interval
+    label: Interval
+    type: string
+    description: >-
+      The time interval at which messages should be generated, expressed either as a duration string or as a cron 
+      expression. If set to an empty string messages will be generated as fast as downstream services can process them. 
+      Cron expressions can specify a timezone by prefixing the expression with `TZ=<location name>`, where the location 
+      name corresponds to a file within the IANA Time Zone database.
+    default: "1s"
+    optional: true
+    examples:
+      - "5s"
+      - "1m"
+      - "1h"
+      - "@every 1s"
+      - "0,30 */2 * * * *"
+      - "TZ=Europe/London 30 3-6,20-23 * * *"
+
+  - path: count
+    name: count
+    label: Count
+    type: int
+    description: >-
+      An optional number of messages to generate, if set above 0 the specified number of messages is generated and 
+      then the input will shut down.
+    default: 0
+    optional: true
+
+  - path: batch_size
+    name: batch_size
+    label: Batch Size
+    type: int
+    description: >-
+      The number of generated messages that should be accumulated into each batch flushed at the specified interval.
+    default: 0
+    optional: true
+
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: Auto Replay Nacks
+    type: bool
+    description: >-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
+      eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these 
+      messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high 
+      throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
+    default: true
+    optional: true

@@ -1,0 +1,13 @@
+model_version: "1"
+name: wombat
+label: Wombat
+version: edge
+image: ghcr.io/synadia-labs/connect-runtime-wombat:latest
+author:
+  name: Synadia
+  email: code@synadia.com
+metrics:
+  port: 4195
+  path: /metrics
+description: |-
+  The Wombat runtime, supporting Redpanda Connect / Benthos configs.

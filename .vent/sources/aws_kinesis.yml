@@ -1,0 +1,239 @@
+model_version: "1"
+name: aws_kinesis
+label: AWS Kinesis
+kind: source
+status: stable
+description: >-
+  Receive messages from one or more Kinesis streams.
+fields:
+  - path: streams
+    name: streams
+    label: Streams
+    type: string
+    kind: list
+    description: >-
+      One or more Kinesis data streams to consume from. Streams can either
+      be specified by their name or full ARN. Shards of a stream are automatically balanced
+      across consumers by coordinating through the provided DynamoDB table. Multiple
+      comma separated streams can be listed in a single element. Shards are automatically
+      distributed across consumers of a stream by coordinating through the provided
+      DynamoDB table. Alternatively, it's possible to specify an explicit shard to consume
+      from with a colon after the stream name, e.g. `foo:0` would consume the shard
+      `0` of the stream `foo`.
+    examples:
+      - - "foo"
+        - "arn:aws:kinesis:*:111122223333:stream/my-stream"
+
+  - path: dynamodb
+    name: dynamodb
+    label: DynamoDB
+    type: object
+    description: >-
+      Determines the table used for storing and accessing the latest consumed
+      sequence for shards, and for coordinating balanced consumers of streams.
+    fields:
+      - path: dynamodb.table
+        name: table
+        label: Table
+        type: string
+        description: >-
+          The name of the table to access.
+      - path: dynamodb.create
+        name: create
+        label: Create
+        type: bool
+        description: >-
+          Whether, if the table does not exist, it should be created.
+      - path: dynamodb.billing_mode
+        name: billing_mode
+        label: Billing Mode
+        type: string
+        description: >-
+          When creating the table determines the billing mode.
+      - path: dynamodb.read_capacity_units
+        name: read_capacity_units
+        label: Read Capacity Units
+        type: int
+        description: >-
+          Set the provisioned read capacity when creating the table with a
+          `billing_mode` of `PROVISIONED`.
+      - path: dynamodb.write_capacity_units
+        name: write_capacity_units
+        label: Write Capacity Units
+        type: int
+        description: >-
+          Set the provisioned write capacity when creating the table with a
+          `billing_mode` of `PROVISIONED`.
+
+  - path: checkpoint_limit
+    name: checkpoint_limit
+    label: Checkpoint Limit
+    type: int
+    description: >-
+      The maximum gap between the in flight sequence versus the latest acknowledged
+      sequence at a given time. Increasing this limit enables parallel processing and
+      batching at the output level to work on individual shards. Any given sequence
+      will not be committed unless all messages under that offset are delivered in order
+      to preserve at least once delivery guarantees.
+
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: Auto Replay Nacks
+    type: bool
+    description: >-
+      Whether messages that are rejected (nacked) at the output level should
+      be automatically replayed indefinitely, eventually resulting in back pressure
+      if the cause of the rejections is persistent. If set to `false` these messages
+      will instead be deleted. Disabling auto replays can greatly improve memory efficiency
+      of high throughput streams as the original shape of the data can be discarded
+      immediately upon consumption and mutation.
+
+  - path: commit_period
+    name: commit_period
+    label: Commit Period
+    type: string
+    description: >-
+      The period of time between each update to the checkpoint table.
+
+  - path: rebalance_period
+    name: rebalance_period
+    label: Rebalance Period
+    type: string
+    description: >-
+      The period of time between each attempt to rebalance shards across clients.
+
+  - path: lease_period
+    name: lease_period
+    label: Lease Period
+    type: string
+    description: >-
+      The period of time after which a client that has failed to update a
+      shard checkpoint is assumed to be inactive.
+
+  - path: start_from_oldest
+    name: start_from_oldest
+    label: Start From Oldest
+    type: bool
+    description: >-
+      Whether to consume from the oldest message when a sequence does not
+      yet exist for the stream.
+
+  - path: region
+    name: region
+    label: Region
+    type: string
+    description: >-
+      The AWS region to target.
+
+  - path: endpoint
+    name: endpoint
+    label: Endpoint
+    type: string
+    description: >-
+      Allows you to specify a custom endpoint for the AWS API.
+
+  - path: credentials
+    name: credentials
+    label: Credentials
+    type: object
+    optional: true
+    description: >-
+      Optional manual configuration of AWS credentials to use. More information
+      can be found in xref:guides:cloud/aws.adoc[].
+    fields:
+      - path: credentials.profile
+        name: profile
+        label: Profile
+        type: string
+        description: >-
+          A profile from `~/.aws/credentials` to use.
+      - path: credentials.id
+        name: id
+        label: ID
+        type: string
+        description: >-
+          The ID of credentials to use.
+      - path: credentials.secret
+        name: secret
+        label: Secret
+        type: string
+        description: >-
+          The secret for the credentials being used.
+      - path: credentials.token
+        name: token
+        label: Token
+        type: string
+        description: >-
+          The token for the credentials being used, required when using short
+          term credentials.
+      - path: credentials.from_ec2_role
+        name: from_ec2_role
+        label: From EC2 Role
+        type: bool
+        description: >-
+          Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an
+          IAM role associated with the instance^].
+      - path: credentials.role
+        name: role
+        label: Role
+        type: string
+        description: >-
+          A role ARN to assume.
+      - path: credentials.role_external_id
+        name: role_external_id
+        label: Role External ID
+        type: string
+        description: >-
+          An external ID to provide when assuming a role.
+
+
+  - path: batching
+    name: batching
+    label: Batching
+    type: object
+    description: >-
+      Allows you to configure a batching policy.
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        type: int
+        description: >-
+          A number of messages at which the batch should be flushed. If `0`
+          disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        type: int
+        description: >-
+          An amount of bytes at which the batch should be flushed. If `0` disables
+          size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        type: string
+        description: >-
+          A period in which an incomplete batch should be flushed regardless
+          of its size.
+        examples:
+          - "1s"
+          - "1m"
+          - "500ms"
+      - path: batching.check
+        name: check
+        label: Check
+        type: condition
+        description: >-
+          A Bloblang query that should return
+          a boolean value indicating whether a message should end a batch.
+        examples:
+          - this.type == "end_of_transaction"

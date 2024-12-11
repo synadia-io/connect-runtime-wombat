@@ -1,0 +1,256 @@
+model_version: "1"
+name: amqp_0_9
+label: AMQP 0.9
+kind: sink
+status: stable
+description: >-
+  Sends messages to an AMQP (0.91) exchange. AMQP is a messaging protocol used by various message brokers, including 
+  RabbitMQ.
+
+fields:
+  - path: urls
+    name: urls
+    label: URLs
+    type: string
+    kind: list
+    description: >-
+      A list of URLs to connect to. The first URL to successfully establish a connection will be used until the 
+      connection is closed. If an item of the list contains commas it will be expanded into multiple URLs.
+    examples:
+      - - "amqp://guest:guest@127.0.0.1:5672/"
+      - - "amqp://127.0.0.1:5672/,amqp://127.0.0.2:5672/"
+      - - "amqp://127.0.0.1:5672/"
+        - "amqp://127.0.0.2:5672/"
+
+  - path: exchange
+    name: exchange
+    label: Exchange
+    type: expression
+    description: >-
+      An AMQP exchange to publish to.
+
+  - path: exchange_declare
+    name: exchange_declare
+    label: Declare The Exchange
+    type: object
+    optional: true
+    description: >-
+      Declare the exchange if it does not already exist.
+    fields:
+      - path: exchange_declare.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        description: >-
+          Whether to declare the exchange if it does not already exist.
+
+      - path: exchange_declare.type
+        name: type
+        label: Type
+        type: string
+        description: >-
+          The type of exchange to declare.
+        default: "direct"
+        optional: true
+        constraints:
+          - enum: ["direct", "fanout", "topic"]
+
+      - path: exchange_declare.durable
+        name: durable
+        label: Durable
+        type: bool
+        description: >-
+          Whether the exchange should survive broker restarts.
+        default: true
+        optional: true
+
+  - path: key
+    name: key
+    label: Key
+    type: expression
+    description: >-
+      The binding key to set for each message.
+    default: ""
+    optional: true
+
+  - path: type
+    name: type
+    label: Type
+    type: expression
+    description: >-
+      The type property to set for each message
+    default: ""
+
+  - path: content_type
+    name: content_type
+    label: Content Type
+    type: expression
+    description: >-
+      The content type property to set for each message
+    default: "application/octet-stream"
+    optional: true
+
+  - path: content_encoding
+    name: content_encoding
+    label: Content Encoding
+    type: string
+    description: >-
+      The content encoding property to set for each message
+    default: ""
+    optional: true
+
+  - path: correlation_id
+    name: correlation_id
+    label: Correlation ID
+    type: expression
+    description: >-
+      The correlation ID property to set for each message
+    default: ""
+    optional: true
+
+  - path: reply_to
+    name: reply_to
+    label: Reply To
+    type: expression
+    description: >-
+      The reply to property to set for each message
+    default: ""
+    optional: true
+
+  - path: expiration
+    name: expiration
+    label: Expiration
+    type: string
+    description: >-
+      The expiration property to set for each message
+    default: ""
+    optional: true
+
+  - path: message_id
+    name: message_id
+    label: Message ID
+    type: expression
+    description: >-
+      The message ID property to set for each message
+    default: ""
+    optional: true
+
+  - path: user_id
+    name: user_id
+    label: User ID
+    type: string
+    description: >-
+      Set the user ID to the name of the publisher.  If this property is set by a publisher, its value must be equal 
+      to the name of the user used to open the connection.
+    default: ""
+    optional: true
+
+  - path: app_id
+    name: app_id
+    label: App ID
+    type: string
+    description: >-
+      The application ID property to set for each message
+    default: ""
+    optional: true
+
+  - path: metadata
+    name: metadata
+    label: Metadata
+    type: object
+    description: >-
+      Determine which (if any) metadata values should be added to messages as headers.
+    fields:
+      - path: metadata.exclude_prefixes
+        name: exclude_prefixes
+        label: Exclude Prefixes
+        type: string
+        description: >-
+          Provide a list of explicit metadata key prefixes to be excluded when adding metadata to sent messages.
+
+  - path: priority
+    name: priority
+    label: Priority
+    type: int
+    description: >-
+      The priority property to set for each message
+    default: 0
+    optional: true
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max in Flight
+    type: int
+    description: >-
+      The maximum number of parallel message batches to have in flight at any given time.
+    default: 64
+    optional: true
+
+  - name: persistent
+    path: persistent
+    label: Persistent
+    type: bool
+    description: >-
+      Whether the message should be persisted to disk.
+    default: false
+    optional: true
+
+  - path: mandatory
+    name: mandatory
+    label: Mandatory
+    type: bool
+    description: >-
+      Whether the message should be returned if it cannot be routed to a queue.
+    default: false
+    optional: true
+
+  - path: immediate
+    name: immediate
+    label: Immediate
+    type: bool
+    description: >-
+      Whether the message should be returned if it cannot be routed to a queue.
+    default: false
+    optional: true
+
+  - path: tls
+    name: tls
+    label: TLS
+    type: object
+    optional: true
+    description: >-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+        - path: tls.enabled
+          name: enabled
+          label: Enabled
+          type: bool
+          optional: true
+          default: false
+          description: >-
+            Whether custom TLS settings are enabled.
+        - path: tls.skip_cert_verify
+          name: skip_cert_verify
+          label: Skip Cert Verify
+          type: bool
+          optional: true
+          default: false
+          description: >-
+            Whether to skip server side certificate verification.
+        - path: tls.enable_renegotiation
+          name: enable_renegotiation
+          label: Enable Renegotiation
+          type: bool
+          optional: true
+          default: false
+          description: >-
+            Whether to allow the remote server to repeatedly request renegotiation.
+            Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+        - path: tls.root_cas
+          name: root_cas
+          label: Root CAs
+          type: string
+          optional: true
+          secret: true
+          description: >-
+            A list of root CAs to use for verifying server certificates. If not provided, the system default CAs will be used.

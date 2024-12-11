@@ -1,0 +1,215 @@
+model_version: "1"
+name: aws_sqs
+label: AWS SQS
+kind: sink
+status: stable
+description: >-
+  Sends messages to an SQS queue.
+fields:
+  - path: url
+    name: url
+    label: URL
+    type: string
+    description: >-
+      The URL of the target SQS queue.
+
+  - path: message_group_id
+    name: message_group_id
+    label: Message Group ID
+    type: string
+    optional: true
+    description: >-
+      An optional group ID to set for messages.
+
+  - path: message_deduplication_id
+    name: message_deduplication_id
+    label: Message Deduplication ID
+    type: expression
+    optional: true
+    description: >-
+      An optional deduplication ID to set for messages.
+
+  - path: delay_seconds
+    name: delay_seconds
+    label: Delay Seconds
+    type: string
+    optional: true
+    description: >-
+      An optional delay time in seconds for message. Value between 0 and 900
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max in Flight
+    type: int
+    description: >-
+      The maximum number of parallel message batches to have in flight at
+      any given time.
+
+  - path: metadata
+    name: metadata
+    label: Metadata
+    type: object
+    description: >-
+      Specify criteria for which metadata values are attached to objects
+      as headers.
+    fields:
+      - path: metadata.exclude_prefixes
+        name: exclude_prefixes
+        label: Exclude Prefixes
+        type: string
+        description: >-
+          Provide a list of explicit metadata key prefixes to be excluded when
+          adding metadata to sent messages.
+
+  - path: batching
+    name: batching
+    label: Batching
+    type: object
+    description: >-
+      Allows you to configure a batching policy.
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        type: int
+        description: >-
+          A number of messages at which the batch should be flushed. If `0`
+          disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        type: int
+        description: >-
+          An amount of bytes at which the batch should be flushed. If `0` disables
+          size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        type: string
+        description: >-
+          A period in which an incomplete batch should be flushed regardless
+          of its size.
+        examples:
+          - "1s"
+          - "1m"
+          - "500ms"
+      - path: batching.check
+        name: check
+        label: Check
+        type: condition
+        description: >-
+          A Bloblang query that should return a boolean value indicating whether a message should end a batch.
+        examples:
+          - this.type == "end_of_transaction"
+
+  - path: region
+    name: region
+    label: Region
+    type: string
+    description: >-
+      The AWS region to target.
+
+  - path: endpoint
+    name: endpoint
+    label: Endpoint
+    type: string
+    description: >-
+      Allows you to specify a custom endpoint for the AWS API.
+
+  - path: credentials
+    name: credentials
+    label: Credentials
+    type: object
+    optional: true
+    description: >-
+      Optional manual configuration of AWS credentials to use. More information
+      can be found in xref:guides:cloud/aws.adoc[].
+    fields:
+      - path: credentials.profile
+        name: profile
+        label: Profile
+        type: string
+        description: >-
+          A profile from `~/.aws/credentials` to use.
+      - path: credentials.id
+        name: id
+        label: ID
+        type: string
+        description: >-
+          The ID of credentials to use.
+      - path: credentials.secret
+        name: secret
+        label: Secret
+        type: string
+        description: >-
+          The secret for the credentials being used.
+      - path: credentials.token
+        name: token
+        label: Token
+        type: string
+        description: >-
+          The token for the credentials being used, required when using short
+          term credentials.
+      - path: credentials.from_ec2_role
+        name: from_ec2_role
+        label: From EC2 Role
+        type: bool
+        description: >-
+          Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an
+          IAM role associated with the instance^].
+      - path: credentials.role
+        name: role
+        label: Role
+        type: string
+        description: >-
+          A role ARN to assume.
+      - path: credentials.role_external_id
+        name: role_external_id
+        label: Role External ID
+        type: string
+        description: >-
+          An external ID to provide when assuming a role.
+
+  - path: max_retries
+    name: max_retries
+    label: Max Retries
+    type: int
+    description: >-
+      The maximum number of retries before giving up on the request. If set
+      to zero there is no discrete limit.
+
+  - path: backoff
+    name: backoff
+    label: Backoff
+    type: object
+    description: >-
+      Control time intervals between retry attempts.
+    fields:
+      - path: backoff.initial_interval
+        name: initial_interval
+        label: Initial Interval
+        type: string
+        description: >-
+          The initial period to wait between retry attempts.
+      - path: backoff.max_interval
+        name: max_interval
+        label: Max Interval
+        type: string
+        description: >-
+          The maximum period to wait between retry attempts.
+      - path: backoff.max_elapsed_time
+        name: max_elapsed_time
+        label: Max Elapsed Time
+        type: string
+        description: >-
+          The maximum period to wait before retry attempts are abandoned. If
+          zero then no limit is used.

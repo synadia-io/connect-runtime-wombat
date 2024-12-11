@@ -1,0 +1,213 @@
+model_version: "1"
+name: aws_s3
+label: AWS S3
+kind: source
+status: stable
+description: >-
+  Downloads objects within an Amazon S3 bucket, optionally filtered by
+  a prefix, either by walking the items in the bucket or by streaming upload notifications
+  in realtime.
+fields:
+  - path: bucket
+    name: bucket
+    label: Bucket
+    type: string
+    optional: true
+    description: >-
+      The bucket to consume from. If the field `sqs.url` is specified this
+      field is optional.
+
+  - path: prefix
+    name: prefix
+    label: Prefix
+    type: string
+    optional: true
+    description: >-
+      An optional path prefix, if set only objects with the prefix are consumed
+      when walking a bucket.
+
+  - path: region
+    name: region
+    label: Region
+    type: string
+    description: >-
+      The AWS region to target.
+
+  - path: endpoint
+    name: endpoint
+    label: Endpoint
+    type: string
+    description: >-
+      Allows you to specify a custom endpoint for the AWS API.
+
+  - path: credentials
+    name: credentials
+    label: Credentials
+    type: object
+    optional: true
+    description: >-
+      Optional manual configuration of AWS credentials to use. More information
+      can be found in xref:guides:cloud/aws.adoc[].
+    fields:
+      - path: credentials.profile
+        name: profile
+        label: Profile
+        type: string
+        description: >-
+          A profile from `~/.aws/credentials` to use.
+      - path: credentials.id
+        name: id
+        label: ID
+        type: string
+        description: >-
+          The ID of credentials to use.
+      - path: credentials.secret
+        name: secret
+        label: Secret
+        type: string
+        description: >-
+          The secret for the credentials being used.
+      - path: credentials.token
+        name: token
+        label: Token
+        type: string
+        description: >-
+          The token for the credentials being used, required when using short
+          term credentials.
+      - path: credentials.from_ec2_role
+        name: from_ec2_role
+        label: From EC2 Role
+        type: bool
+        description: >-
+          Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an
+          IAM role associated with the instance^].
+      - path: credentials.role
+        name: role
+        label: Role
+        type: string
+        description: >-
+          A role ARN to assume.
+      - path: credentials.role_external_id
+        name: role_external_id
+        label: Role External ID
+        type: string
+        description: >-
+          An external ID to provide when assuming a role.
+
+
+
+  - path: force_path_style_urls
+    name: force_path_style_urls
+    label: Force Path Style URLs
+    type: bool
+    description: >-
+      Forces the client API to use path style URLs for downloading keys,
+      which is often required when connecting to custom endpoints.
+
+  - path: delete_objects
+    name: delete_objects
+    label: Delete Objects
+    type: bool
+    description: >-
+      Whether to delete downloaded objects from the bucket once they are processed.
+
+  - path: codec
+    name: codec
+    label: Codec
+    type: string
+    description: >-
+      The way in which the bytes of a data source should be converted into
+      discrete messages, codecs are useful for specifying how large files or continuous
+      streams of data might be processed in small chunks rather than loading it all
+      in memory. It's possible to consume lines using a custom delimiter with the `delim:x`
+      codec, where x is the character sequence custom delimiter. Codecs can be chained
+      with `/`, for example a gzip compressed CSV file can be consumed with the codec
+      `gzip/csv`.
+    examples:
+      - "lines"
+      - "delim:\t"
+      - "delim:foobar"
+      - "gzip/csv"
+
+  - path: max_buffer
+    name: max_buffer
+    label: Max Buffer
+    type: int
+
+  - path: scanner
+    name: scanner
+    label: Scanner
+    type: scanner
+    description: >-
+      The scanner by which the stream
+      of bytes consumed will be broken out into individual messages. Scanners are useful
+      for processing large sources of data without holding the entirety of it within
+      memory. For example, the `csv` scanner allows you to process individual CSV rows
+      without loading the entire CSV file in memory at once.
+
+  - path: sqs
+    name: sqs
+    label: SQS
+    type: object
+    description: >-
+      Consume SQS messages in order to trigger key downloads.
+    fields:
+      - path: sqs.url
+        name: url
+        label: URL
+        type: string
+        optional: true
+        description: >-
+          An optional SQS URL to connect to. When specified this queue will
+          control which objects are downloaded.
+      - path: sqs.endpoint
+        name: endpoint
+        label: Endpoint
+        type: string
+        description: >-
+          A custom endpoint to use when connecting to SQS.
+      - path: sqs.key_path
+        name: key_path
+        label: Key Path
+        type: string
+        description: >-
+          A dot path whereby object keys are found in SQS messages.
+      - path: sqs.bucket_path
+        name: bucket_path
+        label: Bucket Path
+        type: string
+        description: >-
+          A dot path whereby the bucket name can be found in SQS messages.
+      - path: sqs.envelope_path
+        name: envelope_path
+        label: Envelope Path
+        type: string
+        description: >-
+          A dot path of a field to extract an enveloped JSON payload for further extracting the key and bucket from SQS
+          messages. This is specifically useful when subscribing an SQS queue to an SNS topic that receives bucket events.
+        examples:
+          - "Message"
+      - path: sqs.delay_period
+        name: delay_period
+        label: Delay Period
+        type: string
+        optional: true
+        description: >-
+          An optional period of time to wait from when a notification was originally
+          sent to when the target key download is attempted.
+        examples:
+          - "10s"
+          - "5m"
+      - path: sqs.max_messages
+        name: max_messages
+        label: Max Messages
+        type: int
+        description: >-
+          The maximum number of SQS messages to consume from each request.
+      - path: sqs.wait_time_seconds
+        name: wait_time_seconds
+        label: Wait Time Seconds
+        type: int
+        description: >-
+          Whether to set the wait time. Enabling this activates long-polling.
+          Valid values: 0 to 20.
