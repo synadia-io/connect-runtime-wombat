@@ -9,3 +9,7 @@ tasks:
   test:
     cmds:
       - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4
+
+  docker:local:
+    cmds:
+      - docker build . -t connect-runtime-wombat:local
