@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/synadia-labs/vent/public/runtime"
+	"github.com/synadia-io/connect/runtime"
 	"log/slog"
 )
 

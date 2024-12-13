@@ -2,11 +2,11 @@ package test
 
 import (
 	"fmt"
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func AuthenticatedNatsConfig() control.NatsConfig {
-	return control.NatsConfig{
+func AuthenticatedNatsConfig() model.NatsConfig {
+	return model.NatsConfig{
 		Url:         "nats://localhost:4222",
 		AuthEnabled: true,
 		Jwt:         "configured-jwt",
@@ -14,14 +14,14 @@ func AuthenticatedNatsConfig() control.NatsConfig {
 	}
 }
 
-func UnauthenticatedNatsConfig() control.NatsConfig {
-	return control.NatsConfig{
+func UnauthenticatedNatsConfig() model.NatsConfig {
+	return model.NatsConfig{
 		Url: "nats://localhost:4222",
 	}
 }
 
-func NatsConfig(port int) control.NatsConfig {
-	return control.NatsConfig{
+func NatsConfig(port int) model.NatsConfig {
+	return model.NatsConfig{
 		Url:         fmt.Sprintf("nats://localhost:%d", port),
 		AuthEnabled: false,
 	}

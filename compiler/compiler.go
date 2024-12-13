@@ -2,13 +2,13 @@ package compiler
 
 import (
 	"fmt"
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 	"gopkg.in/yaml.v3"
 
-	_ "github.com/synadia-labs/vent/runtimes/wombat/components"
+	_ "github.com/synadia-io/connect-runtime-wombat/components"
 )
 
-func Compile(steps control.Steps) (string, error) {
+func Compile(steps model.Steps) (string, error) {
 	mainCfg := map[string]any{
 		"input":  nil,
 		"output": nil,
@@ -19,7 +19,7 @@ func Compile(steps control.Steps) (string, error) {
 
 	var err error
 	switch steps.Kind() {
-	case control.Inlet:
+	case model.Inlet:
 		mainCfg["input"], err = compileSource(steps)
 		if err != nil {
 			return "", fmt.Errorf("input: %w", err)
@@ -29,7 +29,7 @@ func Compile(steps control.Steps) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("target: %w", err)
 		}
-	case control.Outlet:
+	case model.Outlet:
 		mainCfg["input"], err = compileConsumer(steps)
 		if err != nil {
 			return "", fmt.Errorf("source: %w", err)

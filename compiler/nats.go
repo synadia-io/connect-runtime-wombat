@@ -1,10 +1,10 @@
 package compiler
 
 import (
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func attachNatsConfig(target map[string]any, c control.NatsConfig) {
+func attachNatsConfig(target map[string]any, c model.NatsConfig) {
 	target["urls"] = []string{c.Url}
 
 	if c.AuthEnabled {

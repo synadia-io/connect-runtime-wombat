@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/rs/zerolog/log"
-	"github.com/synadia-labs/vent/public/runtime"
-	_ "github.com/synadia-labs/vent/runtimes/wombat/components"
+	_ "github.com/synadia-io/connect-runtime-wombat/components"
+	"github.com/synadia-io/connect/runtime"
 	"net/http"
 )
 

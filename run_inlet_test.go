@@ -3,6 +3,8 @@ package main_test
 import (
 	"context"
 	"fmt"
+	"github.com/synadia-io/connect-runtime-wombat/runner"
+	"github.com/synadia-io/connect-runtime-wombat/test"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -13,16 +15,13 @@ import (
 	"github.com/nats-io/nats.go/micro"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
-	"github.com/synadia-labs/vent/runtimes/wombat"
-	"github.com/synadia-labs/vent/runtimes/wombat/test"
 )
 
 var _ = Describe("Running an inlet", func() {
 	When("the inlet configuration is invalid", func() {
 		It("should return an error", func() {
 			invalidInlet := test.Inlet(test.InvalidSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))
-			err := main.Run(context.Background(), test.Runtime(), test.TestConfig(invalidInlet))
+			err := runner.Run(context.Background(), test.Runtime(), test.TestConfig(invalidInlet))
 			Expect(err).To(HaveOccurred())
 		})
 	})
@@ -45,7 +44,7 @@ var _ = Describe("Running an inlet", func() {
 			defer s.Drain()
 
 			inlet := test.Inlet(test.GenerateSource(), test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject))
-			err = main.Run(context.Background(), test.Runtime(), test.TestConfig(inlet))
+			err = runner.Run(context.Background(), test.Runtime(), test.TestConfig(inlet))
 			Expect(err).NotTo(HaveOccurred())
 
 			// Sometimes the runner finishes before the nats connection has received the final message
@@ -91,7 +90,7 @@ var _ = Describe("Running an inlet", func() {
 					test.ServiceTransformer(test.NatsConfig(TestPort), fmt.Sprintf("service.%s", serviceName)),
 					test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject),
 				)
-				err = main.Run(context.Background(), test.Runtime(), test.TestConfig(inlet))
+				err = runner.Run(context.Background(), test.Runtime(), test.TestConfig(inlet))
 				Expect(err).NotTo(HaveOccurred())
 
 				Expect(serviceCallCount).To(BeNumerically("==", 5))

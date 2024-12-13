@@ -5,9 +5,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/redpanda-data/benthos/v4/public/service"
-	"github.com/synadia-labs/vent/public/control"
-	"github.com/synadia-labs/vent/runtimes/wombat/compiler"
-	"github.com/synadia-labs/vent/runtimes/wombat/test"
+	"github.com/synadia-io/connect-runtime-wombat/compiler"
+	"github.com/synadia-io/connect-runtime-wombat/test"
+	"github.com/synadia-io/connect/model"
 )
 
 var _ = Describe("Inlet", func() {
@@ -25,7 +25,7 @@ var _ = Describe("Inlet", func() {
 		})
 
 		When("the inlet has a valid source and producer", func() {
-			var inlet control.Steps
+			var inlet model.Steps
 
 			BeforeEach(func() {
 				inlet = test.Inlet(test.GenerateSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))

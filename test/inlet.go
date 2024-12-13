@@ -1,15 +1,15 @@
 package test
 
 import (
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func Inlet(source control.Source, producer control.Producer) control.Steps {
+func Inlet(source model.Source, producer model.Producer) model.Steps {
 	return InletWithTransformer(source, nil, producer)
 }
 
-func InletWithTransformer(source control.Source, transformer *control.Transformer, producer control.Producer) control.Steps {
-	return control.Steps{
+func InletWithTransformer(source model.Source, transformer *model.Transformer, producer model.Producer) model.Steps {
+	return model.Steps{
 		Source:      &source,
 		Transformer: transformer,
 		Producer:    &producer,

@@ -4,15 +4,8 @@ tasks:
     desc: Build the wombat runtime
     cmds:
       - go mod tidy
-      - go build -tags "{{.TAGS}}" -o ../../target/runtime-wombat *.go
+      - go build -tags "{{.TAGS}}" -o ./target/connect-runtime-wombat *.go
 
-  run:
-    desc: Run the vent with the provided APP_ID
-    dotenv:
-      - "{{.HOME}}/.synadia/vent.env"
-    requires:
-      vars:
-        - APP_ID
+  test:
     cmds:
-      - go mod tidy
-      - go run ./*.go {{.APP_ID}}
+      - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4

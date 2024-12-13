@@ -5,11 +5,11 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/redpanda-data/benthos/v4/public/service"
-	"github.com/synadia-labs/vent/public/control"
-	"github.com/synadia-labs/vent/runtimes/wombat/compiler"
-	"github.com/synadia-labs/vent/runtimes/wombat/test"
+	"github.com/synadia-io/connect-runtime-wombat/compiler"
+	"github.com/synadia-io/connect-runtime-wombat/test"
+	"github.com/synadia-io/connect/model"
 
-	_ "github.com/synadia-labs/vent/runtimes/wombat/components"
+	_ "github.com/synadia-io/connect-runtime-wombat/components"
 )
 
 var _ = Describe("Compiling an inlet", func() {
@@ -43,7 +43,7 @@ var _ = Describe("Compiling an inlet", func() {
 	})
 
 	When("the inlet contains a service transformer", func() {
-		var v control.Steps
+		var v model.Steps
 
 		BeforeEach(func() {
 			v = test.InletWithTransformer(

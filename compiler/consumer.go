@@ -1,10 +1,10 @@
 package compiler
 
 import (
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func compileConsumer(steps control.Steps) (map[string]any, error) {
+func compileConsumer(steps model.Steps) (map[string]any, error) {
 	if steps.Consumer.JetStream != nil {
 		return compileJetStreamConsumer(steps)
 	}
@@ -12,7 +12,7 @@ func compileConsumer(steps control.Steps) (map[string]any, error) {
 	return compileCoreConsumer(steps)
 }
 
-func compileCoreConsumer(steps control.Steps) (map[string]any, error) {
+func compileCoreConsumer(steps model.Steps) (map[string]any, error) {
 	cfg := map[string]any{
 		"subject": steps.Consumer.Subject,
 	}
@@ -26,7 +26,7 @@ func compileCoreConsumer(steps control.Steps) (map[string]any, error) {
 	return map[string]any{"nats": cfg}, nil
 }
 
-func compileJetStreamConsumer(steps control.Steps) (map[string]any, error) {
+func compileJetStreamConsumer(steps model.Steps) (map[string]any, error) {
 	cfg := map[string]any{
 		"subject":         steps.Consumer.Subject,
 		"max_ack_pending": 1,

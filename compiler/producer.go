@@ -2,10 +2,10 @@ package compiler
 
 import (
 	"github.com/rs/zerolog/log"
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func compileProducer(steps control.Steps) (map[string]any, error) {
+func compileProducer(steps model.Steps) (map[string]any, error) {
 	var result map[string]any
 	var err error
 
@@ -26,7 +26,7 @@ func compileProducer(steps control.Steps) (map[string]any, error) {
 	return result, nil
 }
 
-func compileCoreProducer(steps control.Steps) (map[string]any, error) {
+func compileCoreProducer(steps model.Steps) (map[string]any, error) {
 	cfg := map[string]any{
 		"subject":       steps.Producer.Subject,
 		"max_in_flight": 1,
@@ -46,7 +46,7 @@ func compileCoreProducer(steps control.Steps) (map[string]any, error) {
 	return map[string]any{"nats": cfg}, nil
 }
 
-func compileJetStreamProducer(steps control.Steps) (map[string]any, error) {
+func compileJetStreamProducer(steps model.Steps) (map[string]any, error) {
 	cfg := map[string]any{
 		"subject":       steps.Producer.Subject,
 		"max_in_flight": 1,

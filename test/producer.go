@@ -1,24 +1,24 @@
 package test
 
 import (
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func CoreProducer(cfg control.NatsConfig) control.Producer {
+func CoreProducer(cfg model.NatsConfig) model.Producer {
 	return CoreProducerWithSubject(cfg, "foo.bar")
 }
 
-func CoreProducerWithSubject(cfg control.NatsConfig, subject string) control.Producer {
-	return control.Producer{
+func CoreProducerWithSubject(cfg model.NatsConfig, subject string) model.Producer {
+	return model.Producer{
 		NatsConfig: cfg,
 		Subject:    subject,
 	}
 }
 
-func StreamProducer(cfg control.NatsConfig) control.Producer {
-	return control.Producer{
+func StreamProducer(cfg model.NatsConfig) model.Producer {
+	return model.Producer{
 		NatsConfig: cfg,
 		Subject:    "foo.bar",
-		JetStream:  &control.ProducerJetStreamOptions{},
+		JetStream:  &model.ProducerJetStreamOptions{},
 	}
 }

@@ -1,9 +1,9 @@
 package test
 
-import "github.com/synadia-labs/vent/public/control"
+import "github.com/synadia-io/connect/model"
 
-func TestConfig(steps control.Steps) control.ConnectorConfig {
-	return control.ConnectorConfig{
+func TestConfig(steps model.Steps) model.ConnectorConfig {
+	return model.ConnectorConfig{
 		Steps: &steps,
 	}
 }

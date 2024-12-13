@@ -1,17 +1,17 @@
 package test
 
 import (
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func InvalidSource() control.Source {
-	return control.Source{
+func InvalidSource() model.Source {
+	return model.Source{
 		Type: "invalid",
 	}
 }
 
-func GenerateSource() control.Source {
-	return control.Source{
+func GenerateSource() model.Source {
+	return model.Source{
 		Type: "generate",
 		Config: map[string]any{
 			"count":   5,

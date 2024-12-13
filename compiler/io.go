@@ -1,10 +1,10 @@
 package compiler
 
 import (
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func compileSource(steps control.Steps) (map[string]any, error) {
+func compileSource(steps model.Steps) (map[string]any, error) {
 	m := map[string]any{
 		steps.Source.Type: steps.Source.Config,
 	}
@@ -12,7 +12,7 @@ func compileSource(steps control.Steps) (map[string]any, error) {
 	return m, nil
 }
 
-func compileSink(steps control.Steps) (map[string]any, error) {
+func compileSink(steps model.Steps) (map[string]any, error) {
 	m := map[string]any{
 		steps.Sink.Type: steps.Sink.Config,
 	}

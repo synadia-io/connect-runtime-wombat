@@ -2,10 +2,10 @@ package compiler
 
 import (
 	"fmt"
-	"github.com/synadia-labs/vent/public/control"
+	"github.com/synadia-io/connect/model"
 )
 
-func attachTransformerAsProcessor(result map[string]any, steps control.Steps) (map[string]any, error) {
+func attachTransformerAsProcessor(result map[string]any, steps model.Steps) (map[string]any, error) {
 	tm, err := compileTransformer(steps.Transformer)
 	if err != nil {
 		return nil, fmt.Errorf("transformer: %w", err)
@@ -18,7 +18,7 @@ func attachTransformerAsProcessor(result map[string]any, steps control.Steps) (m
 	return result, nil
 }
 
-func compileTransformer(transformer *control.Transformer) (map[string]any, error) {
+func compileTransformer(transformer *model.Transformer) (map[string]any, error) {
 	if transformer == nil {
 		return nil, nil
 	}
@@ -38,7 +38,7 @@ func compileTransformer(transformer *control.Transformer) (map[string]any, error
 	return nil, nil
 }
 
-func compileServiceTransformer(t *control.ServiceTransformer) (map[string]any, error) {
+func compileServiceTransformer(t *model.ServiceTransformer) (map[string]any, error) {
 	cfg := map[string]any{
 		"urls":    []string{t.NatsConfig.Url},
 		"subject": t.Endpoint,
@@ -63,7 +63,7 @@ func compileServiceTransformer(t *control.ServiceTransformer) (map[string]any, e
 	return map[string]any{"nats_request_reply": cfg}, nil
 }
 
-func compileCompositeTransformer(t *control.CompositeTransformer) (map[string]any, error) {
+func compileCompositeTransformer(t *model.CompositeTransformer) (map[string]any, error) {
 	result := map[string]any{
 		"processors": []map[string]any{},
 	}
@@ -82,6 +82,6 @@ func compileCompositeTransformer(t *control.CompositeTransformer) (map[string]an
 	return result, nil
 }
 
-func compileMappingTransformer(t *control.MappingTransformer) (map[string]any, error) {
+func compileMappingTransformer(t *model.MappingTransformer) (map[string]any, error) {
 	return map[string]any{"mapping": t.Sourcecode}, nil
 }
