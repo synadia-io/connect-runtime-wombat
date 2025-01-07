@@ -95,6 +95,7 @@ fields:
         name: period
         label: Period
         type: string
+        render_hint: duration
         description: >-
           A period in which an incomplete batch should be flushed regardless
           of its size.

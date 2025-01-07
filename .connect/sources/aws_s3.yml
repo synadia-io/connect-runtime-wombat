@@ -192,6 +192,7 @@ fields:
         label: Delay Period
         type: string
         optional: true
+        render_hint: duration
         description: >-
           An optional period of time to wait from when a notification was originally
           sent to when the target key download is attempted.

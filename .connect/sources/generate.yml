@@ -22,6 +22,7 @@ fields:
     name: interval
     label: Interval
     type: string
+    render_hint: duration
     description: >-
       The time interval at which messages should be generated, expressed either as a duration string or as a cron 
       expression. If set to an empty string messages will be generated as fast as downstream services can process them. 

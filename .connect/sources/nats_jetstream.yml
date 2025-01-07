@@ -72,6 +72,7 @@ fields:
     name: ack_wait
     label: Ack Wait
     type: string
+    render_hint: duration
     description: >-
       The maximum amount of time NATS server should wait for an ack from consumer.
     examples:
