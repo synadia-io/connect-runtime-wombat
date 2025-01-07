@@ -13,7 +13,7 @@ RUN go mod tidy
 # Build
 # Tag timetzdata required for busybox base image:
 # https://github.com/benthosdev/benthos/issues/897
-RUN task runtimes:wombat:build TAGS="timetzdata"
+RUN task build TAGS="timetzdata"
 
 # Pack
 FROM busybox AS package
