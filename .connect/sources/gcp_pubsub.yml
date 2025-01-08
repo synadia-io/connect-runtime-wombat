@@ -1,0 +1,67 @@
+model_version: "1"
+name: gcp_pubsub
+label: GCP PubSub
+kind: source
+status: preview
+description: >-
+  Consumes messages from a GCP Cloud Pub/Sub subscription.
+fields:
+  - path: project
+    name: project
+    label: Project
+    type: string
+    description: >-
+      GCP project where the subscription exists.
+
+  - path: credentials_json
+    name: credentials_json
+    label: Credentials JSON
+    type: string
+    description: >-
+      JSON credentials for authenticating with GCP.
+
+  - path: subscription
+    name: subscription
+    label: Subscription
+    type: string
+    description: >-
+      The ID of the subscription to consume messages from.
+
+  - path: endpoint
+    name: endpoint
+    label: Endpoint
+    type: string
+    description: >-
+      Allows you to specify a custom endpoint for the GCP API. For a list of valid values, 
+      see [this document](https://cloud.google.com/pubsub/docs/reference/service_apis_overview#list_of_regional_endpoints).
+
+  - path: sync
+    name: sync
+    label: Sync
+    type: bool
+    description: >-
+      Whether to consume messages synchronously. If set to `true`, messages will be consumed
+      one at a time and the next message will not be consumed until the current message has been
+      acknowledged. If set to `false`, messages will be consumed in parallel and the next message
+      will be consumed immediately after the current message has been acknowledged. This can
+      improve throughput but may result in out-of-order message delivery.
+
+  - path: max_outstanding_messages
+    name: max_outstanding_messages
+    label: Max Outstanding Messages
+    type: int
+    default: 1000
+    description: >-
+      The maximum number of unacknowledged messages to allow before pausing consumption. If set to `0`,
+      consumption will never pause. This can be used to control the rate of consumption and prevent
+      out-of-memory errors in the case of slow message processing.
+
+  - path: max_outstanding_bytes
+    name: max_outstanding_bytes
+    label: Max Outstanding Bytes
+    type: int
+    default: 100000000
+    description: >-
+      The maximum number of unacknowledged bytes to allow before pausing consumption. If set to `0`,
+      consumption will never pause. This can be used to control the rate of consumption and prevent
+      out-of-memory errors in the case of slow message processing.

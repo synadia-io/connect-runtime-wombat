@@ -1,0 +1,97 @@
+model_version: "1"
+name: mongodb
+label: MongoDB Query
+kind: source
+status: preview
+description: >-
+  Executes a query and creates a message for each document received.
+fields:
+  - path: url
+    name: url
+    label: URL
+    type: string
+    description: >-
+      The MongoDB connection URL.
+    examples:
+      - "mongodb://localhost:27017"
+
+  - path: database
+    name: database
+    label: Database
+    type: string
+    description: >-
+      The name of the database to query.
+    examples:
+      - "my_db"
+
+  - path: username
+    name: username
+    label: Username
+    type: string
+    optional: true
+    description: >-
+      The username to authenticate with.
+
+  - path: password
+    name: password
+    label: Password
+    type: string
+    optional: true
+    description: >-
+      The password to authenticate with.
+
+  - path: collection
+    name: collection
+    label: Collection
+    type: string
+    description: >-
+      The name of the collection to query.
+    examples:
+      - "my_collection"
+
+  - path: operation
+    name: operation
+    label: Operation
+    type: string
+    default: "find"
+    description: >-
+      The operation to perform.
+
+  - path: query
+    name: query
+    label: Query
+    type: string
+    description: >-
+      Bloblang expression describing MongoDB query.
+
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: Auto Replay Nacks
+    type: bool
+    default: true
+    description: >-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
+      eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these 
+      messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high 
+      throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
+
+  - path: batch_size
+    name: batch_size
+    label: Batch Size
+    type: int
+    description: >-
+      A explicit number of documents to batch up before flushing them for processing. Must be greater than `0`.
+
+  - path: sort
+    name: sort
+    label: Sort
+    type: object
+    description: >-
+      An object specifying fields to sort by, and the respective sort order (`1` ascending, `-1` descending). Note: The driver currently appears to support only one sorting key. Operations: `find`
+
+  - path: limit
+    name: limit
+    label: Limit
+    type: int
+    description: >-
+      The maximum number of documents to return. Operations: `find`

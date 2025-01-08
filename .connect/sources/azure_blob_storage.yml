@@ -1,0 +1,74 @@
+model_version: "1"
+name: azure_blob_storage
+label: Azure Blob Storage
+kind: source
+status: preview
+description: >-
+  Downloads objects within an Azure Blob Storage container, optionally filtered by a prefix.
+fields:
+  - path: storage_account
+    name: storage_account
+    label: Account
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      The storage account to access. This field is ignored if `storage_connection_string` is set.
+
+  - path: storage_access_key
+    name: storage_access_key
+    label: Access Key
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      The storage account access key. This field is ignored if `storage_connection_string` is set.
+
+  - path: storage_connection_string
+    name: storage_connection_string
+    label: Connection String
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      A storage account connection string. This field is required if `storage_account` and `storage_access_key` / `storage_sas_token` are not set.
+
+  - path: storage_sas_token
+    name: storage_sas_token
+    label: SAS Token
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      The storage account SAS token. This field is ignored if `storage_connection_string` or `storage_access_key` are set.
+
+  - path: container
+    name: container
+    label: Container
+    type: string
+    description: >-
+      The name of the container from which to download blobs. This field supports interpolation functions.
+
+  - path: prefix
+    name: prefix
+    label: Prefix
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      An optional path prefix, if set only objects with the prefix are consumed.
+
+  - path: scanner
+    name: scanner
+    label: Scanner
+    type: scanner
+    description: >-
+      The scanner by which the stream of bytes consumed will be broken out into individual messages. Scanners are useful for processing large sources of data without holding the entirety of it within memory. For example, the `csv` scanner allows you to process individual CSV rows without loading the entire CSV file in memory at once.
+
+  - path: delete_objects
+    name: delete_objects
+    label: Delete Objects
+    type: bool
+    default: false
+    description: >-
+      Whether to delete downloaded objects from the blob once they are processed.
