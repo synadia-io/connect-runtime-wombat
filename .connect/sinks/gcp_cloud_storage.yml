@@ -1,0 +1,142 @@
+model_version: "1"
+name: gcp_cloud_storage
+label: GCP Cloud Storage
+kind: sink
+status: preview
+description: >-
+  Sends message parts as objects to a Google Cloud Storage bucket. Each object is uploaded with the path specified 
+  with the `path` field.
+fields:
+  - path: credentials_json
+    name: credentials_json
+    label: Credentials JSON
+    type: string
+    description: >-
+      JSON credentials for authenticating with GCP.
+
+  - path: bucket
+    name: bucket
+    label: Bucket
+    type: string
+    description: >-
+      The name of the bucket to upload objects to.
+
+  - path: path
+    name: path
+    label: Path
+    type: string
+    optional: true
+    default: '${!counter()}-${!timestamp_unix_nano()}.txt'
+    description: >-
+      The path of the object to upload to. This field supports interpolation functions.
+
+  - path: content_type
+    name: content_type
+    label: Content Type
+    type: string
+    optional: true
+    default: 'application/octet-stream'
+    description: >-
+      The content type of the object being uploaded.
+
+  - path: content_encoding
+    name: content_encoding
+    label: Content Encoding
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      The content encoding of the object being uploaded.
+
+  - path: collision_mode
+    name: collision_mode
+    label: Collision Mode
+    type: string
+    optional: true
+    default: "overwrite"
+    description: >-
+      The behaviour to take when a collision occurs.
+    constraints:
+      enum:
+        - append
+        - error-if-exists
+        - ignore
+        - overwrite
+
+  - path: chunk_size
+    name: chunk_size
+    label: Chunk Size
+    type: int
+    optional: true
+    default: 16777216
+    description: >-
+      The size in bytes of each chunk to upload the object in.
+
+  - path: timeout
+    name: timeout
+    label: Timeout
+    type: string
+    optional: true
+    default: "5s"
+    description: >-
+      The maximum period to wait on an upload before abandoning it and reattempting.
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    optional: true
+    default: 64
+    description: >-
+      The maximum number of messages to have in flight at any given time.
+
+  - path: batching
+    name: batching
+    label: Batching
+    type: object
+    description: >-
+      Allows you to configure a batching policy.
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        type: int
+        description: >-
+          A number of messages at which the batch should be flushed. If `0`
+          disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        type: int
+        description: >-
+          An amount of bytes at which the batch should be flushed. If `0` disables
+          size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        type: string
+        render_hint: duration
+        description: >-
+          A period in which an incomplete batch should be flushed regardless
+          of its size.
+        examples:
+          - "1s"
+          - "1m"
+          - "500ms"
+      - path: batching.check
+        name: check
+        label: Check
+        type: condition
+        description: >-
+          A Bloblang query that should return a boolean value indicating whether a message should end a batch.
+        examples:
+          - this.type == "end_of_transaction"

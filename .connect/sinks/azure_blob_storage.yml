@@ -1,0 +1,98 @@
+model_version: "1"
+name: azure_blob_storage
+label: Azure Blob Storage
+kind: sink
+status: stable
+description: >-
+  Sends message parts as objects to an Azure Blob Storage Account container. Each object is uploaded with the 
+  filename specified with the `container` field.
+
+fields:
+  - path: storage_account
+    name: storage_account
+    label: Storage Account
+    type: string
+    optional: true
+    description: >-
+      The name of the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
+
+  - path: storage_access_key
+    name: storage_access_key
+    label: Storage Access Key
+    type: string
+    optional: true
+    description: >-
+      The key for the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
+
+  - path: storage_sas_token
+    name: storage_sas_token
+    label: Storage SAS Token
+    type: string
+    optional: true
+    description: >-
+      The SAS token for the Azure Storage Account. This field is ignored if `storage_connection_string` or 
+      `storage_access_key` are set.
+
+  - path: storage_connection_string
+    name: storage_connection_string
+    label: Storage Connection String
+    type: string
+    optional: true
+    description: >-
+      The connection string for the Azure Storage Account. If this field is set, `storage_account`, 
+      `storage_sas_token` and `storage_access_key` are ignored.
+
+
+  - path: container
+    name: container
+    label: Container
+    type: string
+    description: >-
+        The name of the Azure Storage Container to upload objects to.
+
+  - path: path
+    name: path
+    label: Path
+    type: string
+    optional: true
+    default: "${!counter()}-${!timestamp_unix_nano()}.txt"
+    description: >-
+      The path within the container to upload objects to. This field supports interpolation functions.
+
+  - path: blob_type
+    name: blob_type
+    label: Blob Type
+    type: string
+    optional: true
+    default: "BLOCK"
+    description: >-
+      Block and Append blobs are comprized of blocks, and each blob can support up to 50,000 blocks. The default value is `+"`BLOCK`"+`.`
+      This field supports interpolation functions.
+    constraints:
+      enum:
+        - "BLOCK"
+        - "APPEND"
+
+  - path: public_access_level
+    name: public_access_level
+    label: Public Access Level
+    type: string
+    optional: true
+    default: "PRIVATE"
+    description: >-
+      The container's public access level. The default value is `PRIVATE`.
+      This field supports interpolation functions.
+    constraints:
+      enum:
+        - "PRIVATE"
+        - "BLOB"
+        - "CONTAINER"
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    optional: true
+    default: 64
+    description: >-
+      The maximum number of messages to have in flight at any given time.

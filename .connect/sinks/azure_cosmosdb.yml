@@ -1,0 +1,193 @@
+model_version: "1"
+name: azure_cosmosdb
+label: Azure CosmosDB
+kind: sink
+status: preview
+description: >-
+  Creates or updates messages as JSON documents in [Azure CosmosDB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction).
+fields:
+  - path: endpoint
+    name: endpoint
+    label: Endpoint
+    type: string
+    description: >-
+      CosmosDB endpoint. This field is ignored if `connection_string` is set.
+
+  - path: account_key
+    name: account_key
+    label: Account Key
+    type: string
+    description: >-
+      The key of the account. This field is ignored if `connection_string` is set.
+
+  - path: connection_string
+    name: connection_string
+    label: Connection String
+    type: string
+    description: >-
+      A CosmosDB connection string.
+
+  - path: database
+    name: database
+    label: Database
+    type: string
+    description: >-
+      The name of the database to query.
+
+  - path: container
+    name: container
+    label: Container
+    type: string
+    description: >-
+      The name of the container to query.
+
+  - path: partition_keys_map
+    name: partition_keys_map
+    label: Partition Keys Mapping
+    type: string
+    description: >-
+      A Bloblang mapping which should evaluate to a single partition key value or an array of partition key values of type string, integer or boolean. Currently, hierarchical partition keys are not supported so only one value may be provided.
+
+  - path: operation
+    name: operation
+    label: Operation
+    type: string
+    default: Create
+    description: >-
+      The operation to perform on the document.
+    constraints:
+      enum:
+        - Create
+        - Delete
+        - Patch
+        - Replace
+        - Upsert
+
+  - path: patch_operations
+    name: patch_operations
+    label: Patch Operations
+    type: object
+    kind: list
+    description: >-
+      A list of patch operations to apply to the document. This field is only used when the operation is set to `Patch`.
+    fields:
+      - path: patch_operations[].operation
+        name: operation
+        label: Operation
+        type: string
+        default: Add
+        description: >-
+          The operation to perform on the document.
+        constraints:
+          enum:
+            - Add
+            - Increment
+            - Remove
+            - Replace
+            - Set
+      - path: patch_operations[].path
+        name: path
+        label: Path
+        type: string
+        description: >-
+          The path to the field to apply the operation to.
+      - path: patch_operations[].value_map
+        name: value_map
+        label: Value Mapping
+        type: string
+        description: >-
+          A Bloblang mapping which should evaluate to the value to apply to the field.
+        examples:
+          - 'root = "blobfish"'
+          - 'root = json("blobfish").depth'
+          - 'root = [1, 2, 3]'
+
+  - path: patch_condition
+    name: patch_condition
+    label: Patch Condition
+    type: string
+    description: >-
+      Patch operation condition. This field supports interpolation functions. This field is only used when the 
+      operation is set to `Patch`.
+    examples:
+      - "from c where not is_defined(c.blobfish)"
+
+  - path: auto_id
+    name: auto_id
+    label: Auto ID
+    type: bool
+    default: true
+    description: >-
+      Whether to automatically generate an ID for the document if one is not provided. If the `id` field is already 
+      set, then it will not be overwritten. Setting this to `false` can improve performance, since the messages will 
+      not have to be parsed.
+
+  - path: item_id
+    name: item_id
+    label: Item ID
+    type: string
+    description: >-
+      ID of item to replace or delete. Only used by the Replace and Delete operations. This field supports 
+      interpolation functions.
+    examples:
+      - '${!json("id")}'
+
+  - path: batching
+    name: batching
+    label: Batching
+    type: object
+    description: >-
+      Allows you to configure a batching policy.
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        type: int
+        description: >-
+          A number of messages at which the batch should be flushed. If `0`
+          disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        type: int
+        description: >-
+          An amount of bytes at which the batch should be flushed. If `0` disables
+          size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        type: string
+        render_hint: duration
+        description: >-
+          A period in which an incomplete batch should be flushed regardless
+          of its size.
+        examples:
+          - "1s"
+          - "1m"
+          - "500ms"
+      - path: batching.check
+        name: check
+        label: Check
+        type: condition
+        description: >-
+          A Bloblang query that should return a boolean value indicating whether a message should end a batch.
+        examples:
+          - this.type == "end_of_transaction"
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    optional: true
+    default: 64
+    description: >-
+      The maximum number of messages to have in flight at any given time.

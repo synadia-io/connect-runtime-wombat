@@ -1,0 +1,130 @@
+model_version: "1"
+name: gcp_pubsub
+label: GCP PubSub
+kind: sink
+status: preview
+description: >-
+  Sends messages to a GCP Cloud Pub/Sub topic. Metadata from messages are sent as attributes.
+fields:
+  - path: project
+    name: project
+    label: Project
+    type: string
+    description: >-
+      The Google Cloud project to write to.
+
+  - path: credentials_json
+    name: credentials_json
+    label: Credentials JSON
+    type: string
+    description: >-
+      JSON credentials for authenticating with GCP.
+
+  - path: topic
+    name: topic
+    label: Topic
+    type: string
+    description: >-
+      The topic to publish to. This field supports interpolation functions.
+
+  - path: endpoint
+    name: endpoint
+    label: Endpoint
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      An optional endpoint to override the default of `pubsub.googleapis.com:443`. This can be used to connect to a region specific pubsub endpoint. For a list of valid values, see [this document](https://cloud.google.com/pubsub/docs/reference/service_apis_overview#list_of_regional_endpoints).
+
+  - path: ordering_key
+    name: ordering_key
+    label: Ordering Key
+    type: string
+    description: >-
+      The ordering key to use for publishing messages. This field supports interpolation functions.
+
+  - path: publish_timeout
+    name: publish_timeout
+    label: Publish Timeout
+    type: string
+    optional: true
+    default: "10s"
+    description: >-
+      The maximum duration to wait for a message to be published before timing out.
+
+  - path: metadata
+    name: metadata
+    label: Metadata
+    type: object
+    description: >-
+      Specify criteria for which metadata values are attached to objects
+      as headers.
+    fields:
+      - path: metadata.exclude_prefixes
+        name: exclude_prefixes
+        label: Exclude Prefixes
+        type: string
+        description: >-
+          Provide a list of explicit metadata key prefixes to be excluded when
+          adding metadata to sent messages.
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    optional: true
+    default: 64
+    description: >-
+      The maximum number of messages to have in flight at any given time.
+
+
+  - path: batching
+    name: batching
+    label: Batching
+    type: object
+    description: >-
+      Allows you to configure a batching policy.
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        type: int
+        description: >-
+          A number of messages at which the batch should be flushed. If `0`
+          disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        type: int
+        description: >-
+          An amount of bytes at which the batch should be flushed. If `0` disables
+          size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        type: string
+        render_hint: duration
+        description: >-
+          A period in which an incomplete batch should be flushed regardless
+          of its size.
+        examples:
+          - "1s"
+          - "1m"
+          - "500ms"
+      - path: batching.check
+        name: check
+        label: Check
+        type: condition
+        description: >-
+          A Bloblang query that should return a boolean value indicating whether a message should end a batch.
+        examples:
+          - this.type == "end_of_transaction"

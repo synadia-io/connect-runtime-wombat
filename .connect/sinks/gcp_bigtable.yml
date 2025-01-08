@@ -1,0 +1,110 @@
+model_version: "1"
+name: gcp_bigtable
+label: GCP BigTable
+kind: sink
+status: preview
+description: >-
+  Write data to a Google Cloud Bigtable table.
+fields:
+  - path: project
+    name: project
+    label: Project
+    type: string
+    description: >-
+      The Google Cloud project to write to.
+
+  - path: instance
+    name: instance
+    label: Instance
+    type: string
+    description: >-
+      The BigTable Instance ID
+
+  - path: credentials_json
+    name: credentials_json
+    label: Credentials JSON
+    type: string
+    description: >-
+      JSON credentials for authenticating with GCP.
+
+  - path: table
+    name: table
+    label: Table
+    type: string
+    description: >-
+      The BigTable Table to insert rows into.
+
+  - path: key
+    name: key
+    label: Key
+    type: string
+    description: >-
+      The key to use for the row.
+
+  - path: data
+    name: data
+    label: Data
+    type: string
+    description: >-
+      The data to insert into the row.
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    optional: true
+    default: 64
+    description: >-
+      The maximum number of messages to have in flight at any given time.
+
+
+  - path: batching
+    name: batching
+    label: Batching
+    type: object
+    description: >-
+      Allows you to configure a batching policy.
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        type: int
+        description: >-
+          A number of messages at which the batch should be flushed. If `0`
+          disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        type: int
+        description: >-
+          An amount of bytes at which the batch should be flushed. If `0` disables
+          size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        type: string
+        render_hint: duration
+        description: >-
+          A period in which an incomplete batch should be flushed regardless
+          of its size.
+        examples:
+          - "1s"
+          - "1m"
+          - "500ms"
+      - path: batching.check
+        name: check
+        label: Check
+        type: condition
+        description: >-
+          A Bloblang query that should return a boolean value indicating whether a message should end a batch.
+        examples:
+          - this.type == "end_of_transaction"

@@ -1,10 +1,10 @@
 model_version: "1"
-name: azure_queue_storage
-label: Azure Storage Queue
+name: azure_data_lake_gen2
+label: Azure Data Lake Gen2
 kind: sink
 status: stable
 description: >-
-    Publish to an Azure Storage Queue.
+  Sends message parts as files to an Azure Data Lake Gen2 filesystem. Each file is uploaded with the filename specified with the `path` field.
 
 fields:
   - path: storage_account
@@ -41,26 +41,22 @@ fields:
       The connection string for the Azure Storage Account. If this field is set, `storage_account`, 
       `storage_sas_token` and `storage_access_key` are ignored.
 
-  - path: queue_name
-    name: queue_name
-    label: Queue Name
-    type: string
-    description: >-
-      The name of the Azure Storage Queue to publish to.
 
-  - path: ttl
-    name: ttl
-    label: Time-To-Live
+  - path: filesystem
+    name: filesystem
+    label: Filesystem
     type: string
-    default: "0"
-    optional: true
-    render_hint: duration
     description: >-
-      The time-to-live for messages in the queue in seconds. If not set, messages will not expire.
-    examples:
-      - "60s"
-      - "5m"
-      - "36h"
+      The name of the filesystem to upload objects to. This field supports interpolation functions.
+
+  - path: path
+    name: path
+    label: Path
+    type: string
+    optional: true
+    default: "${!counter()}-${!timestamp_unix_nano()}.txt"
+    description: >-
+      The path of each message to upload within the filesystem. This field supports interpolation functions.
 
   - path: max_in_flight
     name: max_in_flight
