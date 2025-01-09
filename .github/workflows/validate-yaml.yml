@@ -4,6 +4,9 @@ name: Validate YAML
 
 on:
   pull_request:
+    paths:
+    - '.connect/*/*.yml'
+    - 'schema.json'
   workflow_dispatch:
 
 permissions:
