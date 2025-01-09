@@ -1,0 +1,23 @@
+# .github/workflows/test.yml
+
+name: Validate YAML
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: none
+
+env:
+  GOPRIVATE: github.com/synadia-io/*
+
+jobs:
+  test:
+    name: Validate YAML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate YAML
+        run: npx --yes ajv-cli validate -s schema.json -d ".connect/*/*.yml" --verbose

@@ -56,7 +56,7 @@ fields:
     description: >-
       The operation to perform on the document.
     constraints:
-      enum:
+      - enum:
         - Create
         - Delete
         - Patch
@@ -79,7 +79,7 @@ fields:
         description: >-
           The operation to perform on the document.
         constraints:
-          enum:
+          - enum:
             - Add
             - Increment
             - Remove

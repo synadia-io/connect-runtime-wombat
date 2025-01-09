@@ -10,6 +10,15 @@ tasks:
     cmds:
       - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4
 
+  test:crawl:
+    cmds:
+      - nats kv add TMP > /dev/null
+      - defer: nats kv del --force TMP
+      - cd ../connect-node && go run ./cmd/connect-node/main.go library crawl ../connect-runtime-wombat --bucket=TMP
+
+  validate:
+    cmd: npx --yes ajv-cli validate -s schema.json -d ".connect/*/*.yml" --verbose
+
   docker:local:
     cmds:
       - docker build . -t connect-runtime-wombat:local

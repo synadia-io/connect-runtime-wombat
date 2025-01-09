@@ -69,7 +69,7 @@ fields:
       Block and Append blobs are comprized of blocks, and each blob can support up to 50,000 blocks. The default value is `+"`BLOCK`"+`.`
       This field supports interpolation functions.
     constraints:
-      enum:
+      - enum:
         - "BLOCK"
         - "APPEND"
 
@@ -83,7 +83,7 @@ fields:
       The container's public access level. The default value is `PRIVATE`.
       This field supports interpolation functions.
     constraints:
-      enum:
+      - enum:
         - "PRIVATE"
         - "BLOB"
         - "CONTAINER"
