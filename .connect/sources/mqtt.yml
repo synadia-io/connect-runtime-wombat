@@ -34,8 +34,8 @@ fields:
     description: >-
       Append a dynamically generated suffix to the specified `client_id` on each run of the pipeline. This can be useful when running multiple instances of this source.
     constraints:
-      enum:
-        - "nanoid"
+      - enum:
+          - "nanoid"
 
   - path: connect_timeout
     name: connect_timeout
@@ -155,7 +155,6 @@ fields:
             description: >-
               The password to decrypt the private key.
 
-
   - path: will
     name: will
     label: Last Will and Testament
@@ -180,10 +179,10 @@ fields:
         description: >-
           The QoS level to use for the last will message.
         constraints:
-          enum:
-            - 0
-            - 1
-            - 2
+          - enum:
+              - "0"
+              - "1"
+              - "2"
 
       - path: will.retained
         name: retained
@@ -206,8 +205,6 @@ fields:
         type: string
         description: >-
           The payload of the last will message.
-  
-
 
   - path: topics
     name: topics
@@ -228,10 +225,10 @@ fields:
     description: >-
       The level of assurance for message delivery.
     constraints:
-        enum:
-            - 0
-            - 1
-            - 2
+      - enum:
+          - "0"
+          - "1"
+          - "2"
 
   - path: clean_session
     name: clean_session

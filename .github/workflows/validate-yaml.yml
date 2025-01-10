@@ -1,0 +1,28 @@
+# .github/workflows/validate-yaml.yml
+
+name: Validate YAML
+
+on:
+  pull_request:
+    paths:
+    - '.connect/*/*.yml'
+    - 'schema.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: none
+
+env:
+  GOPRIVATE: github.com/synadia-io/*
+
+jobs:
+  test:
+    name: Validate YAML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate YAML
+        run: |
+          curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/joeriddles/schema/schemas/component.json -O
+          npx --yes ajv-cli validate -s component.json -d ".connect/*/*.yml" --verbose

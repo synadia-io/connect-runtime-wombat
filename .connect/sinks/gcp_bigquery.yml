@@ -43,7 +43,7 @@ fields:
     description: >-
       The write policy to use when inserting rows.
     constraints:
-      enum:
+      - enum:
           - WRITE_APPEND
           - WRITE_TRUNCATE
           - WRITE_EMPTY
@@ -57,7 +57,7 @@ fields:
     description: >-
       The create policy to use when inserting rows.
     constraints:
-      enum:
+      - enum:
           - CREATE_IF_NEEDED
           - CREATE_NEVER
 

@@ -57,7 +57,7 @@ fields:
     description: >-
       The behaviour to take when a collision occurs.
     constraints:
-      enum:
+      - enum:
         - append
         - error-if-exists
         - ignore
