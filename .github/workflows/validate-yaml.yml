@@ -23,4 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate YAML
-        run: npx --yes ajv-cli validate -s schema.json -d ".connect/*/*.yml" --verbose
+        run: |
+          curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/joeriddles/schema/schemas/component.json -O
+          npx --yes ajv-cli validate -s component.json -d ".connect/*/*.yml" --verbose

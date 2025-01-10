@@ -17,7 +17,9 @@ tasks:
       - cd ../connect-node && go run ./cmd/connect-node/main.go library crawl ../connect-runtime-wombat --bucket=TMP
 
   validate:
-    cmd: npx --yes ajv-cli validate -s schema.json -d ".connect/*/*.yml" --verbose
+    cmds:
+      - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/joeriddles/schema/schemas/component.json -O
+      - npx --yes ajv-cli validate -s component.json -d ".connect/*/*.yml" --verbose
 
   docker:local:
     cmds:
