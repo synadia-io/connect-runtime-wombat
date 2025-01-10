@@ -18,7 +18,7 @@ tasks:
 
   validate:
     cmds:
-      - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/joeriddles/schema/schemas/component.json -O
+      - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/schemas/component.json -O
       - npx --yes ajv-cli validate -s component.json -d ".connect/*/*.yml" --verbose
 
   docker:local:
