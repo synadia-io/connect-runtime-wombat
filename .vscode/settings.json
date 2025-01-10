@@ -1,5 +1,5 @@
 {
   "yaml.schemas": {
-    "schema.json": ".connect/**/*.yml"
+    "https://raw.githubusercontent.com/synadia-io/connect/refs/heads/joeriddles/schema/schemas/component.json": ".connect/**/*.yml"
   }
 }
