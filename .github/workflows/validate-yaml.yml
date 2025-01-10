@@ -1,4 +1,4 @@
-# .github/workflows/test.yml
+# .github/workflows/validate-yaml.yml
 
 name: Validate YAML
 
