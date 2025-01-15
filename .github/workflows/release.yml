@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   packages: write
+  id-token: write
 
 env:
   GOPRIVATE: github.com/synadia-io/*
