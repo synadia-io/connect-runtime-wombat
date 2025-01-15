@@ -2,7 +2,7 @@ model_version: "1"
 name: wombat
 label: Wombat
 version: edge
-image: ghcr.io/synadia-io/connect-runtime-wombat:latest
+image: 936336900585.dkr.ecr.us-east-2.amazonaws.com/connect-runtime-wombat:edge
 author:
   name: Synadia
   email: code@synadia.com
