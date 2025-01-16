@@ -309,6 +309,7 @@ require (
 	github.com/timeplus-io/proton-go-driver/v2 v2.0.17 // indirect
 	github.com/trinodb/trino-go-client v0.315.0 // indirect
 	github.com/twmb/franz-go v1.18.0 // indirect
+	github.com/twmb/franz-go/pkg/kadm v1.13.0 // indirect
 	github.com/twmb/franz-go/pkg/kmsg v1.9.0 // indirect
 	github.com/twmb/franz-go/pkg/sr v1.2.0 // indirect
 	github.com/urfave/cli/v2 v2.27.5 // indirect
@@ -326,6 +327,7 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.mongodb.org/mongo-driver v1.17.2 // indirect
+	go.mongodb.org/mongo-driver/v2 v2.0.0 // indirect
 	go.nanomsg.org/mangos/v3 v3.4.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
