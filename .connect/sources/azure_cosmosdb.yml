@@ -38,7 +38,7 @@ fields:
     name: args_mapping
     label: Argument Mapping
     type: string
-    render_hint: bloblang
+    render_hint: sourcecode
     description: >-
       A Bloblang mapping that, for each message, creates a list of arguments to use with the query.
 
@@ -46,7 +46,7 @@ fields:
     name: partition_keys_map
     label: Partition Keys Mapping
     type: string
-    render_hint: bloblang
+    render_hint: sourcecode
     description: >-
       A Bloblang mapping which should evaluate to a single partition key value or an array of partition key values of type string, integer or boolean. Currently, hierarchical partition keys are not supported so only one value may be provided.
 

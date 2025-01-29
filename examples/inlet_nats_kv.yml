@@ -1,0 +1,21 @@
+# nats --context=demo kv add DAAN
+# nats --context=demo sub 'connect.inlets.nats_kv'
+# nats --context=demo kv put DAAN 'daan.items.hello' 'Hello World Again'
+
+description: Read data from NATS and write it to NATS
+workload: registry.helix-dev.synadia.io/connect-runtime-wombat:edge
+metrics:
+  port: 4195
+  path: /metrics
+steps:
+  source:
+    type: nats_kv
+    config:
+      urls:
+        - nats://demo.nats.io:4222
+      bucket: DAAN
+      key: "daan.items.>"
+  producer:
+    nats_config:
+      url: nats://demo.nats.io:4222
+    subject: connect.inlets.nats_kv

@@ -1,7 +1,7 @@
 model_version: "1"
 name: "mongodb"
 label: "MongoDB"
-kind: scanner
+kind: sink
 status: stable
 description: >-
   Write messages from NATS to a MongoDB collection.
@@ -24,24 +24,6 @@ fields:
     examples:
       - "my_db"
 
-  - path: username
-    name: username
-    label: Username
-    type: string
-    optional: true
-    default: ""
-    description: >-
-      The username to authenticate with.
-
-  - path: password
-    name: password
-    label: Password
-    type: string
-    optional: true
-    default: ""
-    description: >-
-      The password to authenticate with.
-
   - path: collection
     name: collection
     label: Collection
@@ -55,7 +37,7 @@ fields:
     name: document_map
     label: Document Map
     type: string
-    render_hint: bloblang
+    render_hint: sourcecode
     description: >-
       A bloblang map representing a document to store within MongoDB, expressed as extended JSON in canonical form.
       The document map is required for the operations insert-one, replace-one and update-one.
@@ -64,7 +46,7 @@ fields:
     name: filter_map
     label: Filter Map
     type: string
-    render_hint: bloblang
+    render_hint: sourcecode
     optional: true
     description: >-
       A bloblang map representing a filter for a MongoDB command, expressed as extended JSON in canonical form. 

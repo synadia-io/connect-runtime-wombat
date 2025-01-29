@@ -51,7 +51,7 @@ fields:
     type: string
     optional: true
     default: ""
-    render_hint: bloblang
+    render_hint: sourcecode
     description: >-
       An optional Bloblang mapping which should evaluate to an array of values matching in size to the number 
       of placeholder arguments in the field where.
