@@ -1,0 +1,108 @@
+model_version: "1"
+name: "mongodb"
+label: "MongoDB"
+kind: scanner
+status: stable
+description: >-
+  Write messages from NATS to a MongoDB collection.
+fields:
+  - path: url
+    name: url
+    label: URL
+    type: string
+    description: >-
+      The MongoDB connection URL.
+    examples:
+      - "mongodb://localhost:27017"
+
+  - path: database
+    name: database
+    label: Database
+    type: string
+    description: >-
+      The name of the database to query.
+    examples:
+      - "my_db"
+
+  - path: username
+    name: username
+    label: Username
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      The username to authenticate with.
+
+  - path: password
+    name: password
+    label: Password
+    type: string
+    optional: true
+    default: ""
+    description: >-
+      The password to authenticate with.
+
+  - path: collection
+    name: collection
+    label: Collection
+    type: string
+    description: >-
+      The name of the collection to query.
+    examples:
+      - "my_collection"
+
+  - path: document_map
+    name: document_map
+    label: Document Map
+    type: string
+    render_hint: bloblang
+    description: >-
+      A bloblang map representing a document to store within MongoDB, expressed as extended JSON in canonical form.
+      The document map is required for the operations insert-one, replace-one and update-one.
+
+  - path: filter_map
+    name: filter_map
+    label: Filter Map
+    type: string
+    render_hint: bloblang
+    optional: true
+    description: >-
+      A bloblang map representing a filter for a MongoDB command, expressed as extended JSON in canonical form. 
+      The filter map is required for all operations except insert-one. It is used to find the document(s) for the 
+      operation. For example in a delete-one case, the filter map should have the fields required to locate the 
+      document to delete.
+
+  - path: operation
+    name: operation
+    label: Operation
+    type: string
+    default: "insert-one"
+    optional: true
+    description: >-
+      The operation to perform on the collection.
+    constraints:
+      - enum:
+          - insert-one
+          - delete-one
+          - delete-many
+          - replace-one
+          - update-one
+
+  - path: upsert
+    name: upsert
+    label: Upsert
+    type: bool
+    default: false
+    optional: true
+    description: >-
+      Whether to perform an upsert operation.
+
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max in Flight
+    optional: true
+    default: 1024
+    type: int
+    description: >-
+      The maximum number of messages to have in flight at a given time. Increase
+      this to improve throughput.

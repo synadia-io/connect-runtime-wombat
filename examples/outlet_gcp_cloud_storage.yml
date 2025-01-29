@@ -1,0 +1,22 @@
+description: Read data from NATS and send it to a GCP Cloud Storage bucket.
+workload: registry.helix-dev.synadia.io/connect-runtime-wombat:edge
+metrics:
+  port: 4195
+  path: /metrics
+steps:
+  consumer:
+    nats_config:
+      url: nats://demo.nats.io:4222
+    subject: connect.daan.>
+  sink:
+    type: gcp_cloud_storage
+    config:
+      bucket: synadia-connect-test-daan
+      chunk_size: 1.6777216e+07
+      collision_mode: overwrite
+      content_encoding: ""
+      content_type: application/octet-stream
+      credentials_json: ${CREDENTIALS_JSON}
+      max_in_flight: 64
+      path: ${!counter()}-${!timestamp_unix_nano()}.txt
+      timeout: 5s
