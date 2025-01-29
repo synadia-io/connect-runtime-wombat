@@ -29,6 +29,7 @@ fields:
     label: Username
     type: string
     optional: true
+    default: ""
     description: >-
       The username to authenticate with.
 
@@ -37,6 +38,7 @@ fields:
     label: Password
     type: string
     optional: true
+    default: ""
     description: >-
       The password to authenticate with.
 
@@ -54,6 +56,7 @@ fields:
     label: Operation
     type: string
     default: "find"
+    optional: true
     description: >-
       The operation to perform.
 
@@ -68,6 +71,7 @@ fields:
     name: auto_replay_nacks
     label: Auto Replay Nacks
     type: bool
+    optional: true
     default: true
     description: >-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
@@ -79,6 +83,8 @@ fields:
     name: batch_size
     label: Batch Size
     type: int
+    optional: true
+    default: 0
     description: >-
       A explicit number of documents to batch up before flushing them for processing. Must be greater than `0`.
 
@@ -86,6 +92,8 @@ fields:
     name: sort
     label: Sort
     type: object
+    optional: true
+    default: {}
     description: >-
       An object specifying fields to sort by, and the respective sort order (`1` ascending, `-1` descending). Note: The driver currently appears to support only one sorting key. Operations: `find`
 
@@ -93,5 +101,7 @@ fields:
     name: limit
     label: Limit
     type: int
+    optional: true
+    default: 0
     description: >-
       The maximum number of documents to return. Operations: `find`

@@ -7,39 +7,12 @@ description: >-
     Publish to an Azure Queue Storage account.
 
 fields:
-  - path: storage_account
-    name: storage_account
-    label: Storage Account
-    type: string
-    optional: true
-    description: >-
-      The name of the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
-
-  - path: storage_access_key
-    name: storage_access_key
-    label: Storage Access Key
-    type: string
-    optional: true
-    description: >-
-      The key for the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
-
-  - path: storage_sas_token
-    name: storage_sas_token
-    label: Storage SAS Token
-    type: string
-    optional: true
-    description: >-
-      The SAS token for the Azure Storage Account. This field is ignored if `storage_connection_string` or 
-      `storage_access_key` are set.
-
   - path: storage_connection_string
     name: storage_connection_string
     label: Storage Connection String
     type: string
-    optional: true
     description: >-
-      The connection string for the Azure Storage Account. If this field is set, `storage_account`, 
-      `storage_sas_token` and `storage_access_key` are ignored.
+      The connection string for the Azure Storage Account.
 
   - path: queue_name
     name: queue_name

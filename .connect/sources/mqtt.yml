@@ -168,6 +168,7 @@ fields:
         label: Enabled
         type: bool
         default: false
+        optional: true
         description: >-
           Whether to enable the last will message.
 
@@ -176,6 +177,7 @@ fields:
         label: QoS
         type: int
         default: 0
+        optional: true
         description: >-
           The QoS level to use for the last will message.
         constraints:
@@ -189,6 +191,7 @@ fields:
         label: Retained
         type: bool
         default: false
+        optional: true
         description: >-
           Whether the last will message should be retained.
 
@@ -196,6 +199,7 @@ fields:
         name: topic
         label: Topic
         type: string
+        optional: true
         description: >-
           The topic to publish the last will message to.
 
@@ -203,6 +207,7 @@ fields:
         name: payload
         label: Payload
         type: string
+        optional: true
         description: >-
           The payload of the last will message.
 
@@ -222,6 +227,7 @@ fields:
     label: QoS
     type: int
     default: 1
+    optional: true
     description: >-
       The level of assurance for message delivery.
     constraints:
@@ -235,6 +241,7 @@ fields:
     label: Clean Session
     type: bool
     default: true
+    optional: true
     description: >-
       Set whether the connection is non-persistent.
 
@@ -243,6 +250,7 @@ fields:
     label: Auto Replay Nacks
     type: bool
     default: true
+    optional: true
     description: >-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
       eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these 

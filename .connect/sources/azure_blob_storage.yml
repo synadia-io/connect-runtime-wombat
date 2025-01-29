@@ -6,41 +6,12 @@ status: preview
 description: >-
   Downloads objects within an Azure Blob Storage container, optionally filtered by a prefix.
 fields:
-  - path: storage_account
-    name: storage_account
-    label: Account
-    type: string
-    optional: true
-    default: ""
-    description: >-
-      The storage account to access. This field is ignored if `storage_connection_string` is set.
-
-  - path: storage_access_key
-    name: storage_access_key
-    label: Access Key
-    type: string
-    optional: true
-    default: ""
-    description: >-
-      The storage account access key. This field is ignored if `storage_connection_string` is set.
-
   - path: storage_connection_string
-    name: storage_connection_string
+    name: connection_string
     label: Connection String
     type: string
-    optional: true
-    default: ""
     description: >-
-      A storage account connection string. This field is required if `storage_account` and `storage_access_key` / `storage_sas_token` are not set.
-
-  - path: storage_sas_token
-    name: storage_sas_token
-    label: SAS Token
-    type: string
-    optional: true
-    default: ""
-    description: >-
-      The storage account SAS token. This field is ignored if `storage_connection_string` or `storage_access_key` are set.
+      A storage account connection string.
 
   - path: container
     name: container
@@ -69,6 +40,7 @@ fields:
     name: delete_objects
     label: Delete Objects
     type: bool
+    optional: true
     default: false
     description: >-
       Whether to delete downloaded objects from the blob once they are processed.

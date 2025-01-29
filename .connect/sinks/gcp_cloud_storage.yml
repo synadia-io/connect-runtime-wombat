@@ -24,7 +24,7 @@ fields:
   - path: path
     name: path
     label: Path
-    type: string
+    type: expression
     optional: true
     default: '${!counter()}-${!timestamp_unix_nano()}.txt'
     description: >-
@@ -94,6 +94,7 @@ fields:
     name: batching
     label: Batching
     type: object
+    optional: true
     description: >-
       Allows you to configure a batching policy.
     examples:
@@ -110,6 +111,7 @@ fields:
         name: count
         label: Count
         type: int
+        optional: true
         description: >-
           A number of messages at which the batch should be flushed. If `0`
           disables count based batching.
@@ -117,6 +119,7 @@ fields:
         name: byte_size
         label: Byte Size
         type: int
+        optional: true
         description: >-
           An amount of bytes at which the batch should be flushed. If `0` disables
           size based batching.
@@ -125,6 +128,7 @@ fields:
         label: Period
         type: string
         render_hint: duration
+        optional: true
         description: >-
           A period in which an incomplete batch should be flushed regardless
           of its size.
@@ -136,6 +140,7 @@ fields:
         name: check
         label: Check
         type: condition
+        optional: true
         description: >-
           A Bloblang query that should return a boolean value indicating whether a message should end a batch.
         examples:

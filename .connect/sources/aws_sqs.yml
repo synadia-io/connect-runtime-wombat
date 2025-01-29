@@ -16,6 +16,8 @@ fields:
   - path: delete_message
     name: delete_message
     label: Delete Message
+    optional: true
+    default: true
     type: bool
     description: >-
       Whether to delete the consumed message once it is acked. Disabling
@@ -24,6 +26,8 @@ fields:
   - path: reset_visibility
     name: reset_visibility
     label: Reset Visibility
+    optional: true
+    default: true
     type: bool
     description: >-
       Whether to set the visibility timeout of the consumed message to zero
@@ -34,16 +38,40 @@ fields:
     name: max_number_of_messages
     label: Max Number of Messages
     type: int
+    optional: true
+    default: 10
     description: >-
       The maximum number of messages to return on one poll. Valid values: 1 to 10.
+
+  - path: max_outstanding_messages
+    name: max_outstanding_messages
+    label: Max number of outstanding messages
+    type: int
+    optional: true
+    default: 1000
+    description: >-
+      The maximum number of outstanding pending messages to be consumed at a given time
 
   - path: wait_time_seconds
     name: wait_time_seconds
     label: Wait Time Seconds
     type: int
+    optional: true
+    default: 0
     description: >-
       Whether to set the wait time. Enabling this activates long-polling.
       Valid values: 0 to 20.
+
+  - path: message_timeout
+    name: message_timeout
+    label: Message Timeout
+    type: string
+    render_hint: duration
+    optional: true
+    default: 30s
+    description: >-
+      The time to process messages before needing to refresh the receipt handle. Messages will be eligible 
+      for refresh when half of the timeout has elapsed. This sets MessageVisibility for each received message.
 
   - path: region
     name: region
@@ -56,6 +84,8 @@ fields:
     name: endpoint
     label: Endpoint
     type: string
+    optional: true
+    default: ""
     description: >-
       Allows you to specify a custom endpoint for the AWS API.
 
@@ -63,7 +93,6 @@ fields:
     name: credentials
     label: Credentials
     type: object
-    optional: true
     description: >-
       Optional manual configuration of AWS credentials to use. More information
       can be found in xref:guides:cloud/aws.adoc[].
@@ -72,24 +101,32 @@ fields:
         name: profile
         label: Profile
         type: string
+        optional: true
+        default: ""
         description: >-
           A profile from `~/.aws/credentials` to use.
       - path: credentials.id
         name: id
         label: ID
         type: string
+        optional: true
+        default: ""
         description: >-
           The ID of credentials to use.
       - path: credentials.secret
         name: secret
         label: Secret
         type: string
+        optional: true
+        default: ""
         description: >-
           The secret for the credentials being used.
       - path: credentials.token
         name: token
         label: Token
         type: string
+        optional: true
+        default: ""
         description: >-
           The token for the credentials being used, required when using short
           term credentials.
@@ -97,6 +134,8 @@ fields:
         name: from_ec2_role
         label: From EC2 Role
         type: bool
+        optional: true
+        default: ""
         description: >-
           Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an
           IAM role associated with the instance^].
@@ -104,11 +143,16 @@ fields:
         name: role
         label: Role
         type: string
+        optional: true
+        default: ""
         description: >-
           A role ARN to assume.
       - path: credentials.role_external_id
         name: role_external_id
         label: Role External ID
         type: string
+        optional: true
+        default: ""
         description: >-
           An external ID to provide when assuming a role.
+

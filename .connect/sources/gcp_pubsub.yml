@@ -31,6 +31,8 @@ fields:
     name: endpoint
     label: Endpoint
     type: string
+    default: ""
+    optional: true
     description: >-
       Allows you to specify a custom endpoint for the GCP API. For a list of valid values, 
       see [this document](https://cloud.google.com/pubsub/docs/reference/service_apis_overview#list_of_regional_endpoints).
@@ -39,6 +41,8 @@ fields:
     name: sync
     label: Sync
     type: bool
+    optional: true
+    default: false
     description: >-
       Whether to consume messages synchronously. If set to `true`, messages will be consumed
       one at a time and the next message will not be consumed until the current message has been
@@ -51,6 +55,7 @@ fields:
     label: Max Outstanding Messages
     type: int
     default: 1000
+    optional: true
     description: >-
       The maximum number of unacknowledged messages to allow before pausing consumption. If set to `0`,
       consumption will never pause. This can be used to control the rate of consumption and prevent
@@ -60,6 +65,7 @@ fields:
     name: max_outstanding_bytes
     label: Max Outstanding Bytes
     type: int
+    optional: true
     default: 100000000
     description: >-
       The maximum number of unacknowledged bytes to allow before pausing consumption. If set to `0`,

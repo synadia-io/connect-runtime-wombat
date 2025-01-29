@@ -6,20 +6,6 @@ status: preview
 description: >-
   Creates or updates messages as JSON documents in [Azure CosmosDB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction).
 fields:
-  - path: endpoint
-    name: endpoint
-    label: Endpoint
-    type: string
-    description: >-
-      CosmosDB endpoint. This field is ignored if `connection_string` is set.
-
-  - path: account_key
-    name: account_key
-    label: Account Key
-    type: string
-    description: >-
-      The key of the account. This field is ignored if `connection_string` is set.
-
   - path: connection_string
     name: connection_string
     label: Connection String
@@ -44,15 +30,19 @@ fields:
   - path: partition_keys_map
     name: partition_keys_map
     label: Partition Keys Mapping
+    render_hint: bloblang
     type: string
     description: >-
-      A Bloblang mapping which should evaluate to a single partition key value or an array of partition key values of type string, integer or boolean. Currently, hierarchical partition keys are not supported so only one value may be provided.
+      A Bloblang mapping which should evaluate to a single partition key value or an array of partition key values 
+      of type string, integer or boolean. Currently, hierarchical partition keys are not supported so only one 
+      value may be provided.
 
   - path: operation
     name: operation
     label: Operation
     type: string
     default: Create
+    optional: true
     description: >-
       The operation to perform on the document.
     constraints:
@@ -67,6 +57,7 @@ fields:
     name: patch_operations
     label: Patch Operations
     type: object
+    optional: true
     kind: list
     description: >-
       A list of patch operations to apply to the document. This field is only used when the operation is set to `Patch`.
@@ -76,6 +67,7 @@ fields:
         label: Operation
         type: string
         default: Add
+        optional: true
         description: >-
           The operation to perform on the document.
         constraints:
@@ -89,12 +81,15 @@ fields:
         name: path
         label: Path
         type: string
+        optional: true
         description: >-
           The path to the field to apply the operation to.
       - path: patch_operations[].value_map
         name: value_map
         label: Value Mapping
         type: string
+        optional: true
+        render_hint: bloblang
         description: >-
           A Bloblang mapping which should evaluate to the value to apply to the field.
         examples:
@@ -106,6 +101,7 @@ fields:
     name: patch_condition
     label: Patch Condition
     type: string
+    optional: true
     description: >-
       Patch operation condition. This field supports interpolation functions. This field is only used when the 
       operation is set to `Patch`.
@@ -116,6 +112,7 @@ fields:
     name: auto_id
     label: Auto ID
     type: bool
+    optional: true
     default: true
     description: >-
       Whether to automatically generate an ID for the document if one is not provided. If the `id` field is already 
@@ -125,7 +122,7 @@ fields:
   - path: item_id
     name: item_id
     label: Item ID
-    type: string
+    type: expression
     description: >-
       ID of item to replace or delete. Only used by the Replace and Delete operations. This field supports 
       interpolation functions.
@@ -136,6 +133,7 @@ fields:
     name: batching
     label: Batching
     type: object
+    optional: true
     description: >-
       Allows you to configure a batching policy.
     examples:
@@ -152,6 +150,7 @@ fields:
         name: count
         label: Count
         type: int
+        optional: true
         description: >-
           A number of messages at which the batch should be flushed. If `0`
           disables count based batching.
@@ -159,6 +158,7 @@ fields:
         name: byte_size
         label: Byte Size
         type: int
+        optional: true
         description: >-
           An amount of bytes at which the batch should be flushed. If `0` disables
           size based batching.
@@ -167,6 +167,7 @@ fields:
         label: Period
         type: string
         render_hint: duration
+        optional: true
         description: >-
           A period in which an incomplete batch should be flushed regardless
           of its size.
@@ -178,6 +179,7 @@ fields:
         name: check
         label: Check
         type: condition
+        optional: true
         description: >-
           A Bloblang query that should return a boolean value indicating whether a message should end a batch.
         examples:

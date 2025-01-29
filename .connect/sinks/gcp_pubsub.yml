@@ -23,7 +23,7 @@ fields:
   - path: topic
     name: topic
     label: Topic
-    type: string
+    type: expression
     description: >-
       The topic to publish to. This field supports interpolation functions.
 
@@ -39,7 +39,8 @@ fields:
   - path: ordering_key
     name: ordering_key
     label: Ordering Key
-    type: string
+    type: expression
+    optional: true
     description: >-
       The ordering key to use for publishing messages. This field supports interpolation functions.
 
@@ -48,7 +49,7 @@ fields:
     label: Publish Timeout
     type: string
     optional: true
-    default: "10s"
+    default: "1m"
     description: >-
       The maximum duration to wait for a message to be published before timing out.
 
@@ -56,6 +57,7 @@ fields:
     name: metadata
     label: Metadata
     type: object
+    optional: true
     description: >-
       Specify criteria for which metadata values are attached to objects
       as headers.
@@ -64,6 +66,7 @@ fields:
         name: exclude_prefixes
         label: Exclude Prefixes
         type: string
+        optional: true
         description: >-
           Provide a list of explicit metadata key prefixes to be excluded when
           adding metadata to sent messages.
@@ -82,6 +85,7 @@ fields:
     name: batching
     label: Batching
     type: object
+    optional: true
     description: >-
       Allows you to configure a batching policy.
     examples:
@@ -98,6 +102,7 @@ fields:
         name: count
         label: Count
         type: int
+        optional: true
         description: >-
           A number of messages at which the batch should be flushed. If `0`
           disables count based batching.
@@ -105,6 +110,7 @@ fields:
         name: byte_size
         label: Byte Size
         type: int
+        optional: true
         description: >-
           An amount of bytes at which the batch should be flushed. If `0` disables
           size based batching.
@@ -113,6 +119,7 @@ fields:
         label: Period
         type: string
         render_hint: duration
+        optional: true
         description: >-
           A period in which an incomplete batch should be flushed regardless
           of its size.
@@ -124,6 +131,8 @@ fields:
         name: check
         label: Check
         type: condition
+        optional: true
+        render_hint: bloblang
         description: >-
           A Bloblang query that should return a boolean value indicating whether a message should end a batch.
         examples:

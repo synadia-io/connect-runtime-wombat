@@ -43,6 +43,8 @@ fields:
     name: auto_replay_nacks
     label: Auto Replay Nacks
     type: bool
+    optional: true
+    default: true
     description: >-
       Whether messages that are rejected (nacked) at the output level should
       be automatically replayed indefinitely, eventually resulting in back pressure
@@ -55,6 +57,8 @@ fields:
     name: send_ack
     label: Send Ack
     type: bool
+    optional: true
+    default: true
     description: >-
       Control whether ACKS are sent as a reply to each message. When enabled,
       these replies are sent only once the data has been delivered to all outputs.
@@ -74,6 +78,8 @@ fields:
     name: prefetch_count
     label: Prefetch Count
     type: int
+    optional: true
+    default: 524288
     description: >-
       The maximum number of messages to pull at a time.
 
@@ -81,6 +87,7 @@ fields:
     name: tls
     label: TLS
     type: object
+    optional: true
     description: >-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -88,18 +95,22 @@ fields:
         name: enabled
         label: Enabled
         type: bool
+        optional: true
+        default: false
         description: >-
           Whether custom TLS settings are enabled.
       - path: tls.skip_cert_verify
         name: skip_cert_verify
         label: Skip Cert Verify
         type: bool
+        optional: true
         description: >-
           Whether to skip server side certificate verification.
       - path: tls.enable_renegotiation
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
+        optional: true
         description: >-
           Whether to allow the remote server to repeatedly request renegotiation.
           Enable this option if you''re seeing the error message `local error: tls: no renegotiation`.
@@ -133,6 +144,7 @@ fields:
         name: client_certs
         label: Client Certs
         type: object
+        optional: true
         description: >-
           A list of client certificates to use. For each certificate either
           the fields `cert` and `key`, or `cert_file` and `key_file` should be specified,
@@ -147,30 +159,35 @@ fields:
             name: cert
             label: Cert
             type: string
+            optional: true
             description: >-
               A plain text certificate to use.
           - path: tls.client_certs.key
             name: key
             label: Key
             type: string
+            optional: true
             description: >-
               A plain text certificate key to use.
           - path: tls.client_certs.cert_file
             name: cert_file
             label: Cert File
             type: string
+            optional: true
             description: >-
               The path of a certificate to use.
           - path: tls.client_certs.key_file
             name: key_file
             label: Key File
             type: string
+            optional: true
             description: >-
               The path of a certificate key to use.
           - path: tls.client_certs.password
             name: password
             label: Password
             type: string
+            optional: true
             description: >-
               A plain text password for when the private key is password encrypted in PKCS#1 or PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported for the PKCS#8 format.
 

@@ -41,6 +41,8 @@ fields:
         name: enabled
         label: Enabled
         type: bool
+        optional: true
+        default: false
         description: >-
           Whether to declare the exchange if it does not already exist.
 
@@ -158,6 +160,7 @@ fields:
     name: metadata
     label: Metadata
     type: object
+    optional: true
     description: >-
       Determine which (if any) metadata values should be added to messages as headers.
     fields:
@@ -165,16 +168,17 @@ fields:
         name: exclude_prefixes
         label: Exclude Prefixes
         type: string
+        optional: true
         description: >-
           Provide a list of explicit metadata key prefixes to be excluded when adding metadata to sent messages.
 
   - path: priority
     name: priority
     label: Priority
-    type: int
+    type: string
     description: >-
       The priority property to set for each message
-    default: 0
+    default: ""
     optional: true
 
   - path: max_in_flight

@@ -7,44 +7,17 @@ description: >-
   Stores messages in an Azure Table Storage table.
 
 fields:
-  - path: storage_account
-    name: storage_account
-    label: Storage Account
-    type: string
-    optional: true
-    description: >-
-      The name of the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
-
-  - path: storage_access_key
-    name: storage_access_key
-    label: Storage Access Key
-    type: string
-    optional: true
-    description: >-
-      The key for the Azure Storage Account. This field is ignored if `storage_connection_string` is set.
-
-  - path: storage_sas_token
-    name: storage_sas_token
-    label: Storage SAS Token
-    type: string
-    optional: true
-    description: >-
-      The SAS token for the Azure Storage Account. This field is ignored if `storage_connection_string` or 
-      `storage_access_key` are set.
-
   - path: storage_connection_string
     name: storage_connection_string
     label: Storage Connection String
     type: string
-    optional: true
     description: >-
-      The connection string for the Azure Storage Account. If this field is set, `storage_account`, 
-      `storage_sas_token` and `storage_access_key` are ignored.
+      The connection string for the Azure Storage Account.
 
   - path: table_name
     name: table_name
     label: Table
-    type: string
+    type: expression
     description: >-
         The name of the table to store messages in.
     examples:
@@ -117,6 +90,7 @@ fields:
     name: batching
     label: Batching
     type: object
+    optional: true
     description: >-
       Allows you to configure a batching policy.
     examples:
@@ -133,6 +107,7 @@ fields:
         name: count
         label: Count
         type: int
+        optional: true
         description: >-
           A number of messages at which the batch should be flushed. If `0`
           disables count based batching.
@@ -140,6 +115,7 @@ fields:
         name: byte_size
         label: Byte Size
         type: int
+        optional: true
         description: >-
           An amount of bytes at which the batch should be flushed. If `0` disables
           size based batching.
@@ -148,6 +124,7 @@ fields:
         label: Period
         type: string
         render_hint: duration
+        optional: true
         description: >-
           A period in which an incomplete batch should be flushed regardless
           of its size.
@@ -159,6 +136,7 @@ fields:
         name: check
         label: Check
         type: condition
+        optional: true
         description: >-
           A Bloblang query that should return a boolean value indicating whether a message should end a batch.
         examples:

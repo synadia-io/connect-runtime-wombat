@@ -6,20 +6,6 @@ status: preview
 description: >-
   Executes a SQL query against [Azure CosmosDB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction) and creates a batch of messages from each page of items.
 fields:
-  - path: endpoint
-    name: endpoint
-    label: Endpoint
-    type: string
-    description: >-
-      CosmosDB endpoint. This field is ignored if `connection_string` is set.
-
-  - path: account_key
-    name: account_key
-    label: Account Key
-    type: string
-    description: >-
-      The key of the account. This field is ignored if `connection_string` is set.
-
   - path: connection_string
     name: connection_string
     label: Connection String
@@ -52,6 +38,7 @@ fields:
     name: args_mapping
     label: Argument Mapping
     type: string
+    render_hint: bloblang
     description: >-
       A Bloblang mapping that, for each message, creates a list of arguments to use with the query.
 
@@ -59,6 +46,7 @@ fields:
     name: partition_keys_map
     label: Partition Keys Mapping
     type: string
+    render_hint: bloblang
     description: >-
       A Bloblang mapping which should evaluate to a single partition key value or an array of partition key values of type string, integer or boolean. Currently, hierarchical partition keys are not supported so only one value may be provided.
 
@@ -66,6 +54,7 @@ fields:
     name: auto_replay_nacks
     label: Automatically Replay Nacks
     type: bool
+    optional: true
     default: true
     description: >-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

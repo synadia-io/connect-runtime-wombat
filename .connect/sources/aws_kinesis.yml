@@ -28,6 +28,7 @@ fields:
     name: dynamodb
     label: DynamoDB
     type: object
+    optional: true
     description: >-
       Determines the table used for storing and accessing the latest consumed
       sequence for shards, and for coordinating balanced consumers of streams.
@@ -41,6 +42,8 @@ fields:
       - path: dynamodb.create
         name: create
         label: Create
+        optional: true
+        default: false
         type: bool
         description: >-
           Whether, if the table does not exist, it should be created.
@@ -48,11 +51,15 @@ fields:
         name: billing_mode
         label: Billing Mode
         type: string
+        optional: true
+        default: "PAY_PER_REQUEST"
         description: >-
           When creating the table determines the billing mode.
       - path: dynamodb.read_capacity_units
         name: read_capacity_units
         label: Read Capacity Units
+        optional: true
+        default: 0
         type: int
         description: >-
           Set the provisioned read capacity when creating the table with a
@@ -61,6 +68,7 @@ fields:
         name: write_capacity_units
         label: Write Capacity Units
         type: int
+        default: 0
         description: >-
           Set the provisioned write capacity when creating the table with a
           `billing_mode` of `PROVISIONED`.
@@ -68,6 +76,8 @@ fields:
   - path: checkpoint_limit
     name: checkpoint_limit
     label: Checkpoint Limit
+    optional: true
+    default: 1024
     type: int
     description: >-
       The maximum gap between the in flight sequence versus the latest acknowledged
@@ -79,6 +89,8 @@ fields:
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
+    optional: true
+    default: true
     type: bool
     description: >-
       Whether messages that are rejected (nacked) at the output level should
@@ -92,6 +104,8 @@ fields:
     name: commit_period
     label: Commit Period
     type: string
+    optional: true
+    default: 5s
     description: >-
       The period of time between each update to the checkpoint table.
 
@@ -99,6 +113,8 @@ fields:
     name: rebalance_period
     label: Rebalance Period
     type: string
+    optional: true
+    default: 30s
     description: >-
       The period of time between each attempt to rebalance shards across clients.
 
@@ -106,6 +122,8 @@ fields:
     name: lease_period
     label: Lease Period
     type: string
+    optional: true
+    default: 30s
     description: >-
       The period of time after which a client that has failed to update a
       shard checkpoint is assumed to be inactive.
@@ -114,6 +132,8 @@ fields:
     name: start_from_oldest
     label: Start From Oldest
     type: bool
+    optional: true
+    default: true
     description: >-
       Whether to consume from the oldest message when a sequence does not
       yet exist for the stream.
@@ -129,6 +149,8 @@ fields:
     name: endpoint
     label: Endpoint
     type: string
+    optional: true
+    default: ""
     description: >-
       Allows you to specify a custom endpoint for the AWS API.
 
@@ -136,7 +158,6 @@ fields:
     name: credentials
     label: Credentials
     type: object
-    optional: true
     description: >-
       Optional manual configuration of AWS credentials to use. More information
       can be found in xref:guides:cloud/aws.adoc[].
@@ -145,24 +166,32 @@ fields:
         name: profile
         label: Profile
         type: string
+        optional: true
+        default: ""
         description: >-
           A profile from `~/.aws/credentials` to use.
       - path: credentials.id
         name: id
         label: ID
         type: string
+        optional: true
+        default: ""
         description: >-
           The ID of credentials to use.
       - path: credentials.secret
         name: secret
         label: Secret
         type: string
+        optional: true
+        default: ""
         description: >-
           The secret for the credentials being used.
       - path: credentials.token
         name: token
         label: Token
         type: string
+        optional: true
+        default: ""
         description: >-
           The token for the credentials being used, required when using short
           term credentials.
@@ -170,6 +199,8 @@ fields:
         name: from_ec2_role
         label: From EC2 Role
         type: bool
+        optional: true
+        default: ""
         description: >-
           Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an
           IAM role associated with the instance^].
@@ -177,12 +208,16 @@ fields:
         name: role
         label: Role
         type: string
+        optional: true
+        default: ""
         description: >-
           A role ARN to assume.
       - path: credentials.role_external_id
         name: role_external_id
         label: Role External ID
         type: string
+        optional: true
+        default: ""
         description: >-
           An external ID to provide when assuming a role.
 
@@ -191,6 +226,7 @@ fields:
     name: batching
     label: Batching
     type: object
+    optional: true
     description: >-
       Allows you to configure a batching policy.
     examples:
@@ -207,6 +243,8 @@ fields:
         name: count
         label: Count
         type: int
+        optional: true
+        default: 0
         description: >-
           A number of messages at which the batch should be flushed. If `0`
           disables count based batching.
@@ -214,6 +252,8 @@ fields:
         name: byte_size
         label: Byte Size
         type: int
+        optional: true
+        default: 0
         description: >-
           An amount of bytes at which the batch should be flushed. If `0` disables
           size based batching.
@@ -222,6 +262,8 @@ fields:
         label: Period
         type: string
         render_hint: duration
+        optional: true
+        default: ""
         description: >-
           A period in which an incomplete batch should be flushed regardless
           of its size.
@@ -233,6 +275,8 @@ fields:
         name: check
         label: Check
         type: condition
+        optional: true
+        default: ""
         description: >-
           A Bloblang query that should return
           a boolean value indicating whether a message should end a batch.

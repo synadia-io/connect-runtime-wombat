@@ -39,15 +39,29 @@ fields:
     name: where
     label: Where
     type: string
+    optional: true
+    default: ""
     description: >-
       Optional `WHERE` clause to filter rows. Placeholder arguments are populated with the `args_mapping` field. 
       Placeholders should always be question marks (`?`).
+
+  - path: args_mapping
+    name: args_mapping
+    label: Arguments
+    type: string
+    optional: true
+    default: ""
+    render_hint: bloblang
+    description: >-
+      An optional Bloblang mapping which should evaluate to an array of values matching in size to the number 
+      of placeholder arguments in the field where.
 
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
     type: bool
     default: true
+    optional: true
     description: >-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
       eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these 
