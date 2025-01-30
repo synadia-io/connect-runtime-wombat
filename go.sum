@@ -1198,7 +1198,6 @@ github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeN
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
-github.com/google/martian v2.1.0+incompatible h1:/CP5g8u/VJHijgedC/Legn3BAbAaWPgecwXBIDzw5no=
 github.com/google/martian v2.1.0+incompatible/go.mod h1:9I4somxYTbIHy5NJKHRl3wXiIaQGbYVAs8BPL6v8lEs=
 github.com/google/martian/v3 v3.0.0/go.mod h1:y5Zk1BBys9G+gd6Jrk0W3cC1+ELVxBWuIGO+w/tUAp0=
 github.com/google/martian/v3 v3.1.0/go.mod h1:y5Zk1BBys9G+gd6Jrk0W3cC1+ELVxBWuIGO+w/tUAp0=
@@ -1811,8 +1810,10 @@ github.com/vmihailenco/tagparser/v2 v2.0.0 h1:y09buUbR+b5aycVFQs/g70pqKVZNBmxwAh
 github.com/vmihailenco/tagparser/v2 v2.0.0/go.mod h1:Wri+At7QHww0WTrCBeu4J6bNtoV6mEfg5OIWRZA9qds=
 github.com/wI2L/jsondiff v0.4.0 h1:iP56F9tK83eiLttg3YdmEENtZnwlYd3ezEpNNnfZVyM=
 github.com/wI2L/jsondiff v0.4.0/go.mod h1:nR/vyy1efuDeAtMwc3AF6nZf/2LD1ID8GTyyJ+K8YB0=
-github.com/wombatwisdom/wombat v1.0.3 h1:g1C6gLn4c/A5HtZj4bDCqxKp54LgGFsUMy1w7E8YX+8=
-github.com/wombatwisdom/wombat v1.0.3/go.mod h1:HH9+1XAAvPwzxcmj6QlFkzSHZUjH27vItRRqUmJ8eiM=
+github.com/wombatwisdom/wombat v1.0.4-0.20250130101315-2e1f5c3d3243 h1:vIdJZSLL8hgFfszbaWk3dB5oAFoWBCBD7J9ZquR0nRw=
+github.com/wombatwisdom/wombat v1.0.4-0.20250130101315-2e1f5c3d3243/go.mod h1:HH9+1XAAvPwzxcmj6QlFkzSHZUjH27vItRRqUmJ8eiM=
+github.com/wombatwisdom/wombat v1.0.4-0.20250130121658-2a517ada8ebf h1:zIQC/blQu7072AoHVx1qW39pLhvkRJP/anbuxSmsv2E=
+github.com/wombatwisdom/wombat v1.0.4-0.20250130121658-2a517ada8ebf/go.mod h1:OHvWQ+Ip5S32WYNtMVAs6LMaasc0BSQ47gba895PBuk=
 github.com/xdg-go/pbkdf2 v1.0.0 h1:Su7DPu48wXMwC3bs7MCNG+z4FhcyEuz5dlvchbq0B0c=
 github.com/xdg-go/pbkdf2 v1.0.0/go.mod h1:jrpuAogTd400dnrH08LKmI/xc1MbPOebTwRqcT5RDeI=
 github.com/xdg-go/scram v1.1.1/go.mod h1:RaEWvsqvNKKvBPvcKeFjrG2cJqOkHTiyTpzz23ni57g=

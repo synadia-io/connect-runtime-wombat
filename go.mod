@@ -12,7 +12,7 @@ require (
 	github.com/redpanda-data/benthos/v4 v4.43.0
 	github.com/rs/zerolog v1.33.0
 	github.com/synadia-io/connect v1.0.3
-	github.com/wombatwisdom/wombat v1.0.3
+	github.com/wombatwisdom/wombat v1.0.4-0.20250130121658-2a517ada8ebf
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -179,6 +179,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/martian/v3 v3.3.3 // indirect
 	github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect

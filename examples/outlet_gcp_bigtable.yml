@@ -1,0 +1,21 @@
+description: Read data from NATS and send it to a GCP BigTable Table.
+workload: connect-runtime-wombat:local
+metrics:
+  port: 4195
+  path: /metrics
+steps:
+  consumer:
+    nats_config:
+      url: nats://demo.nats.io:4222
+    subject: connect.outlet.bigtable.>
+  sink:
+    type: gcp_bigtable
+    config:
+      project: daan-gerits
+      instance: syn-connect-demo
+      credentials_json: ${CREDENTIALS_JSON}
+      table: "items"
+      key: this.key
+      max_in_flight: 64
+      data: |-
+        root.default.raw = this.message

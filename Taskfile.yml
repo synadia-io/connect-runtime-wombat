@@ -23,4 +23,4 @@ tasks:
 
   docker:local:
     cmds:
-      - docker build . -t connect-runtime-wombat:local
+      - docker build --no-cache -t connect-runtime-wombat:local .
