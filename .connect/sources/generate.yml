@@ -54,7 +54,7 @@ fields:
     type: int
     description: >-
       The number of generated messages that should be accumulated into each batch flushed at the specified interval.
-    default: 0
+    default: 1
     optional: true
 
   - path: auto_replay_nacks
