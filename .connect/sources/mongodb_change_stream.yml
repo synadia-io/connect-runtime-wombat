@@ -11,9 +11,9 @@ description: >-
   When only a database is provided, changes to all collections in that database will be read.
   When neither a database nor a collection is provided, changes to all databases and collections will be read.
 fields:
-  - path: url
-    name: url
-    label: URL
+  - path: uri
+    name: uri
+    label: URI
     type: string
     description: >-
       MongoDB connection URI
