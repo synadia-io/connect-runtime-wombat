@@ -2,7 +2,7 @@ model_version: "1"
 name: wombat
 label: Wombat
 version: edge
-image: registry.helix-dev.synadia.io/connect-runtime-wombat:edge
+image: registry.helix-dev.synadia.io/connect-runtime-wombat:nex
 author:
   name: Synadia
   email: code@synadia.com
