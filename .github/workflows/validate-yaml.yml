@@ -3,10 +3,11 @@
 name: Validate YAML
 
 on:
-  pull_request:
-    paths:
-    - '.connect/*/*.yml'
-    - 'schema.json'
+  # disabling this for the time being. It has a dependency on the component schema which we cannot satisfy at the moment.
+#  pull_request:
+#    paths:
+#    - '.connect/*/*.yml'
+#    - 'schema.json'
   workflow_dispatch:
 
 permissions:
