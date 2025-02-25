@@ -7,7 +7,7 @@ import (
 )
 
 func Runtime() *runtime.Runtime {
-    r := runtime.NewRuntime("dummy-account", "my-connector-id", "my-instance-id", slog.LevelInfo)
+    r := runtime.NewRuntime(slog.LevelInfo)
     r.Logger = slog.Default()
     return r
 }
