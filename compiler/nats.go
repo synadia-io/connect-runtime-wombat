@@ -8,15 +8,17 @@ func attachNatsConfig(target map[string]any, c model.NatsConfig) {
     target["urls"] = []string{c.Url}
 
     if c.AuthEnabled {
-        target["auth"] = map[string]string{}
+        auth := map[string]string{}
 
         if c.Jwt != nil {
-            target["user_jwt"] = *c.Jwt
+            auth["user_jwt"] = *c.Jwt
         }
 
         if c.Seed != nil {
-            target["user_nkey_seed"] = *c.Seed
+            auth["user_nkey_seed"] = *c.Seed
         }
+
+        target["auth"] = auth
     }
 }
 
