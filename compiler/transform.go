@@ -1,28 +1,10 @@
 package compiler
 
 import (
-    "fmt"
     "github.com/synadia-io/connect/model"
 )
 
-func attachTransformerAsProcessor(result map[string]any, steps model.Steps) (map[string]any, error) {
-    tm, err := compileTransformer(steps.Transformer)
-    if err != nil {
-        return nil, fmt.Errorf("transformer: %w", err)
-    }
-
-    if tm != nil {
-        result["processors"] = []map[string]any{tm}
-    }
-
-    return result, nil
-}
-
-func compileTransformer(transformer *model.TransformerStep) (map[string]any, error) {
-    if transformer == nil {
-        return nil, nil
-    }
-
+func compileTransformer(transformer model.TransformerStep) Fragment {
     if transformer.Composite != nil {
         return compileCompositeTransformer(transformer.Composite)
     }
@@ -35,50 +17,27 @@ func compileTransformer(transformer *model.TransformerStep) (map[string]any, err
         return compileMappingTransformer(transformer.Mapping)
     }
 
-    return nil, nil
+    return nil
 }
 
-func compileServiceTransformer(t *model.ServiceTransformerStep) (map[string]any, error) {
-    cfg := map[string]any{
-        "urls":    []string{t.Nats.Url},
-        "subject": t.Endpoint,
-        "metadata": map[string]any{
-            "include_patterns": []string{
-                ".*",
-            },
-        },
-    }
-
-    if t.Nats.AuthEnabled {
-        attachNatsAuth(cfg, t.Nats)
-    }
-
-    if t.Timeout != "" {
-        cfg["timeout"] = t.Timeout
-    }
-
-    return map[string]any{"nats_request_reply": cfg}, nil
+func compileServiceTransformer(t *model.ServiceTransformerStep) Fragment {
+    return Frag().
+        Fragment("nats_request_reply", natsBaseFragment(t.Nats).
+            String("subject", t.Endpoint).
+            String("timeout", t.Timeout).
+            Fragment("metadata", Frag().
+                Strings("include_patterns", ".*")))
 }
 
-func compileCompositeTransformer(t *model.CompositeTransformerStep) (map[string]any, error) {
-    result := map[string]any{
-        "processors": []map[string]any{},
-    }
-
+func compileCompositeTransformer(t *model.CompositeTransformerStep) Fragment {
+    var seq []Fragment
     for _, ct := range t.Sequential {
-        compiled, err := compileTransformer(&ct)
-        if err != nil {
-            return nil, fmt.Errorf("composite transformer: %w", err)
-        }
-
-        if compiled != nil {
-            result["processors"] = append(result["processors"].([]map[string]any), compiled)
-        }
+        seq = append(seq, compileTransformer(ct))
     }
 
-    return result, nil
+    return Frag().Fragment("processors", Frag().Fragments("sequence", seq...))
 }
 
-func compileMappingTransformer(t *model.MappingTransformerStep) (map[string]any, error) {
-    return map[string]any{"mapping": t.Sourcecode}, nil
+func compileMappingTransformer(t *model.MappingTransformerStep) Fragment {
+    return Frag().String("mapping", t.Sourcecode)
 }

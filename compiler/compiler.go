@@ -9,37 +9,27 @@ import (
 )
 
 func Compile(steps model.Steps) (string, error) {
-    mainCfg := map[string]any{
-        "input":  nil,
-        "output": nil,
-        "metrics": map[string]any{
-            "prometheus": map[string]any{},
-        },
-    }
+    mainCfg := Frag().
+        Fragment("metrics", Frag().
+            Fragment("prometheus", Frag()))
 
     var err error
     if steps.Producer != nil && steps.Source != nil {
-        // -- an inlet has a producer and a source
-        mainCfg["input"], err = compileSource(steps)
+        producer, err := compileProducer(*steps.Producer)
         if err != nil {
-            return "", fmt.Errorf("input: %w", err)
+            return "", fmt.Errorf("output: %w", err)
         }
 
-        mainCfg["output"], err = compileProducer(steps)
-        if err != nil {
-            return "", fmt.Errorf("target: %w", err)
-        }
+        mainCfg.Fragment("input", compileSource(*steps.Source, steps.Transformer))
+        mainCfg.Fragment("output", producer)
     } else if steps.Consumer != nil && steps.Sink != nil {
-        // -- an outlet has a consumer and a sink
-        mainCfg["input"], err = compileConsumer(steps)
+        consumer, err := compileConsumer(*steps.Consumer, steps.Transformer)
         if err != nil {
             return "", fmt.Errorf("source: %w", err)
         }
 
-        mainCfg["output"], err = compileSink(steps)
-        if err != nil {
-            return "", fmt.Errorf("output: %w", err)
-        }
+        mainCfg.Fragment("input", consumer)
+        mainCfg.Fragment("output", compileSink(*steps.Sink))
     } else {
         return "", fmt.Errorf("invalid steps")
     }

@@ -5,6 +5,7 @@ import (
     "fmt"
     "github.com/synadia-io/connect-runtime-wombat/runner"
     "github.com/synadia-io/connect-runtime-wombat/test"
+    . "github.com/synadia-io/connect/builders"
     "strings"
     "sync"
     "sync/atomic"
@@ -85,6 +86,8 @@ var _ = Describe("Running an inlet", func() {
                 Expect(err).NotTo(HaveOccurred())
                 defer s.Drain()
 
+                inlet := Steps().
+                    Build()
                 inlet := test.InletWithTransformer(
                     test.GenerateSource(),
                     test.ServiceTransformer(test.NatsConfig(TestPort), fmt.Sprintf("service.%s", serviceName)),
