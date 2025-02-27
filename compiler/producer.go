@@ -58,7 +58,5 @@ func compileKvProducer(m model.ProducerStep) Fragment {
         Fragment("nats_kv", natsBaseFragment(m.Nats).
             String("bucket", m.Kv.Bucket).
             String("key", m.Kv.Key).
-            Int("max_in_flight", m.Threads).
-            Fragment("metadata", Frag().
-                Strings("include_patterns", ".*")))
+            Int("max_in_flight", m.Threads))
 }
