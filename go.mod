@@ -11,7 +11,7 @@ require (
 	github.com/r3labs/diff/v3 v3.0.1
 	github.com/redpanda-data/benthos/v4 v4.44.1
 	github.com/rs/zerolog v1.33.0
-	github.com/synadia-io/connect v1.0.7-0.20250227083826-f664f6b3bc6a
+	github.com/synadia-io/connect v1.0.7-0.20250227084904-5365321acb21
 	github.com/wombatwisdom/wombat v1.0.4-rc1
 	gopkg.in/yaml.v3 v3.0.1
 )

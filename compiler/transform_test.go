@@ -16,7 +16,10 @@ import (
 var _ = Describe("Compiling an inlet", func() {
     When("the configuration is invalid", func() {
         It("should return an error", func() {
-            invalidInlet := test.Inlet(test.InvalidSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))
+            invalidInlet := Steps().
+                Source(test.InvalidSource()).
+                Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
+                Build()
             artifact, err := compiler.Compile(invalidInlet)
             Expect(err).NotTo(HaveOccurred())
 
@@ -28,7 +31,10 @@ var _ = Describe("Compiling an inlet", func() {
 
     When("the inlet has a valid source and producer", func() {
         It("should generate a valid wombat artifact", func() {
-            inlet := test.Inlet(test.GenerateSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))
+            inlet := Steps().
+                Source(test.GenerateSource()).
+                Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
+                Build()
 
             artifact, err := compiler.Compile(inlet)
             Expect(err).NotTo(HaveOccurred())

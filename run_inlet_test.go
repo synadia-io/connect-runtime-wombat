@@ -21,7 +21,10 @@ import (
 var _ = Describe("Running an inlet", func() {
     When("the inlet configuration is invalid", func() {
         It("should return an error", func() {
-            invalidInlet := test.Inlet(test.InvalidSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))
+            invalidInlet := Steps().
+                Source(SourceStep("invalid")).
+                Producer(test.CoreProducer(NatsConfig(DefaultNatsUrl))).
+                Build()
             err := runner.Run(context.Background(), test.Runtime(), invalidInlet)
             Expect(err).To(HaveOccurred())
         })
@@ -44,7 +47,10 @@ var _ = Describe("Running an inlet", func() {
             Expect(err).NotTo(HaveOccurred())
             defer s.Drain()
 
-            inlet := test.Inlet(test.GenerateSource(), test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject))
+            inlet := Steps().
+                Source(test.GenerateSource()).
+                Producer(test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject)).
+                Build()
             err = runner.Run(context.Background(), test.Runtime(), inlet)
             Expect(err).NotTo(HaveOccurred())
 
@@ -87,12 +93,11 @@ var _ = Describe("Running an inlet", func() {
                 defer s.Drain()
 
                 inlet := Steps().
+                    Source(test.GenerateSource()).
+                    Transformer(TransformerStep().
+                        Service(ServiceTransformerStep(fmt.Sprintf("service.%s", serviceName), test.NatsConfig(TestPort)))).
+                    Producer(test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject)).
                     Build()
-                inlet := test.InletWithTransformer(
-                    test.GenerateSource(),
-                    test.ServiceTransformer(test.NatsConfig(TestPort), fmt.Sprintf("service.%s", serviceName)),
-                    test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject),
-                )
                 err = runner.Run(context.Background(), test.Runtime(), inlet)
                 Expect(err).NotTo(HaveOccurred())
 

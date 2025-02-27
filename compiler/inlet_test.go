@@ -7,7 +7,7 @@ import (
     "github.com/redpanda-data/benthos/v4/public/service"
     "github.com/synadia-io/connect-runtime-wombat/compiler"
     "github.com/synadia-io/connect-runtime-wombat/test"
-    "github.com/synadia-io/connect/builders"
+    . "github.com/synadia-io/connect/builders"
     "github.com/synadia-io/connect/model"
 )
 
@@ -15,7 +15,10 @@ var _ = Describe("Inlet", func() {
     Describe("Compiling an inlet", func() {
         When("the inlet configuration is invalid", func() {
             It("should return an error", func() {
-                invalidInlet := test.Inlet(test.InvalidSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))
+                invalidInlet := Steps().
+                    Source(test.InvalidSource()).
+                    Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
+                    Build()
                 artifact, err := compiler.Compile(invalidInlet)
                 Expect(err).NotTo(HaveOccurred())
 
@@ -29,10 +32,9 @@ var _ = Describe("Inlet", func() {
             var inlet model.Steps
 
             BeforeEach(func() {
-                inlet = builders.Steps().
+                inlet = Steps().
                     Source(test.GenerateSource()).Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
                     Build()
-                inlet = test.Inlet(test.GenerateSource(), test.CoreProducer(test.UnauthenticatedNatsConfig()))
             })
 
             It("should generate a valid wombat artifact", func() {
