@@ -1770,6 +1770,8 @@ github.com/synadia-io/connect v1.0.7-0.20250226111653-739a0fdeb6fb h1:JNuoj2UVtx
 github.com/synadia-io/connect v1.0.7-0.20250226111653-739a0fdeb6fb/go.mod h1:taaEzj9WIQZdcC2db0NM+D8fn1nsScQ5Cm1OErKWwpg=
 github.com/synadia-io/connect v1.0.7-0.20250226111741-9479874b40be h1:Xrc373undWCIXKApr1uFcvob0EZznH6+VJr9FMlPjPo=
 github.com/synadia-io/connect v1.0.7-0.20250226111741-9479874b40be/go.mod h1:taaEzj9WIQZdcC2db0NM+D8fn1nsScQ5Cm1OErKWwpg=
+github.com/synadia-io/connect v1.0.7-0.20250227083826-f664f6b3bc6a h1:/LGabhq3iJmfzMtw7HHi0Jx+5xT6CIF+jZ8gGW6raEo=
+github.com/synadia-io/connect v1.0.7-0.20250227083826-f664f6b3bc6a/go.mod h1:taaEzj9WIQZdcC2db0NM+D8fn1nsScQ5Cm1OErKWwpg=
 github.com/testcontainers/testcontainers-go v0.33.0 h1:zJS9PfXYT5O0ZFXM2xxXfk4J5UMw/kRiISng037Gxdw=
 github.com/testcontainers/testcontainers-go v0.33.0/go.mod h1:W80YpTa8D5C3Yy16icheD01UTDu+LmXIA2Keo+jWtT8=
 github.com/testcontainers/testcontainers-go/modules/qdrant v0.32.0 h1:rsk1UKBcu3s5V/msn6Hsizx7f70SPDyLZKlgz0xDEJ8=
