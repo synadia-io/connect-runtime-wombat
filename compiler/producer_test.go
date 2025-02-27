@@ -61,9 +61,7 @@ func TestCompileKvProducer(t *testing.T) {
                 Strings("urls", DefaultNatsUrl).
                 String("bucket", "foo").
                 String("key", "bar").
-                Int("max_in_flight", 1).
-                Fragment("metadata", Frag().
-                    Strings("include_patterns", ".*"))),
+                Int("max_in_flight", 1)),
         },
     )
 }
