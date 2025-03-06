@@ -1,82 +1,62 @@
 package compiler
 
 import (
-    "github.com/rs/zerolog/log"
+    "fmt"
     "github.com/synadia-io/connect/model"
 )
 
-func compileProducer(steps model.Steps) (map[string]any, error) {
-    var result map[string]any
-    var err error
-
-    if steps.Producer.Jetstream != nil {
-        result, err = compileJetStreamProducer(steps)
-    } else {
-        result, err = compileCoreProducer(steps)
+func compileProducer(m model.ProducerStep) (Fragment, error) {
+    types := 0
+    if m.Core != nil {
+        types++
+    }
+    if m.Stream != nil {
+        types++
+    }
+    if m.Kv != nil {
+        types++
+    }
+    if types != 1 {
+        return nil, fmt.Errorf("exactly one consumer type (core, stream, kv) must be defined")
     }
 
-    if err != nil {
-        return nil, err
+    if m.Core != nil {
+        return compileCoreProducer(m), nil
     }
 
-    if steps.Transformer != nil {
-        return attachTransformerAsProcessor(result, steps)
+    if m.Stream != nil {
+        return compileStreamProducer(m), nil
     }
 
-    return result, nil
+    if m.Kv != nil {
+        return compileKvProducer(m), nil
+    }
+
+    return nil, fmt.Errorf("at least one producer type (core, stream, kv) must be defined")
 }
 
-func compileCoreProducer(steps model.Steps) (map[string]any, error) {
-    cfg := map[string]any{
-        "subject":       steps.Producer.Subject,
-        "max_in_flight": 1,
-        "metadata": map[string]any{
-            "include_patterns": []string{
-                ".*",
-            },
-        },
-    }
-
-    attachNatsConfig(cfg, steps.Producer.Nats)
-
-    if steps.Producer.Threads > 0 {
-        cfg["max_in_flight"] = steps.Producer.Threads
-    }
-
-    return map[string]any{"nats": cfg}, nil
+func compileCoreProducer(m model.ProducerStep) Fragment {
+    return Frag().
+        Fragment("nats", natsBaseFragment(m.Nats).
+            String("subject", m.Core.Subject).
+            Int("max_in_flight", m.Threads).
+            Fragment("metadata", Frag().
+                Strings("include_patterns", ".*")))
 }
 
-func compileJetStreamProducer(steps model.Steps) (map[string]any, error) {
-    cfg := map[string]any{
-        "subject":       steps.Producer.Subject,
-        "max_in_flight": 1,
-    }
+func compileStreamProducer(m model.ProducerStep) Fragment {
+    return Frag().
+        Fragment("nats_jetstream", natsBaseFragment(m.Nats).
+            String("subject", m.Stream.Subject).
+            Int("max_in_flight", m.Threads).
+            Fragment("metadata", Frag().
+                Strings("include_patterns", ".*")))
+}
 
-    attachNatsConfig(cfg, steps.Producer.Nats)
-
-    if steps.Producer.Threads > 0 {
-        cfg["max_in_flight"] = steps.Producer.Threads
-    }
-
-    if steps.Producer.Jetstream.MsgId != nil {
-        log.Warn().Msgf("msg_id is not supported for jetstream producer")
-        //cfg["msg_id"] = v.Producer.JetStream.MsgId
-    }
-
-    if steps.Producer.Jetstream.AckWait != nil {
-        log.Warn().Msgf("ack_wait is not supported for jetstream producer")
-        //cfg["ack_wait"] = v.Producer.JetStream.AckWait
-    }
-
-    if steps.Producer.Jetstream.Batching != nil {
-        log.Warn().Msgf("batching is not supported for jetstream producer")
-        //cfg["batching"] = map[string]any{
-        //	"count":     v.Producer.JetStream.Batching.Count,
-        //	"byte_size": v.Producer.JetStream.Batching.ByteSize,
-        //}
-    }
-
-    result := map[string]any{"nats_jetstream": cfg}
-
-    return result, nil
+func compileKvProducer(m model.ProducerStep) Fragment {
+    return Frag().
+        Fragment("nats_kv", natsBaseFragment(m.Nats).
+            String("bucket", m.Kv.Bucket).
+            String("key", m.Kv.Key).
+            Int("max_in_flight", m.Threads))
 }

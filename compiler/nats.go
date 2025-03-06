@@ -4,6 +4,19 @@ import (
     "github.com/synadia-io/connect/model"
 )
 
+func natsBaseFragment(c model.NatsConfig) Fragment {
+    cfg := Frag().
+        Strings("urls", c.Url)
+
+    if c.AuthEnabled {
+        cfg.Fragment("auth", Frag().
+            StringP("user_jwt", c.Jwt).
+            StringP("user_nkey_seed", c.Seed))
+    }
+
+    return cfg
+}
+
 func attachNatsConfig(target map[string]any, c model.NatsConfig) {
     target["urls"] = []string{c.Url}
 

@@ -3,6 +3,7 @@ module github.com/synadia-io/connect-runtime-wombat
 go 1.24
 
 require (
+	github.com/bsm/gomega v1.27.10
 	github.com/google/uuid v1.6.0
 	github.com/nats-io/nats-server/v2 v2.10.25
 	github.com/nats-io/nats.go v1.39.1
@@ -11,7 +12,7 @@ require (
 	github.com/r3labs/diff/v3 v3.0.1
 	github.com/redpanda-data/benthos/v4 v4.44.1
 	github.com/rs/zerolog v1.33.0
-	github.com/synadia-io/connect v1.0.7-0.20250225093057-5d6906f07c93
+	github.com/synadia-io/connect v1.0.7-0.20250227084904-5365321acb21
 	github.com/wombatwisdom/wombat v1.0.4-rc1
 	gopkg.in/yaml.v3 v3.0.1
 )

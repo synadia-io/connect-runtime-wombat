@@ -28,7 +28,6 @@ jobs:
           images: |
             ${{ vars.DEV_AWS_ECR_ADDR }}/connect-runtime-wombat
           tags: |
-            type=edge
             type=ref,event=branch
 
       - name: Set up QEMU

@@ -1,21 +1,15 @@
 package test
 
 import (
-    "github.com/synadia-io/connect/model"
+    "github.com/synadia-io/connect/builders"
 )
 
-func InvalidSource() model.SourceStep {
-    return model.SourceStep{
-        Type: "invalid",
-    }
+func InvalidSource() *builders.SourceStepBuilder {
+    return builders.SourceStep("invalid")
 }
 
-func GenerateSource() model.SourceStep {
-    return model.SourceStep{
-        Type: "generate",
-        Config: map[string]any{
-            "count":   5,
-            "mapping": "root = \"hello world\"",
-        },
-    }
+func GenerateSource() *builders.SourceStepBuilder {
+    return builders.SourceStep("generate").
+        SetString("mapping", "root = \"hello world\"").
+        SetInt("count", 5)
 }
