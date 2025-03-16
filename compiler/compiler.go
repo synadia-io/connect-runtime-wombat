@@ -11,13 +11,17 @@ import (
 )
 
 func Compile(steps model.Steps) (string, error) {
-    mainCfg := Frag().
-        Fragment("metrics", Frag().
-            Fragment("nats", Frag().
-                String("url", os.Getenv(runtime.NatsUrlVar)).
-                String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", os.Getenv(runtime.NamespaceEnvVar), os.Getenv(runtime.InstanceEnvVar))).
-                String("jwt", os.Getenv(runtime.NatsJwtVar)).
-                String("seed", os.Getenv(runtime.NatsSeedVar))))
+    mainCfg := Frag()
+
+    if os.Getenv(runtime.NatsUrlVar) != "" {
+        mainCfg.
+            Fragment("metrics", Frag().
+                Fragment("nats", Frag().
+                    String("url", os.Getenv(runtime.NatsUrlVar)).
+                    String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", os.Getenv(runtime.NamespaceEnvVar), os.Getenv(runtime.InstanceEnvVar))).
+                    String("jwt", os.Getenv(runtime.NatsJwtVar)).
+                    String("seed", os.Getenv(runtime.NatsSeedVar))))
+    }
 
     var err error
     if steps.Producer != nil && steps.Source != nil {
