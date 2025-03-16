@@ -19,7 +19,7 @@ var _ = Describe("Inlet", func() {
                     Source(test.InvalidSource()).
                     Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
                     Build()
-                artifact, err := compiler.Compile(invalidInlet)
+                artifact, err := compiler.Compile(test.Runtime(), invalidInlet)
                 Expect(err).NotTo(HaveOccurred())
 
                 sb, err := compiler.Validate(context.Background(), test.Runtime(), artifact, nil)
@@ -38,7 +38,7 @@ var _ = Describe("Inlet", func() {
             })
 
             It("should generate a valid wombat artifact", func() {
-                artifact, err := compiler.Compile(inlet)
+                artifact, err := compiler.Compile(test.Runtime(), inlet)
                 Expect(err).NotTo(HaveOccurred())
 
                 Expect(artifact).NotTo(BeNil())

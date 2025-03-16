@@ -1,19 +1,19 @@
 package test
 
 import (
-    "log/slog"
-    "os"
-
     "github.com/synadia-io/connect/runtime"
 )
 
-func Runtime() *runtime.Runtime {
-    r := runtime.NewRuntime(slog.LevelInfo, "MY_NAMESPACE", "MY_CONNECTOR", "MY_INSTANCE")
+func Runtime(opts ...runtime.Opt) *runtime.Runtime {
+    r := runtime.NewRuntime(
+        runtime.WithNamespace("MY_NAMESPACE"),
+        runtime.WithGroup("MY_CONNECTOR"),
+        runtime.WithInstance("MY_INSTANCE"),
+    )
 
-    os.Setenv(runtime.NamespaceEnvVar, r.Namespace)
-    os.Setenv(runtime.InstanceEnvVar, r.Instance)
-    os.Setenv(runtime.GroupEnvVar, r.Connector)
+    for _, opt := range opts {
+        opt(r)
+    }
 
-    r.Logger = slog.Default()
     return r
 }

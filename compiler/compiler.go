@@ -2,25 +2,29 @@ package compiler
 
 import (
     "fmt"
+    _ "github.com/synadia-io/connect-runtime-wombat/components"
     "github.com/synadia-io/connect/model"
     "github.com/synadia-io/connect/runtime"
     "gopkg.in/yaml.v3"
-    "os"
-
-    _ "github.com/synadia-io/connect-runtime-wombat/components"
 )
 
-func Compile(steps model.Steps) (string, error) {
+func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
     mainCfg := Frag()
 
-    if os.Getenv(runtime.NatsUrlVar) != "" {
+    if rt.NatsUrl != "" && rt.Namespace != "" && rt.Instance != "" {
+        natsCfg := Frag().
+            String("url", rt.NatsUrl).
+            String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance))
+
+        if rt.NatsJwt != "" && rt.NatsSeed != "" {
+            natsCfg.
+                String("jwt", rt.NatsJwt).
+                String("seed", rt.NatsSeed)
+        }
+
         mainCfg.
             Fragment("metrics", Frag().
-                Fragment("nats", Frag().
-                    String("url", os.Getenv(runtime.NatsUrlVar)).
-                    String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", os.Getenv(runtime.NamespaceEnvVar), os.Getenv(runtime.InstanceEnvVar))).
-                    String("jwt", os.Getenv(runtime.NatsJwtVar)).
-                    String("seed", os.Getenv(runtime.NatsSeedVar))))
+                Fragment("nats", natsCfg))
     }
 
     var err error

@@ -10,7 +10,6 @@ import (
     . "github.com/synadia-io/connect/builders"
     "github.com/synadia-io/connect/runtime"
     "gopkg.in/yaml.v3"
-    "os"
     "strings"
     "sync"
     "sync/atomic"
@@ -37,7 +36,9 @@ var _ = Describe("Running an inlet", func() {
 
     When("the inlet has a valid input and target", func() {
         It("should send out metrics", func() {
-            rt := test.Runtime()
+            rt := test.Runtime(
+                runtime.WithNatsUrl(natsUrl),
+            )
             subject := fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)
 
             msgReceived := make(chan struct{})
@@ -56,14 +57,14 @@ var _ = Describe("Running an inlet", func() {
                 Build()
 
             // -- try to compile
-            artifact, err := compiler.Compile(inlet)
+            artifact, err := compiler.Compile(rt, inlet)
             Expect(err).NotTo(HaveOccurred())
             validateArtifact(artifact, rt)
 
             ctx, cancel := context.WithCancel(context.Background())
             runnerFinished := make(chan struct{})
             go func(ctx context.Context) {
-                err = runner.Run(context.Background(), rt, inlet)
+                err = runner.Run(ctx, rt, inlet)
                 if err != nil {
                     fmt.Println(err)
                 }
@@ -102,8 +103,10 @@ var _ = Describe("Running an inlet", func() {
 
             rt := test.Runtime()
 
-            err = runner.Run(context.Background(), rt, inlet)
+            ctx, cancel := context.WithCancel(context.Background())
+            err = runner.Run(ctx, rt, inlet)
             Expect(err).NotTo(HaveOccurred())
+            defer cancel()
 
             // Sometimes the runner finishes before the nats connection has received the final message
             err = waitTimeout(&wg, 100*time.Millisecond)
@@ -149,8 +152,11 @@ var _ = Describe("Running an inlet", func() {
                         Service(ServiceTransformerStep(fmt.Sprintf("service.%s", serviceName), test.NatsConfig(TestPort)))).
                     Producer(test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject)).
                     Build()
-                err = runner.Run(context.Background(), test.Runtime(), inlet)
+
+                ctx, cancel := context.WithCancel(context.Background())
+                err = runner.Run(ctx, test.Runtime(), inlet)
                 Expect(err).NotTo(HaveOccurred())
+                defer cancel()
 
                 Expect(serviceCallCount).To(BeNumerically("==", 5))
                 for _, msg := range outputMessages {
@@ -181,6 +187,6 @@ func validateArtifact(artifact string, rt *runtime.Runtime) {
 
     am := gabs.Wrap(rm)
 
-    Expect(am.Path("metrics.nats.url").Data()).To(Equal(os.Getenv(runtime.NatsUrlVar)))
+    Expect(am.Path("metrics.nats.url").Data()).To(Equal(rt.NatsUrl))
     Expect(am.Path("metrics.nats.subject").Data()).To(Equal(fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)))
 }

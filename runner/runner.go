@@ -13,7 +13,7 @@ import (
 )
 
 func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error {
-    art, err := compiler.Compile(steps)
+    art, err := compiler.Compile(runtime, steps)
     if err != nil {
         return fmt.Errorf("compilation failed: %w", err)
     }
@@ -43,17 +43,21 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
     signal.Notify(sigs, os.Interrupt, os.Kill)
 
     select {
+    case <-ctx.Done():
+        log.Info().Msg("shutting down")
+        server.Shutdown(context.TODO())
+        stream.Stop(context.TODO())
     case <-sigs:
         log.Info().Msg("received signal, shutting down")
-        server.Shutdown(ctx)
-        stream.Stop(ctx)
+        server.Shutdown(context.TODO())
+        stream.Stop(context.TODO())
     case err := <-streamChan:
         log.Info().Msg("stream stopped, shutting down")
-        server.Shutdown(ctx)
+        server.Shutdown(context.TODO())
         return err
     case err := <-httpChan:
         log.Info().Msg("http server stopped, shutting down")
-        stream.Stop(ctx)
+        stream.Stop(context.TODO())
         return err
     }
 

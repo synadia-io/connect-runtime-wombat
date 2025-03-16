@@ -23,7 +23,7 @@ var _ = Describe("Compiling an inlet", func() {
                 Source(test.InvalidSource()).
                 Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
                 Build()
-            artifact, err := compiler.Compile(invalidInlet)
+            artifact, err := compiler.Compile(test.Runtime(), invalidInlet)
             Expect(err).NotTo(HaveOccurred())
 
             sb, err := compiler.Validate(context.Background(), test.Runtime(), artifact, nil)
@@ -39,7 +39,7 @@ var _ = Describe("Compiling an inlet", func() {
                 Producer(test.CoreProducer(test.UnauthenticatedNatsConfig())).
                 Build()
 
-            artifact, err := compiler.Compile(inlet)
+            artifact, err := compiler.Compile(test.Runtime(), inlet)
             Expect(err).NotTo(HaveOccurred())
 
             Expect(artifact).NotTo(BeNil())
@@ -64,7 +64,7 @@ var _ = Describe("Compiling an inlet", func() {
         })
 
         It("should generate a valid wombat artifact", func() {
-            artifact, err := compiler.Compile(v)
+            artifact, err := compiler.Compile(test.Runtime(), v)
             Expect(err).NotTo(HaveOccurred())
             GinkgoLogr.Info(artifact)
 
@@ -85,33 +85,6 @@ var _ = Describe("Compiling an inlet", func() {
             Expect(am.Path("output.nats.subject").Data()).To(Equal("foo.bar"))
             Expect(am.Path("output.nats.max_in_flight").Data()).To(Equal(1))
             Expect(am.Path("output.nats.metadata.include_patterns").Data()).To(ContainElement(".*"))
-
-            //            expected := `
-            //input:
-            //    stdin: {}
-            //    processors:
-            //        - nats_request_reply:
-            //            urls:
-            //                - nats://localhost:4222
-            //            subject: my.service
-            //            timeout: 5s
-            //            metadata:
-            //                include_patterns: [ ".*" ]
-            //metrics:
-            //    nats: {}
-            //output:
-            //    nats:
-            //        urls:
-            //            - nats://localhost:4222
-            //        subject: foo.bar
-            //        max_in_flight: 1
-            //        metadata:
-            //            include_patterns: [ ".*" ]
-            //`
-
-            //cl, err := test.DiffYaml(expected, artifact)
-            //Expect(err).NotTo(HaveOccurred())
-            //Expect(cl).To(BeEmpty())
         })
     })
 })

@@ -15,6 +15,7 @@ import (
 
 var srv *server.Server
 var nc *nats.Conn
+var natsUrl string
 
 const TestPort = 60002
 
@@ -26,7 +27,7 @@ var _ = BeforeSuite(func() {
     opts.JetStream = true
     srv = test.RunServer(&opts)
 
-    natsUrl := fmt.Sprintf("nats://localhost:%d", TestPort)
+    natsUrl = fmt.Sprintf("nats://localhost:%d", TestPort)
     err = os.Setenv(runtime.NatsUrlVar, natsUrl)
     Expect(err).ToNot(HaveOccurred())
 
