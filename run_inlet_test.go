@@ -3,9 +3,14 @@ package main_test
 import (
     "context"
     "fmt"
+    "github.com/Jeffail/gabs/v2"
+    "github.com/synadia-io/connect-runtime-wombat/compiler"
     "github.com/synadia-io/connect-runtime-wombat/runner"
     "github.com/synadia-io/connect-runtime-wombat/test"
     . "github.com/synadia-io/connect/builders"
+    "github.com/synadia-io/connect/runtime"
+    "gopkg.in/yaml.v3"
+    "os"
     "strings"
     "sync"
     "sync/atomic"
@@ -31,6 +36,49 @@ var _ = Describe("Running an inlet", func() {
     })
 
     When("the inlet has a valid input and target", func() {
+        It("should send out metrics", func() {
+            rt := test.Runtime()
+            subject := fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)
+
+            msgReceived := make(chan struct{})
+
+            s, err := nc.Subscribe(subject, func(msg *nats.Msg) {
+                GinkgoLogr.Info(fmt.Sprintf("received:\n %s", msg.Data))
+                close(msgReceived)
+            })
+            Expect(err).NotTo(HaveOccurred())
+            defer s.Drain()
+
+            inlet := Steps().
+                Source(SourceStep("generate").
+                    SetString("mapping", "root = \"hello world\"")).
+                Producer(test.CoreProducerWithSubject(test.NatsConfig(TestPort), "foo.bar")).
+                Build()
+
+            // -- try to compile
+            artifact, err := compiler.Compile(inlet)
+            Expect(err).NotTo(HaveOccurred())
+            validateArtifact(artifact, rt)
+
+            ctx, cancel := context.WithCancel(context.Background())
+            runnerFinished := make(chan struct{})
+            go func(ctx context.Context) {
+                err = runner.Run(context.Background(), rt, inlet)
+                if err != nil {
+                    fmt.Println(err)
+                }
+            }(ctx)
+            defer cancel()
+
+            // -- wait for the runner to finish or a message to be received
+            select {
+            case <-msgReceived:
+            case <-runnerFinished:
+            case <-time.After(15 * time.Second):
+                Fail("no metrics data has been sent!")
+            }
+        })
+
         It("should consume messages and send them to nats", func() {
             // -- generate a subject name
             subject := fmt.Sprintf("test.%s", uuid.New().String())
@@ -51,7 +99,10 @@ var _ = Describe("Running an inlet", func() {
                 Source(test.GenerateSource()).
                 Producer(test.CoreProducerWithSubject(test.NatsConfig(TestPort), subject)).
                 Build()
-            err = runner.Run(context.Background(), test.Runtime(), inlet)
+
+            rt := test.Runtime()
+
+            err = runner.Run(context.Background(), rt, inlet)
             Expect(err).NotTo(HaveOccurred())
 
             // Sometimes the runner finishes before the nats connection has received the final message
@@ -122,4 +173,14 @@ func waitTimeout(wg *sync.WaitGroup, timeout time.Duration) error {
     case <-time.After(timeout):
         return fmt.Errorf("wait group timed out after: %v", timeout)
     }
+}
+
+func validateArtifact(artifact string, rt *runtime.Runtime) {
+    var rm map[string]any
+    Expect(yaml.Unmarshal([]byte(artifact), &rm)).To(Succeed())
+
+    am := gabs.Wrap(rm)
+
+    Expect(am.Path("metrics.nats.url").Data()).To(Equal(os.Getenv(runtime.NatsUrlVar)))
+    Expect(am.Path("metrics.nats.subject").Data()).To(Equal(fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)))
 }
