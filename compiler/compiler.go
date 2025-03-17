@@ -8,13 +8,24 @@ import (
     "gopkg.in/yaml.v3"
 )
 
+const (
+    AccountMetricHeader   = "account"
+    ConnectorMetricHeader = "connector_id"
+    InstanceMetricHeader  = "instance_id"
+)
+
 func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
     mainCfg := Frag()
 
     if rt.NatsUrl != "" && rt.Namespace != "" && rt.Instance != "" {
         natsCfg := Frag().
             String("url", rt.NatsUrl).
-            String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance))
+            String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)).
+            StringMap("headers", map[string]string{
+                AccountMetricHeader:   rt.Namespace,
+                ConnectorMetricHeader: rt.Connector,
+                InstanceMetricHeader:  rt.Instance,
+            })
 
         if rt.NatsJwt != "" && rt.NatsSeed != "" {
             natsCfg.

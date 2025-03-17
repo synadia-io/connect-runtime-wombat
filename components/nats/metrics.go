@@ -21,6 +21,7 @@ const (
     metricFlushIntervalField = "flush_interval"
     metricJwtField           = "jwt"
     metricSeedField          = "seed"
+    headersField             = "headers"
 )
 
 var MetricsConfigSpec = service.NewConfigSpec().
@@ -38,6 +39,7 @@ var MetricsConfigSpec = service.NewConfigSpec().
         service.NewStringField(metricUrlField).Description("The url of the NATS server"),
         service.NewStringField(metricJwtField).Description("The JWT for the NATS server").Optional(),
         service.NewStringField(metricSeedField).Description("The seed for the NATS server").Optional(),
+        service.NewStringMapField(headersField).Description("A list of headers to add to the NATS server").Optional(),
     )
 
 func NewMetrics(conf *service.ParsedConfig, log *service.Logger) (m *Metrics, err error) {
@@ -74,6 +76,10 @@ func NewMetrics(conf *service.ParsedConfig, log *service.Logger) (m *Metrics, er
         timersHist: make(map[string]*stats.TimingHistVec),
 
         closedChan: make(chan struct{}),
+    }
+
+    if headers, _ := conf.FieldStringMap(headersField); headers != nil {
+        m.headers = headers
     }
 
     if err := m.reg.Register(collectors.NewBuildInfoCollector()); err != nil {
@@ -119,6 +125,8 @@ func NewMetrics(conf *service.ParsedConfig, log *service.Logger) (m *Metrics, er
                         }
                     }
 
+                    msg := nats.NewMsg(m.subject)
+                    msg.Header.Set("format", "expfmt")
                     if err = m.nc.Publish(m.subject, b.Bytes()); err != nil {
                         m.log.Errorf("Failed to publish metrics: %v\n", err)
                     }
@@ -143,6 +151,8 @@ type Metrics struct {
     gauges     map[string]*stats.GaugeVec
     timers     map[string]*stats.TimingVec
     timersHist map[string]*stats.TimingHistVec
+
+    headers map[string]string
 
     closedChan chan struct{}
 }
