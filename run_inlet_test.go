@@ -29,7 +29,10 @@ var _ = Describe("Running an inlet", func() {
                 Source(SourceStep("invalid")).
                 Producer(test.CoreProducer(NatsConfig(DefaultNatsUrl))).
                 Build()
-            err := runner.Run(context.Background(), test.Runtime(), invalidInlet)
+
+            ctx, cancel := context.WithCancel(context.Background())
+            defer cancel()
+            err := runner.Run(ctx, test.Runtime(), invalidInlet)
             Expect(err).To(HaveOccurred())
         })
     })
@@ -62,6 +65,7 @@ var _ = Describe("Running an inlet", func() {
             validateArtifact(artifact, rt)
 
             ctx, cancel := context.WithCancel(context.Background())
+            defer cancel()
             runnerFinished := make(chan struct{})
             go func(ctx context.Context) {
                 err = runner.Run(ctx, rt, inlet)
@@ -69,7 +73,6 @@ var _ = Describe("Running an inlet", func() {
                     fmt.Println(err)
                 }
             }(ctx)
-            defer cancel()
 
             // -- wait for the runner to finish or a message to be received
             select {
@@ -104,9 +107,9 @@ var _ = Describe("Running an inlet", func() {
             rt := test.Runtime()
 
             ctx, cancel := context.WithCancel(context.Background())
+            defer cancel()
             err = runner.Run(ctx, rt, inlet)
             Expect(err).NotTo(HaveOccurred())
-            defer cancel()
 
             // Sometimes the runner finishes before the nats connection has received the final message
             err = waitTimeout(&wg, 100*time.Millisecond)
@@ -154,9 +157,9 @@ var _ = Describe("Running an inlet", func() {
                     Build()
 
                 ctx, cancel := context.WithCancel(context.Background())
+                defer cancel()
                 err = runner.Run(ctx, test.Runtime(), inlet)
                 Expect(err).NotTo(HaveOccurred())
-                defer cancel()
 
                 Expect(serviceCallCount).To(BeNumerically("==", 5))
                 for _, msg := range outputMessages {
