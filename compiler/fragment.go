@@ -16,6 +16,11 @@ func (f Fragment) Fragment(key string, fragment Fragment) Fragment {
     return f
 }
 
+func (f Fragment) StringMap(key string, m map[string]string) Fragment {
+    f[key] = m
+    return f
+}
+
 func (f Fragment) Map(key string, m map[string]any) Fragment {
     f[key] = m
     return f

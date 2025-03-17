@@ -2,16 +2,41 @@ package compiler
 
 import (
     "fmt"
-    "github.com/synadia-io/connect/model"
-    "gopkg.in/yaml.v3"
-
     _ "github.com/synadia-io/connect-runtime-wombat/components"
+    "github.com/synadia-io/connect/model"
+    "github.com/synadia-io/connect/runtime"
+    "gopkg.in/yaml.v3"
 )
 
-func Compile(steps model.Steps) (string, error) {
-    mainCfg := Frag().
-        Fragment("metrics", Frag().
-            Fragment("prometheus", Frag()))
+const (
+    AccountMetricHeader   = "account"
+    ConnectorMetricHeader = "connector_id"
+    InstanceMetricHeader  = "instance_id"
+)
+
+func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
+    mainCfg := Frag()
+
+    if rt.NatsUrl != "" && rt.Namespace != "" && rt.Instance != "" {
+        natsCfg := Frag().
+            String("url", rt.NatsUrl).
+            String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)).
+            StringMap("headers", map[string]string{
+                AccountMetricHeader:   rt.Namespace,
+                ConnectorMetricHeader: rt.Connector,
+                InstanceMetricHeader:  rt.Instance,
+            })
+
+        if rt.NatsJwt != "" && rt.NatsSeed != "" {
+            natsCfg.
+                String("jwt", rt.NatsJwt).
+                String("seed", rt.NatsSeed)
+        }
+
+        mainCfg.
+            Fragment("metrics", Frag().
+                Fragment("nats", natsCfg))
+    }
 
     var err error
     if steps.Producer != nil && steps.Source != nil {
@@ -40,5 +65,4 @@ func Compile(steps model.Steps) (string, error) {
     }
 
     return string(b), nil
-
 }

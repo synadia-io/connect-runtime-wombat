@@ -5,6 +5,7 @@ import (
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
     "github.com/synadia-io/connect-runtime-wombat/compiler"
+    "github.com/synadia-io/connect-runtime-wombat/test"
     "github.com/synadia-io/connect/convert"
     "github.com/synadia-io/connect/spec"
     "gopkg.in/yaml.v3"
@@ -58,7 +59,7 @@ func testConfig(cfg string, exp string) {
 
     msp := convert.ConvertStepsFromSpec(sp.Steps)
 
-    res, err := compiler.Compile(msp)
+    res, err := compiler.Compile(test.Runtime(), msp)
     Expect(err).To(BeNil())
 
     var rm map[string]any

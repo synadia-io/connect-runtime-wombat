@@ -6,12 +6,15 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/nats-io/nats-server/v2 v2.10.25
 	github.com/nats-io/nats.go v1.39.1
+	github.com/nats-io/nkeys v0.4.10
 	github.com/onsi/ginkgo/v2 v2.22.2
 	github.com/onsi/gomega v1.36.2
+	github.com/prometheus/client_golang v1.19.1
+	github.com/prometheus/common v0.55.0
 	github.com/r3labs/diff/v3 v3.0.1
 	github.com/redpanda-data/benthos/v4 v4.44.1
 	github.com/rs/zerolog v1.33.0
-	github.com/synadia-io/connect v1.0.0-rc2
+	github.com/synadia-io/connect v1.0.0-rc4.0.20250316212554-8c85266e16cb
 	github.com/wombatwisdom/wombat v1.0.4-rc1
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -250,7 +253,6 @@ require (
 	github.com/mtibben/percent v0.2.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nats-io/jwt/v2 v2.7.3 // indirect
-	github.com/nats-io/nkeys v0.4.10 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/nats-io/stan.go v0.10.4 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
@@ -276,9 +278,7 @@ require (
 	github.com/pkg/sftp v1.13.6 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/prometheus/client_golang v1.19.1 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/pusher/pusher-http-go v4.0.1+incompatible // indirect
 	github.com/qdrant/go-client v1.11.1 // indirect
