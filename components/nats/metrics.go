@@ -127,7 +127,14 @@ func NewMetrics(conf *service.ParsedConfig, log *service.Logger) (m *Metrics, er
 
                     msg := nats.NewMsg(m.subject)
                     msg.Header.Set("format", "expfmt")
-                    if err = m.nc.Publish(m.subject, b.Bytes()); err != nil {
+
+                    for k, v := range m.headers {
+                        msg.Header.Set(k, v)
+                    }
+
+                    msg.Data = b.Bytes()
+
+                    if err = m.nc.PublishMsg(msg); err != nil {
                         m.log.Errorf("Failed to publish metrics: %v\n", err)
                     }
                 }
