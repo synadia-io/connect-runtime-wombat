@@ -14,7 +14,7 @@ description: |-
   - hdfs_path
 
   You can access these metadata fields using
-  [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](interpolation functions).
+  [interpolation functions](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
 fields:
   - path: hosts
     name: hosts

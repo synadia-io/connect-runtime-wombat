@@ -218,7 +218,7 @@ fields:
         count: 0
         period: 1m
     description: |-
-      Allows you to configure a [https://wombat.dev/pipelines/learn/batching/#batch-policy](batching policy).
+      Allows you to configure a [batching policy](https://wombat.dev/pipelines/learn/batching/#batch-policy).
     fields:
       - path: batching.count
         name: count
@@ -261,7 +261,7 @@ fields:
         examples:
           - this.type == "end_of_transaction"
         description: |-
-          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.
   - path: max_in_flight
     name: max_in_flight
     label: Max In Flight

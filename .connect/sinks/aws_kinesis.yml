@@ -60,7 +60,7 @@ fields:
     type: object
     description: >-
       Optional manual configuration of AWS credentials to use. More information
-      can be found in [https://wombat.dev/pipelines/deploy/cloud/aws/](the AWS Guide).
+      can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
     fields:
       - path: credentials.id
         name: id

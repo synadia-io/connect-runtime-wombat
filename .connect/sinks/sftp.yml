@@ -5,7 +5,7 @@ status: preview
 description: |-
   Writes files to an SFTP server.
     
-    In order to have a different path for each object you should use function interpolations described [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](here).
+    In order to have a different path for each object you should use function interpolations described [here](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
     
     # Performance
     

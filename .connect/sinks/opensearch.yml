@@ -5,13 +5,11 @@ status: stable
 description: |-
   Publishes messages into an Elasticsearch index. If the index does not exist then it is created with a dynamic mapping.
     
-    Both the `id` and `index` fields can be dynamically set using function interpolations described [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](here). When sending batched messages these interpolations are performed per message part.
-    
     # Performance
     
     This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
     
-    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more [https://wombat.dev/pipelines/learn/batching/](in this doc).
+    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more [in this doc](https://wombat.dev/pipelines/learn/batching/).
 fields:
   - path: urls
     name: urls
@@ -232,7 +230,7 @@ fields:
         count: 0
         period: 1m
     description: |-
-      Allows you to configure a [https://wombat.dev/pipelines/learn/batching/#batch-policy](batching policy).
+      Allows you to configure a [batching policy](https://wombat.dev/pipelines/learn/batching/#batch-policy).
     fields:
       - path: batching.count
         name: count
@@ -275,7 +273,7 @@ fields:
         examples:
           - this.type == "end_of_transaction"
         description: |-
-          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.
   - path: aws
     name: aws
     label: AWS
@@ -319,7 +317,7 @@ fields:
         type: object
         optional: false
         description: |-
-          Optional manual configuration of AWS credentials to use. More information can be found in [https://wombat.dev/pipelines/deploy/cloud/aws/](the AWS Guide).
+          Optional manual configuration of AWS credentials to use. More information can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
         fields:
           - path: aws.credentials.profile
             name: profile

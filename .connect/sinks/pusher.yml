@@ -64,7 +64,7 @@ fields:
         examples:
           - this.type == "end_of_transaction"
         description: |-
-          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.
   - path: channel
     name: channel
     label: Channel

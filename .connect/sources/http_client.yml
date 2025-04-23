@@ -5,7 +5,6 @@ name: http_client
 status: preview
 description: |-
   Connects to a server and continuously performs requests for a single message.
-  The URL and header values of this type can be dynamically set using function interpolations described [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](here).
 
   # Streaming
   If you enable streaming then the connector will consume the body of the response as a continuous stream of data, breaking messages out following a chosen scanner. This allows you to consume APIs that provide long lived streamed data feeds (such as Twitter).

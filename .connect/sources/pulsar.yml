@@ -21,9 +21,7 @@ description: |-
   - pulsar_redelivery_count
   - All properties of the message
   ```
-
-  You can access these metadata fields using
-  [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](interpolation functions).
+  
 fields:
   - path: url
     name: url

@@ -17,7 +17,7 @@ description: |-
   - All string typed message annotations
   ```
 
-  You can access these metadata fields using [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](interpolation functions).
+  You can access these metadata fields using [interpolation functions](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
 
   By setting `read_header` to `true`, additional message header properties will be added to each message:
 
