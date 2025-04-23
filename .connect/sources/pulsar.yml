@@ -6,9 +6,7 @@ status: experimental
 description: |-
   Reads messages from an Apache Pulsar server.
 
-  # Metadata
-
-  This input adds the following metadata fields to each message:
+  The following metadata fields are added to each message:
 
   ```text
   - pulsar_message_id

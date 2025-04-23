@@ -18,9 +18,11 @@ description: |-
           content: ${!json("document.text")}
     ```
     
-    If the field `walk_metadata` is set to `true` then the connector will walk all metadata fields of messages and add them to the list of hash fields to set.
+    If the field `walk_metadata` is set to `true` then the connector will walk all metadata fields of messages and 
+    add them to the list of hash fields to set.
     
-    If the field `walk_json_object` is set to `true` then the connector will walk each message as a JSON object, extracting keys and the string representation of their value and adds them to the list of hash fields to set.
+    If the field `walk_json_object` is set to `true` then the connector will walk each message as a JSON object, 
+    extracting keys and the string representation of their value and adds them to the list of hash fields to set.
     
     The order of hash field extraction is as follows:
     
@@ -29,10 +31,6 @@ description: |-
     3. Explicit fields
     
     Where latter stages will overwrite matching field names of a former stage.
-    
-    # Performance
-    
-    This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
 fields:
   - path: url
     name: url

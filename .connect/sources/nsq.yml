@@ -6,9 +6,7 @@ status: preview
 description: |-
   Subscribe to an NSQ instance topic and channel.
 
-  # Metadata
-
-  This input adds the following metadata fields to each message:
+  The following metadata fields are added to each message:
 
   - nsq_attempts
   - nsq_id

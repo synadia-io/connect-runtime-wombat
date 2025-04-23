@@ -12,18 +12,13 @@ description: |-
     The URL and header values of this type can be dynamically set using function interpolations described 
     in [Bloblang queries](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
     
-    The body of the HTTP request is the raw contents of the message payload. If the message has multiple parts 
-    (is a batch) the request will be sent according to https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html[RFC1341^]. This behavior can be disabled by setting the field <<batch_as_multipart, `batch_as_multipart`>> to `false`.
+    The body of the HTTP request is the raw contents of the message payload.
     
-    # Propagate responses
+    It's possible to propagate the response from each HTTP request back to the input source by setting 
+    `propagate_response` to `true`. Only inputs that support 
+    [synchronous responses](https://wombat.dev/guides/sync_responses/) are able to make use of these 
+    propagated responses.
     
-    It's possible to propagate the response from each HTTP request back to the input source by setting `propagate_response` to `true`. Only inputs that support [synchronous responses](https://wombat.dev/guides/sync_responses/) are able to make use of these propagated responses.
-    
-    # Performance
-    
-    This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
-    
-    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more [in this doc](https://wombat.dev/pipelines/learn/batching/).
 fields:
   - path: url
     name: url

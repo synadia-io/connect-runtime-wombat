@@ -5,15 +5,8 @@ status: stable
 description: |-
   Publishes messages into an Elasticsearch index. If the index does not exist then it is created with a dynamic mapping.
     
-    # AWS
     It's possible to enable AWS connectivity with this output using the `aws` fields. However, you may need to 
     set `sniff` and `healthcheck` to false for connections to succeed.
-    
-    # Performance
-    This output benefits from sending multiple messages in flight in parallel for improved performance. You can 
-    tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
-    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both 
-    the input and output level. You can find out more [in this doc](https://wombat.dev/pipelines/learn/batching/).
 fields:
   - path: urls
     name: urls

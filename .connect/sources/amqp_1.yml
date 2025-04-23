@@ -6,9 +6,7 @@ status: preview
 description: |-
   Reads messages from an AMQP (1.0) server.
 
-  # Metadata
-
-  This input adds the following metadata fields to each message:
+  The following metadata fields are added to each message:
 
   ```text
   - amqp_content_type
@@ -16,8 +14,6 @@ description: |-
   - amqp_creation_time
   - All string typed message annotations
   ```
-
-  You can access these metadata fields using [interpolation functions](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
 
   By setting `read_header` to `true`, additional message header properties will be added to each message:
 
@@ -28,8 +24,6 @@ description: |-
   - amqp_first_acquirer
   - amqp_delivery_count
   ```
-
-  # Performance
 
   This input benefits from receiving multiple messages in flight in parallel for improved performance.
   You can tune the max number of in flight messages with the field `credit`.

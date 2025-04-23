@@ -7,8 +7,8 @@ description: |-
     
     This output can send message to Timeplus Enterprise Cloud, Timeplus Enterprise (self-hosted) or directly to timeplusd.
     
-    This output accepts structured message only. It also expects all message contains the same keys and matches the schema of the destination stream. If the upstream source or pipeline returns
-    unstructured message such as string, please refer to the "Unstructured message" example.
+    This output accepts structured message only. It also expects all message contains the same keys and matches the 
+    schema of the destination stream.
 fields:
   - path: target
     name: target

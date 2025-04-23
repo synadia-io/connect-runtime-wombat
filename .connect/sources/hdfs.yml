@@ -6,15 +6,10 @@ status: preview
 description: |-
   Reads files from a HDFS directory, where each discrete file will be consumed as a single message payload.
 
-  # Metadata
-
-  This input adds the following metadata fields to each message:
+  The following metadata fields are added to each message:
 
   - hdfs_name
   - hdfs_path
-
-  You can access these metadata fields using
-  [interpolation functions](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
 fields:
   - path: hosts
     name: hosts

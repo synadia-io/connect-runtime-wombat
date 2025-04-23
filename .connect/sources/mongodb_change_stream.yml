@@ -7,7 +7,10 @@ icon:
 status: preview
 description: |-
   Consume the MongoDB ChangeStream.
-  This input is capable of reading change events from a MongoDB client, database, or collection. When a database as well as a collection is provided, only changes to that collection will be read. When only a database is provided, changes to all collections in that database will be read. When neither a database nor a collection is provided, changes to all databases and collections will be read.
+  This input is capable of reading change events from a MongoDB client, database, or collection. 
+  When a database as well as a collection is provided, only changes to that collection will be read. 
+  When only a database is provided, changes to all collections in that database will be read. 
+  When neither a database nor a collection is provided, changes to all databases and collections will be read.
 fields:
   - path: uri
     name: uri

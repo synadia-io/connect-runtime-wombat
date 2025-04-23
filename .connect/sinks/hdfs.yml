@@ -5,11 +5,9 @@ status: stable
 description: |-
   Sends message parts as files to a HDFS directory.
     
-    Each file is written with the path specified with the 'path' field, in order to have a different path for each object you should use function interpolations described [here](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
-    
-    # Performance
-    
-    This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
+    Each file is written with the path specified with the 'path' field, in order to have a different path for 
+    each object you should use function interpolations described 
+    [here](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
 fields:
   - path: hosts
     name: hosts
