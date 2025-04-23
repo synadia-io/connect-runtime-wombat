@@ -5,7 +5,7 @@ status: stable
 description: |-
   Sends message parts as files to a HDFS directory.
     
-    Each file is written with the path specified with the 'path' field, in order to have a different path for each object you should use function interpolations described xref:configuration:interpolation.adoc#bloblang-queries[here].
+    Each file is written with the path specified with the 'path' field, in order to have a different path for each object you should use function interpolations described [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](here).
     
     # Performance
     

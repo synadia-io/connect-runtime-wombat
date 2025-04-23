@@ -226,7 +226,7 @@ fields:
             default: ''
             optional: false
             description: |-
-              Optional manual configuration of AWS credentials to use. More information can be found in xref:guides:cloud/aws.adoc[].
+              Optional manual configuration of AWS credentials to use. More information can be found in [https://wombat.dev/pipelines/deploy/cloud/aws/](the AWS Guide).
             fields:
               - path: sasl[].aws.credentials.profile
                 name: profile

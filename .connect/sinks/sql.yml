@@ -4,10 +4,6 @@ name: sql
 status: deprecated
 description: |-
   Executes an arbitrary SQL query for each message.
-    
-    # Alternatives
-    
-    For basic inserts use the xref:components:outputs/sql.adoc[`sql_insert`] output. For more complex queries use the xref:components:outputs/sql_raw.adoc[`sql_raw`] output.
 fields:
   - path: driver
     name: driver
@@ -69,7 +65,7 @@ fields:
       - root = [ this.cat.meow, this.doc.woofs[0] ]
       - root = [ meta("user.id") ]
     description: |-
-      An optional xref:guides:bloblang/about.adoc[Bloblang mapping] which should evaluate to an array of values matching in size to the number of placeholder arguments in the field `query`.
+      An optional [https://wombat.dev/bloblang/](Bloblang mapping) which should evaluate to an array of values matching in size to the number of placeholder arguments in the field `query`.
   - path: max_in_flight
     name: max_in_flight
     label: Max In Flight

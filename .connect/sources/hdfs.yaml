@@ -14,7 +14,7 @@ description: |-
   - hdfs_path
 
   You can access these metadata fields using
-  xref:configuration:interpolation.adoc#bloblang-queries[function interpolation].
+  [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](interpolation functions).
 fields:
   - path: hosts
     name: hosts

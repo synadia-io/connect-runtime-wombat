@@ -5,16 +5,13 @@ name: http_client
 status: preview
 description: |-
   Connects to a server and continuously performs requests for a single message.
-
-  The URL and header values of this type can be dynamically set using function interpolations described xref:configuration:interpolation.adoc#bloblang-queries[here].
+  The URL and header values of this type can be dynamically set using function interpolations described [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](here).
 
   # Streaming
-
   If you enable streaming then the connector will consume the body of the response as a continuous stream of data, breaking messages out following a chosen scanner. This allows you to consume APIs that provide long lived streamed data feeds (such as Twitter).
 
   # Pagination
-
-  This input supports interpolation functions in the `url` and `headers` fields where data from the previous successfully consumed message (if there was one) can be referenced. This can be used in order to support basic levels of pagination. However, in cases where pagination depends on logic it is recommended that you use an xref:components:processors/http.adoc[`http` processor] instead, often combined with a xref:components:inputs/generate.adoc[`generate` input] in order to schedule the processor.
+  This input supports interpolation functions in the `url` and `headers` fields where data from the previous successfully consumed message (if there was one) can be referenced. This can be used in order to support basic levels of pagination.
 fields:
   - path: url
     name: url
@@ -464,14 +461,6 @@ fields:
           -   - _timestamp_unix$
         description: |-
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
-  - path: rate_limit
-    name: rate_limit
-    label: Rate Limit
-    kind: scalar
-    type: string
-    optional: false
-    description: |-
-      An optional xref:components:rate_limits/about.adoc[rate limit] to throttle requests by.
   - path: timeout
     name: timeout
     label: Timeout
@@ -613,7 +602,7 @@ fields:
         default: '{"lines":{}}'
         optional: true
         description: |-
-          The xref:components:scanners/about.adoc[scanner] by which the stream of bytes consumed will be broken out into individual messages. Scanners are useful for processing large sources of data without holding the entirety of it within memory. For example, the `csv` scanner allows you to process individual CSV rows without loading the entire CSV file in memory at once.
+          The scanner by which the stream of bytes consumed will be broken out into individual messages. Scanners are useful for processing large sources of data without holding the entirety of it within memory. For example, the `csv` scanner allows you to process individual CSV rows without loading the entire CSV file in memory at once.
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks

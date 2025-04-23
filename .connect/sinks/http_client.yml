@@ -7,19 +7,19 @@ description: |-
     
     When the number of retries expires the output will reject the message, the behavior after this will depend on the pipeline but usually this simply means the send is attempted again until successful whilst applying back pressure.
     
-    The URL and header values of this type can be dynamically set using function interpolations described in xref:configuration:interpolation.adoc#bloblang-queries[Bloblang queries].
+    The URL and header values of this type can be dynamically set using function interpolations described in [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang queries).
     
     The body of the HTTP request is the raw contents of the message payload. If the message has multiple parts (is a batch) the request will be sent according to https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html[RFC1341^]. This behavior can be disabled by setting the field <<batch_as_multipart, `batch_as_multipart`>> to `false`.
     
     # Propagate responses
     
-    It's possible to propagate the response from each HTTP request back to the input source by setting `propagate_response` to `true`. Only inputs that support xref:guides:sync_responses.adoc[synchronous responses] are able to make use of these propagated responses.
+    It's possible to propagate the response from each HTTP request back to the input source by setting `propagate_response` to `true`. Only inputs that support [https://wombat.dev/guides/sync_responses/](synchronous responses) are able to make use of these propagated responses.
     
     # Performance
     
     This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
     
-    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more xref:configuration:batching.adoc[in this doc].
+    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more [https://wombat.dev/pipelines/learn/batching/](in this doc).
 fields:
   - path: url
     name: url
@@ -469,14 +469,6 @@ fields:
           -   - _timestamp_unix$
         description: |-
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
-  - path: rate_limit
-    name: rate_limit
-    label: Rate Limit
-    kind: scalar
-    type: string
-    optional: false
-    description: |-
-      An optional xref:components:rate_limits/about.adoc[rate limit] to throttle requests by.
   - path: timeout
     name: timeout
     label: Timeout
@@ -583,7 +575,7 @@ fields:
     default: 'false'
     optional: true
     description: |-
-      Whether responses from the server should be xref:guides:sync_responses.adoc[propagated back] to the input.
+      Whether responses from the server should be [https://wombat.dev/guides/sync_responses/](propagated back) to the input.
   - path: max_in_flight
     name: max_in_flight
     label: Max In Flight

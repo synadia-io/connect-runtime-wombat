@@ -13,7 +13,7 @@ description: |-
     
     This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
     
-    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more xref:configuration:batching.adoc[in this doc].
+    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more [https://wombat.dev/pipelines/learn/batching/](in this doc).
 fields:
   - path: addresses
     name: addresses
@@ -237,7 +237,7 @@ fields:
     type: string
     optional: false
     description: |-
-      A xref:guides:bloblang/about.adoc[Bloblang mapping] that can be used to provide arguments to Cassandra queries. The result of the query must be an array containing a matching number of elements to the query arguments.
+      A [https://wombat.dev/bloblang/](Bloblang mapping) that can be used to provide arguments to Cassandra queries. The result of the query must be an array containing a matching number of elements to the query arguments.
   - path: consistency
     name: consistency
     label: Consistency
