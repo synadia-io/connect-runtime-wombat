@@ -1,5 +1,5 @@
 model_version: '1'
-label: redis_streams
+label: Redis Streams
 name: redis_streams
 status: stable
 description: |-

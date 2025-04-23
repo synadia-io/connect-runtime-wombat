@@ -1,5 +1,5 @@
 model_version: '1'
-label: nsq
+label: NSQ
 name: nsq
 status: stable
 description: |-

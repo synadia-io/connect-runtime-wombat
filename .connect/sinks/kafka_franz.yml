@@ -1,5 +1,5 @@
 model_version: '1'
-label: kafka_franz
+label: Kafka
 name: kafka_franz
 status: preview
 description: |-

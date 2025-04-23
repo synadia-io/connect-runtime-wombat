@@ -1,7 +1,7 @@
 model_version: '1'
 kind: source
-label: cassandra
-name: Cassandra
+label: Cassandra
+name: cassandra
 status: preview
 description: |-
   Executes a find query and creates a message for each row received.

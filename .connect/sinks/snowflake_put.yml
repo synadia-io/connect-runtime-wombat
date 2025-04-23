@@ -1,5 +1,5 @@
 model_version: '1'
-label: snowflake_put
+label: Snowflake
 name: snowflake_put
 status: preview
 description: |-

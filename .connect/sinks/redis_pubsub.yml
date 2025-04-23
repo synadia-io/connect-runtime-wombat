@@ -1,5 +1,5 @@
 model_version: '1'
-label: redis_pubsub
+label: Redis PubSub
 name: redis_pubsub
 status: stable
 description: |-

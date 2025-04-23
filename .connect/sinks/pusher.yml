@@ -1,5 +1,5 @@
 model_version: '1'
-label: pusher
+label: Pusher
 name: pusher
 status: experimental
 description: |-

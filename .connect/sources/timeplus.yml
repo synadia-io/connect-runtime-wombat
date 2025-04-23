@@ -1,7 +1,7 @@
 model_version: '1'
 kind: source
-label: timeplus
-name: Timeplus
+label: Timeplus
+name: timeplus
 status: experimental
 description: |-
   Executes a query on Timeplus Enterprise and creates a message from each row received

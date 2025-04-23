@@ -1,5 +1,5 @@
 model_version: '1'
-label: http_client
+label: HTTP
 name: http_client
 status: stable
 description: |-

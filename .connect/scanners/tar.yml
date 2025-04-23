@@ -5,8 +5,5 @@ status: stable
 description: |-
   Consume a tar archive file by file.
 
-  # Metadata
-
-  This scanner adds the following metadata to each message:
-
-  - `tar_name`
+    This scanner adds the following metadata to each message:
+    - `tar_name`

@@ -1,5 +1,5 @@
 model_version: '1'
-label: redis_list
+label: Redis List
 name: redis_list
 status: stable
 description: |-

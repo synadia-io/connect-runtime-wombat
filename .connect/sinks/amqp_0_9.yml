@@ -1,5 +1,5 @@
 model_version: '1'
-label: amqp_0_9
+label: AMQP 0.9
 name: amqp_0_9
 status: stable
 description: |-

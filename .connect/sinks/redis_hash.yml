@@ -1,5 +1,5 @@
 model_version: '1'
-label: redis_hash
+label: Redis Hash
 name: redis_hash
 status: stable
 description: |-

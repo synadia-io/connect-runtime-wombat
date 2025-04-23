@@ -1,5 +1,5 @@
 model_version: '1'
-label: opensearch
+label: Opensearch
 name: opensearch
 status: stable
 description: |-
