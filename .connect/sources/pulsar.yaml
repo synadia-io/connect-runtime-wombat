@@ -27,7 +27,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -39,7 +39,7 @@ fields:
       A URL to connect to.
   - path: topics
     name: topics
-    label: topics
+    label: Topics
     kind: list
     type: string
     optional: false
@@ -47,7 +47,7 @@ fields:
       A list of topics to subscribe to. This or topics_pattern must be set.
   - path: topics_pattern
     name: topics_pattern
-    label: topics_pattern
+    label: Topics_pattern
     kind: scalar
     type: string
     optional: false
@@ -91,29 +91,9 @@ fields:
       - enum:
           - latest
           - earliest
-  - path: tls
-    name: tls
-    label: tls
-    kind: scalar
-    type: object
-    optional: false
-    description: |-
-      Specify the path to a custom CA certificate to trust broker TLS service.
-    fields:
-      - path: tls.root_cas_file
-        name: root_cas_file
-        label: root_cas_file
-        kind: scalar
-        type: string
-        default: '""'
-        optional: true
-        examples:
-          - ./root_cas.pem
-        description: |-
-          An optional path of a root certificate authority file to use. This is a file, often with a .pem extension, containing a certificate chain from the parent trusted root certificate, to possible intermediate signing certificates, to the host certificate.
   - path: auth
     name: auth
-    label: auth
+    label: Auth
     kind: scalar
     type: object
     optional: false
@@ -122,7 +102,7 @@ fields:
     fields:
       - path: auth.oauth2
         name: oauth2
-        label: oauth2
+        label: OAuth2
         kind: scalar
         type: object
         optional: false
@@ -131,7 +111,7 @@ fields:
         fields:
           - path: auth.oauth2.enabled
             name: enabled
-            label: enabled
+            label: Enabled
             kind: scalar
             type: bool
             default: 'false'
@@ -165,18 +145,9 @@ fields:
             optional: true
             description: |-
               OAuth2 scope to request.
-          - path: auth.oauth2.private_key_file
-            name: private_key_file
-            label: private_key_file
-            kind: scalar
-            type: string
-            default: '""'
-            optional: true
-            description: |-
-              The path to a file containing a private key.
       - path: auth.token
         name: token
-        label: token
+        label: Token
         kind: scalar
         type: object
         optional: false
@@ -185,7 +156,7 @@ fields:
         fields:
           - path: auth.token.enabled
             name: enabled
-            label: enabled
+            label: Enabled
             kind: scalar
             type: bool
             default: 'false'
@@ -194,7 +165,7 @@ fields:
               Whether Token Auth is enabled.
           - path: auth.token.token
             name: token
-            label: token
+            label: Token
             kind: scalar
             type: string
             default: '""'

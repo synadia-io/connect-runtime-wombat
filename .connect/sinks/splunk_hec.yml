@@ -9,7 +9,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -17,7 +17,7 @@ fields:
       Full HTTP Endpoint Collector (HEC) URL, ie. https://foobar.splunkcloud.com/services/collector/event
   - path: token
     name: token
-    label: token
+    label: Token
     kind: scalar
     type: string
     optional: false
@@ -25,7 +25,7 @@ fields:
       A bot token used for authentication.
   - path: gzip
     name: gzip
-    label: gzip
+    label: Gzip
     kind: scalar
     type: bool
     default: 'false'
@@ -34,7 +34,7 @@ fields:
       Enable gzip compression
   - path: event_host
     name: event_host
-    label: event_host
+    label: Event_host
     kind: scalar
     type: string
     default: '""'
@@ -43,7 +43,7 @@ fields:
       Set the host value to assign to the event data. Overrides existing host field if present.
   - path: event_source
     name: event_source
-    label: event_source
+    label: Event_source
     kind: scalar
     type: string
     default: '""'
@@ -52,7 +52,7 @@ fields:
       Set the source value to assign to the event data. Overrides existing source field if present.
   - path: event_sourcetype
     name: event_sourcetype
-    label: event_sourcetype
+    label: Event_sourcetype
     kind: scalar
     type: string
     default: '""'
@@ -61,7 +61,7 @@ fields:
       Set the sourcetype value to assign to the event data. Overrides existing sourcetype field if present.
   - path: event_index
     name: event_index
-    label: event_index
+    label: Event_index
     kind: scalar
     type: string
     default: '""'
@@ -70,7 +70,7 @@ fields:
       Set the index value to assign to the event data. Overrides existing index field if present.
   - path: batching_count
     name: batching_count
-    label: batching_count
+    label: Batching Count
     kind: scalar
     type: int
     default: '100'
@@ -79,7 +79,7 @@ fields:
       A number of messages at which the batch should be flushed. If 0 disables count based batching.
   - path: batching_period
     name: batching_period
-    label: batching_period
+    label: Batching Period
     kind: scalar
     type: string
     default: '"30s"'
@@ -88,7 +88,7 @@ fields:
       A period in which an incomplete batch should be flushed regardless of its size.
   - path: batching_byte_size
     name: batching_byte_size
-    label: batching_byte_size
+    label: Batching Byte Size
     kind: scalar
     type: int
     default: '1000000'
@@ -97,7 +97,7 @@ fields:
       An amount of bytes at which the batch should be flushed. If 0 disables size based batching. Splunk Cloud recommends limiting content length of HEC payload to 1 MB.
   - path: rate_limit
     name: rate_limit
-    label: rate_limit
+    label: Rate Limit
     kind: scalar
     type: string
     default: '""'
@@ -106,7 +106,7 @@ fields:
       An optional rate limit resource to restrict API requests with.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -115,7 +115,7 @@ fields:
       The maximum number of parallel message batches to have in flight at any given time.
   - path: skip_cert_verify
     name: skip_cert_verify
-    label: skip_cert_verify
+    label: Skip Cert Verify
     kind: scalar
     type: bool
     default: 'false'

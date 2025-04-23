@@ -13,7 +13,7 @@ description: |-
 fields:
   - path: nsqd_tcp_address
     name: nsqd_tcp_address
-    label: nsqd_tcp_address
+    label: NSQD TCP Address
     kind: scalar
     type: string
     optional: false
@@ -21,7 +21,7 @@ fields:
       The address of the target NSQD server.
   - path: topic
     name: topic
-    label: topic
+    label: Topic
     kind: scalar
     type: string
     optional: false
@@ -29,7 +29,7 @@ fields:
       The topic to publish to.
   - path: user_agent
     name: user_agent
-    label: user_agent
+    label: User_agent
     kind: scalar
     type: string
     optional: false
@@ -140,7 +140,7 @@ fields:
   
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'

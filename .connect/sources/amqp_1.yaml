@@ -36,7 +36,7 @@ description: |-
 fields:
   - path: urls
     name: urls
-    label: urls
+    label: URLs
     kind: list
     type: string
     optional: false
@@ -191,7 +191,7 @@ fields:
   
   - path: sasl
     name: sasl
-    label: sasl
+    label: SASL
     kind: scalar
     type: object
     optional: false
@@ -209,7 +209,7 @@ fields:
           The SASL authentication mechanism to use.
       - path: sasl.user
         name: user
-        label: user
+        label: User
         kind: scalar
         type: string
         default: '""'
@@ -220,7 +220,7 @@ fields:
           A SASL plain text username. It is recommended that you use environment variables to populate this field.
       - path: sasl.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'

@@ -18,7 +18,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -26,7 +26,7 @@ fields:
       The URL to connect to.
   - path: verb
     name: verb
-    label: verb
+    label: Verb
     kind: scalar
     type: string
     default: '"GET"'
@@ -39,7 +39,7 @@ fields:
       A verb to connect with
   - path: headers
     name: headers
-    label: headers
+    label: Headers
     kind: scalar
     type: object
     default: '{}'
@@ -51,7 +51,7 @@ fields:
       A map of headers to add to the request.
   - path: metadata
     name: metadata
-    label: metadata
+    label: Metadata
     kind: scalar
     type: object
     optional: false
@@ -86,7 +86,7 @@ fields:
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
   - path: dump_request_log_level
     name: dump_request_log_level
-    label: dump_request_log_level
+    label: Dump Request Log Level
     kind: scalar
     type: string
     default: '""'
@@ -104,7 +104,7 @@ fields:
           - ''
   - path: oauth
     name: oauth
-    label: oauth
+    label: OAuth
     kind: scalar
     type: object
     optional: false
@@ -113,7 +113,7 @@ fields:
     fields:
       - path: oauth.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -160,7 +160,7 @@ fields:
         secret: true
       - path: oauth2.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -188,7 +188,7 @@ fields:
         secret: true
       - path: oauth2.token_url
         name: token_url
-        label: token_url
+        label: Token_url
         kind: scalar
         type: string
         default: '""'
@@ -221,7 +221,7 @@ fields:
           A list of optional endpoint parameters, values should be arrays of strings.
   - path: oauth2
     name: oauth2
-    label: oauth2
+    label: OAuth2
     kind: scalar
     type: object
     optional: false
@@ -230,7 +230,7 @@ fields:
     fields:
       - path: oauth2.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -258,7 +258,7 @@ fields:
         secret: true
       - path: oauth2.token_url
         name: token_url
-        label: token_url
+        label: Token_url
         kind: scalar
         type: string
         default: '""'
@@ -291,7 +291,7 @@ fields:
           A list of optional endpoint parameters, values should be arrays of strings.
   - path: basic_auth
     name: basic_auth
-    label: basic_auth
+    label: Basic Auth
     kind: scalar
     type: object
     optional: false
@@ -300,7 +300,7 @@ fields:
     fields:
       - path: basic_auth.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -309,7 +309,7 @@ fields:
           Whether to use basic authentication in requests.
       - path: basic_auth.username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -318,7 +318,7 @@ fields:
           A username to authenticate as.
       - path: basic_auth.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -326,60 +326,6 @@ fields:
         description: |-
           A password to authenticate with.
         secret: true
-  - path: jwt
-    name: jwt
-    label: jwt
-    kind: scalar
-    type: object
-    optional: false
-    description: |-
-      BETA: Allows you to specify JWT authentication.
-    fields:
-      - path: jwt.enabled
-        name: enabled
-        label: enabled
-        kind: scalar
-        type: bool
-        default: 'false'
-        optional: true
-        description: |-
-          Whether to use JWT authentication in requests.
-      - path: jwt.private_key_file
-        name: private_key_file
-        label: private_key_file
-        kind: scalar
-        type: string
-        default: '""'
-        optional: true
-        description: |-
-          A file with the PEM encoded via PKCS1 or PKCS8 as private key.
-      - path: jwt.signing_method
-        name: signing_method
-        label: signing_method
-        kind: scalar
-        type: string
-        default: '""'
-        optional: true
-        description: |-
-          A method used to sign the token such as RS256, RS384, RS512 or EdDSA.
-      - path: jwt.claims
-        name: claims
-        label: claims
-        kind: scalar
-        type: object
-        default: '{}'
-        optional: true
-        description: |-
-          A value used to identify the claims that issued the JWT.
-      - path: jwt.headers
-        name: headers
-        label: headers
-        kind: scalar
-        type: object
-        default: '{}'
-        optional: true
-        description: |-
-          Add optional key/value headers to the JWT.
   - path: tls
     name: tls
     label: TLS Configuration
@@ -485,7 +431,7 @@ fields:
   
   - path: extract_headers
     name: extract_headers
-    label: extract_headers
+    label: Extract Headers
     kind: scalar
     type: object
     optional: false
@@ -520,7 +466,7 @@ fields:
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
   - path: rate_limit
     name: rate_limit
-    label: rate_limit
+    label: Rate Limit
     kind: scalar
     type: string
     optional: false
@@ -528,7 +474,7 @@ fields:
       An optional xref:components:rate_limits/about.adoc[rate limit] to throttle requests by.
   - path: timeout
     name: timeout
-    label: timeout
+    label: Timeout
     kind: scalar
     type: string
     default: '"5s"'
@@ -537,7 +483,7 @@ fields:
       A static timeout to apply to requests.
   - path: retry_period
     name: retry_period
-    label: retry_period
+    label: Retry Period
     kind: scalar
     type: string
     default: '"1s"'
@@ -546,7 +492,7 @@ fields:
       The base period to wait between failed requests.
   - path: max_retry_backoff
     name: max_retry_backoff
-    label: max_retry_backoff
+    label: Max Retry Backoff
     kind: scalar
     type: string
     default: '"300s"'
@@ -555,7 +501,7 @@ fields:
       The maximum period to wait between failed requests.
   - path: retries
     name: retries
-    label: retries
+    label: Retries
     kind: scalar
     type: int
     default: '3'
@@ -564,7 +510,7 @@ fields:
       The maximum number of retry attempts to make.
   - path: follow_redirects
     name: follow_redirects
-    label: follow_redirects
+    label: Follow Redirects
     kind: scalar
     type: bool
     default: 'true'
@@ -573,7 +519,7 @@ fields:
       Whether or not to transparently follow redirects, i.e. responses with 300-399 status codes. If disabled, the response message will contain the body, status, and headers from the redirect response and the processor will not make a request to the URL set in the Location header of the response.
   - path: backoff_on
     name: backoff_on
-    label: backoff_on
+    label: Backoff_on
     kind: list
     type: int
     default: '[429]'
@@ -582,7 +528,7 @@ fields:
       A list of status codes whereby the request should be considered to have failed and retries should be attempted, but the period between them should be increased gradually.
   - path: drop_on
     name: drop_on
-    label: drop_on
+    label: Drop On
     kind: list
     type: int
     default: '[]'
@@ -591,7 +537,7 @@ fields:
       A list of status codes whereby the request should be considered to have failed but retries should not be attempted. This is useful for preventing wasted retries for requests that will never succeed. Note that with these status codes the _request_ is dropped, but _message_ that caused the request will not be dropped.
   - path: successful_on
     name: successful_on
-    label: successful_on
+    label: Successful On
     kind: list
     type: int
     default: '[]'
@@ -600,7 +546,7 @@ fields:
       A list of status codes whereby the attempt should be considered successful, this is useful for dropping requests that return non-2XX codes indicating that the message has been dealt with, such as a 303 See Other or a 409 Conflict. All 2XX codes are considered successful unless they are present within `backoff_on` or `drop_on`, regardless of this field.
   - path: proxy_url
     name: proxy_url
-    label: proxy_url
+    label: Proxy URL
     kind: scalar
     type: string
     optional: false
@@ -608,7 +554,7 @@ fields:
       An optional HTTP proxy URL.
   - path: disable_http2
     name: disable_http2
-    label: disable_http2
+    label: Disable HTTP2
     kind: scalar
     type: bool
     default: 'false'
@@ -634,7 +580,7 @@ fields:
       Whether empty payloads received from the target server should be dropped.
   - path: stream
     name: stream
-    label: stream
+    label: Stream
     kind: scalar
     type: object
     optional: false
@@ -643,7 +589,7 @@ fields:
     fields:
       - path: stream.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -670,7 +616,7 @@ fields:
           The xref:components:scanners/about.adoc[scanner] by which the stream of bytes consumed will be broken out into individual messages. Scanners are useful for processing large sources of data without holding the entirety of it within memory. For example, the `csv` scanner allows you to process individual CSV rows without loading the entire CSV file in memory at once.
   - path: auto_replay_nacks
     name: auto_replay_nacks
-    label: auto_replay_nacks
+    label: Auto Replay Nacks
     kind: scalar
     type: bool
     default: 'true'

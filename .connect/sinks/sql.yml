@@ -11,7 +11,7 @@ description: |-
 fields:
   - path: driver
     name: driver
-    label: driver
+    label: Driver
     kind: scalar
     type: string
     optional: false
@@ -31,7 +31,7 @@ fields:
           - spanner
   - path: data_source_name
     name: data_source_name
-    label: data_source_name
+    label: Data Source Name
     kind: scalar
     type: string
     optional: false
@@ -39,7 +39,7 @@ fields:
       Data source name.
   - path: query
     name: query
-    label: query
+    label: Query
     kind: scalar
     type: string
     optional: false
@@ -61,7 +61,7 @@ fields:
         | `gocosmos` | Colon |
   - path: args_mapping
     name: args_mapping
-    label: args_mapping
+    label: Args Mapping
     kind: scalar
     type: string
     optional: false
@@ -72,7 +72,7 @@ fields:
       An optional xref:guides:bloblang/about.adoc[Bloblang mapping] which should evaluate to an array of values matching in size to the number of placeholder arguments in the field `query`.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -81,7 +81,7 @@ fields:
       The maximum number of inserts to run in parallel.
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false

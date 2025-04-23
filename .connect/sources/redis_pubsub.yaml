@@ -16,7 +16,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -31,7 +31,7 @@ fields:
       The URL of the target Redis server. Database is optional and is supplied as the URL path.
   - path: kind
     name: kind
-    label: kind
+    label: Kind
     kind: scalar
     type: string
     default: '"simple"'
@@ -45,7 +45,7 @@ fields:
           - failover
   - path: master
     name: master
-    label: master
+    label: Master
     kind: scalar
     type: string
     default: '""'
@@ -159,7 +159,7 @@ fields:
   
   - path: channels
     name: channels
-    label: channels
+    label: Channels
     kind: list
     type: string
     optional: false
@@ -176,7 +176,7 @@ fields:
       Whether to use the PSUBSCRIBE command, allowing for glob-style patterns within target channel names.
   - path: auto_replay_nacks
     name: auto_replay_nacks
-    label: auto_replay_nacks
+    label: Auto Replay Nacks
     kind: scalar
     type: bool
     default: 'true'

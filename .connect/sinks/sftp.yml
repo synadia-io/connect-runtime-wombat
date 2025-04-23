@@ -13,7 +13,7 @@ description: |-
 fields:
   - path: address
     name: address
-    label: address
+    label: Address
     kind: scalar
     type: string
     optional: false
@@ -21,7 +21,7 @@ fields:
       The address of the server to connect to.
   - path: path
     name: path
-    label: path
+    label: Path
     kind: scalar
     type: string
     optional: false
@@ -29,7 +29,7 @@ fields:
       The file to save the messages to on the server.
   - path: codec
     name: codec
-    label: codec
+    label: Codec
     kind: scalar
     type: string
     default: '"all-bytes"'
@@ -42,7 +42,7 @@ fields:
       The way in which the bytes of messages should be written out into the output data stream. It's possible to write lines using a custom delimiter with the `delim:x` codec, where x is the character sequence custom delimiter.
   - path: credentials
     name: credentials
-    label: credentials
+    label: Credentials
     kind: scalar
     type: object
     optional: false
@@ -51,7 +51,7 @@ fields:
     fields:
       - path: credentials.username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -60,7 +60,7 @@ fields:
           The username to connect to the SFTP server.
       - path: credentials.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -68,28 +68,9 @@ fields:
         description: |-
           The password for the username to connect to the SFTP server.
         secret: true
-      - path: credentials.private_key_file
-        name: private_key_file
-        label: private_key_file
-        kind: scalar
-        type: string
-        default: '""'
-        optional: true
-        description: |-
-          The private key for the username to connect to the SFTP server.
-      - path: credentials.private_key_pass
-        name: private_key_pass
-        label: private_key_pass
-        kind: scalar
-        type: string
-        default: '""'
-        optional: true
-        description: |-
-          Optional passphrase for private key.
-        secret: true
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'

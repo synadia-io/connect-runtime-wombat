@@ -11,7 +11,7 @@ description: |-
 fields:
   - path: seed_brokers
     name: seed_brokers
-    label: seed_brokers
+    label: Seed Brokers
     kind: list
     type: string
     optional: false
@@ -24,7 +24,7 @@ fields:
       A list of broker addresses to connect to in order to establish connections. If an item of the list contains commas it will be expanded into multiple addresses.
   - path: client_id
     name: client_id
-    label: client_id
+    label: Client ID
     kind: scalar
     type: string
     default: '"benthos"'
@@ -136,7 +136,7 @@ fields:
 
   - path: sasl
     name: sasl
-    label: sasl
+    label: SASL
     kind: list
     type: object
     optional: false
@@ -157,7 +157,7 @@ fields:
           The SASL mechanism to use.
       - path: sasl[].username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -166,7 +166,7 @@ fields:
           A username to provide for PLAIN or SCRAM-* authentication.
       - path: sasl[].password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -176,7 +176,7 @@ fields:
         secret: true
       - path: sasl[].token
         name: token
-        label: token
+        label: Token
         kind: scalar
         type: string
         default: '""'
@@ -193,7 +193,7 @@ fields:
           Key/value pairs to add to OAUTHBEARER authentication requests.
       - path: sasl[].aws
         name: aws
-        label: aws
+        label: AWS
         kind: scalar
         type: object
         optional: false
@@ -202,7 +202,7 @@ fields:
         fields:
           - path: sasl[].aws.region
             name: region
-            label: region
+            label: Region
             kind: scalar
             type: string
             default: '""'
@@ -220,7 +220,7 @@ fields:
               Allows you to specify a custom endpoint for the AWS API.
           - path: sasl[].aws.credentials
             name: credentials
-            label: credentials
+            label: Credentials
             kind: scalar
             type: object
             default: ''
@@ -239,7 +239,7 @@ fields:
                   A profile from `~/.aws/credentials` to use.
               - path: sasl[].aws.credentials.id
                 name: id
-                label: id
+                label: ID
                 kind: scalar
                 type: string
                 default: '""'
@@ -248,7 +248,7 @@ fields:
                   The ID of credentials to use.
               - path: sasl[].aws.credentials.secret
                 name: secret
-                label: secret
+                label: Secret
                 kind: scalar
                 type: string
                 default: '""'
@@ -258,7 +258,7 @@ fields:
                 secret: true
               - path: sasl[].aws.credentials.token
                 name: token
-                label: token
+                label: Token
                 kind: scalar
                 type: string
                 default: '""'
@@ -276,7 +276,7 @@ fields:
                   Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
               - path: sasl[].aws.credentials.role
                 name: role
-                label: role
+                label: Role
                 kind: scalar
                 type: string
                 default: '""'
@@ -285,7 +285,7 @@ fields:
                   A role ARN to assume.
               - path: sasl[].aws.credentials.role_external_id
                 name: role_external_id
-                label: role_external_id
+                label: Role_external_id
                 kind: scalar
                 type: string
                 default: '""'
@@ -294,7 +294,7 @@ fields:
                   An external ID to provide when assuming a role.
   - path: metadata_max_age
     name: metadata_max_age
-    label: metadata_max_age
+    label: Metadata Max Age
     kind: scalar
     type: string
     default: '"5m"'
@@ -303,7 +303,7 @@ fields:
       The maximum age of metadata before it is refreshed.
   - path: topic
     name: topic
-    label: topic
+    label: Topic
     kind: scalar
     type: string
     optional: false
@@ -311,7 +311,7 @@ fields:
       A topic to write messages to.
   - path: key
     name: key
-    label: key
+    label: Key
     kind: scalar
     type: string
     optional: false
@@ -319,7 +319,7 @@ fields:
       An optional key to populate for each message.
   - path: partition
     name: partition
-    label: partition
+    label: Partition
     kind: scalar
     type: string
     optional: false
@@ -329,7 +329,7 @@ fields:
       An optional explicit partition to set for each message. This field is only relevant when the `partitioner` is set to `manual`. The provided interpolation string must be a valid integer.
   - path: metadata
     name: metadata
-    label: metadata
+    label: Metadata
     kind: scalar
     type: object
     optional: false
@@ -364,7 +364,7 @@ fields:
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
   - path: timestamp_ms
     name: timestamp_ms
-    label: timestamp_ms
+    label: Timestamp
     kind: scalar
     type: string
     optional: false
@@ -375,7 +375,7 @@ fields:
       An optional timestamp to set for each message expressed in milliseconds. When left empty, the current timestamp is used.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '10'
@@ -384,7 +384,7 @@ fields:
       The maximum number of batches to be sending in parallel at any given time.
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
@@ -444,7 +444,7 @@ fields:
           A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
   - path: partitioner
     name: partitioner
-    label: partitioner
+    label: Partitioner
     kind: scalar
     type: string
     optional: false
@@ -452,7 +452,7 @@ fields:
       Override the default murmur2 hashing partitioner.
   - path: idempotent_write
     name: idempotent_write
-    label: idempotent_write
+    label: Idempotent Write
     kind: scalar
     type: bool
     default: 'true'
@@ -461,7 +461,7 @@ fields:
       Enable the idempotent write producer option. This requires the `IDEMPOTENT_WRITE` permission on `CLUSTER` and can be disabled if this permission is not available.
   - path: compression
     name: compression
-    label: compression
+    label: Compression
     kind: scalar
     type: string
     optional: false
@@ -476,7 +476,7 @@ fields:
           - zstd
   - path: timeout
     name: timeout
-    label: timeout
+    label: Timeout
     kind: scalar
     type: string
     default: '"10s"'
@@ -485,7 +485,7 @@ fields:
       The maximum period of time to wait for message sends before abandoning the request and retrying
   - path: max_message_bytes
     name: max_message_bytes
-    label: max_message_bytes
+    label: Max Message Bytes
     kind: scalar
     type: string
     default: '"1MB"'
@@ -497,7 +497,7 @@ fields:
       The maximum space in bytes than an individual message may take, messages larger than this value will be rejected. This field corresponds to Kafka's `max.message.bytes`.
   - path: broker_write_max_bytes
     name: broker_write_max_bytes
-    label: broker_write_max_bytes
+    label: Broker Write Max Bytes
     kind: scalar
     type: string
     default: '"100MB"'

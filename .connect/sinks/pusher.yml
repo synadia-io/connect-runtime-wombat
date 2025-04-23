@@ -7,7 +7,7 @@ description: |-
 fields:
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
@@ -67,7 +67,7 @@ fields:
           A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
   - path: channel
     name: channel
-    label: channel
+    label: Channel
     kind: scalar
     type: string
     optional: false
@@ -78,7 +78,7 @@ fields:
       Pusher channel to publish to. Interpolation functions can also be used
   - path: event
     name: event
-    label: event
+    label: Event
     kind: scalar
     type: string
     optional: false
@@ -86,7 +86,7 @@ fields:
       Event to publish to
   - path: appId
     name: appId
-    label: appId
+    label: Application ID
     kind: scalar
     type: string
     optional: false
@@ -94,7 +94,7 @@ fields:
       Pusher app id
   - path: key
     name: key
-    label: key
+    label: Key
     kind: scalar
     type: string
     optional: false
@@ -102,7 +102,7 @@ fields:
       Pusher key
   - path: secret
     name: secret
-    label: secret
+    label: Secret
     kind: scalar
     type: string
     optional: false
@@ -110,7 +110,7 @@ fields:
       Pusher secret
   - path: cluster
     name: cluster
-    label: cluster
+    label: Cluster
     kind: scalar
     type: string
     optional: false
@@ -118,7 +118,7 @@ fields:
       Pusher cluster
   - path: secure
     name: secure
-    label: secure
+    label: Secure
     kind: scalar
     type: bool
     default: 'true'
@@ -127,7 +127,7 @@ fields:
       Enable SSL encryption
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '1'

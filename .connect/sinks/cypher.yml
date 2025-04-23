@@ -1,5 +1,5 @@
 model_version: '1'
-label: cypher
+label: Cypher
 name: cypher
 status: experimental
 description: |-
@@ -7,7 +7,7 @@ description: |-
 fields:
   - path: uri
     name: uri
-    label: uri
+    label: URI
     kind: scalar
     type: string
     optional: false
@@ -23,7 +23,7 @@ fields:
         See https://neo4j.com/docs/go-manual/current/connect-advanced/[Neo4j's documentation^] for more information.
   - path: cypher
     name: cypher
-    label: cypher
+    label: Cypher
     kind: scalar
     type: string
     optional: false
@@ -35,7 +35,7 @@ fields:
       The cypher expression to execute against the graph database.
   - path: database_name
     name: database_name
-    label: database_name
+    label: Database Name
     kind: scalar
     type: string
     default: '""'
@@ -44,7 +44,7 @@ fields:
       Set the target database for which expressions are evaluated against.
   - path: args_mapping
     name: args_mapping
-    label: args_mapping
+    label: Args Mapping
     kind: scalar
     type: string
     optional: false
@@ -55,7 +55,7 @@ fields:
       The mapping from the message to the data that is passed in as parameters to the cypher expression. Must be an object. By default the entire payload is used.
   - path: basic_auth
     name: basic_auth
-    label: basic_auth
+    label: Basic Auth
     kind: scalar
     type: object
     optional: false
@@ -64,7 +64,7 @@ fields:
     fields:
       - path: basic_auth.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -73,7 +73,7 @@ fields:
           Whether to use basic authentication in requests.
       - path: basic_auth.username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -82,7 +82,7 @@ fields:
           A username to authenticate as.
       - path: basic_auth.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -204,7 +204,7 @@ fields:
   
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
@@ -264,7 +264,7 @@ fields:
           A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'

@@ -20,7 +20,7 @@ fields:
           - tcp
   - path: address
     name: address
-    label: address
+    label: Address
     kind: scalar
     type: string
     optional: false
@@ -31,7 +31,7 @@ fields:
       The address to connect to.
   - path: auto_replay_nacks
     name: auto_replay_nacks
-    label: auto_replay_nacks
+    label: Auto Replay Nacks
     kind: scalar
     type: bool
     default: 'true'

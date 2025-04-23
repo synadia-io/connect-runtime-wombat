@@ -15,7 +15,7 @@ description: |-
 fields:
   - path: urls
     name: urls
-    label: urls
+    label: URLs
     kind: list
     type: string
     optional: false
@@ -25,7 +25,7 @@ fields:
       A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: index
     name: index
-    label: index
+    label: Index
     kind: scalar
     type: string
     optional: false
@@ -33,7 +33,7 @@ fields:
       The index to place messages.
   - path: action
     name: action
-    label: action
+    label: Action
     kind: scalar
     type: string
     optional: false
@@ -41,7 +41,7 @@ fields:
       The action to take on the document. This field must resolve to one of the following action types: `index`, `update` or `delete`.
   - path: id
     name: id
-    label: id
+    label: ID
     kind: scalar
     type: string
     optional: false
@@ -51,7 +51,7 @@ fields:
       The ID for indexed messages. Interpolation should be used in order to create a unique ID for each message.
   - path: pipeline
     name: pipeline
-    label: pipeline
+    label: Pipeline
     kind: scalar
     type: string
     default: '""'
@@ -60,7 +60,7 @@ fields:
       An optional pipeline id to preprocess incoming documents.
   - path: routing
     name: routing
-    label: routing
+    label: Routing
     kind: scalar
     type: string
     default: '""'
@@ -172,7 +172,7 @@ fields:
   
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -181,7 +181,7 @@ fields:
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
   - path: basic_auth
     name: basic_auth
-    label: basic_auth
+    label: Basic Auth
     kind: scalar
     type: object
     optional: false
@@ -190,7 +190,7 @@ fields:
     fields:
       - path: basic_auth.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -199,7 +199,7 @@ fields:
           Whether to use basic authentication in requests.
       - path: basic_auth.username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -208,7 +208,7 @@ fields:
           A username to authenticate as.
       - path: basic_auth.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -218,7 +218,7 @@ fields:
         secret: true
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
@@ -278,7 +278,7 @@ fields:
           A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
   - path: aws
     name: aws
-    label: aws
+    label: AWS
     kind: scalar
     type: object
     optional: false
@@ -287,7 +287,7 @@ fields:
     fields:
       - path: aws.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -296,7 +296,7 @@ fields:
           Whether to connect to Amazon Elastic Service.
       - path: aws.region
         name: region
-        label: region
+        label: Region
         kind: scalar
         type: string
         default: '""'
@@ -314,7 +314,7 @@ fields:
           Allows you to specify a custom endpoint for the AWS API.
       - path: aws.credentials
         name: credentials
-        label: credentials
+        label: Credentials
         kind: scalar
         type: object
         optional: false
@@ -332,7 +332,7 @@ fields:
               A profile from `~/.aws/credentials` to use.
           - path: aws.credentials.id
             name: id
-            label: id
+            label: ID
             kind: scalar
             type: string
             default: '""'
@@ -341,7 +341,7 @@ fields:
               The ID of credentials to use.
           - path: aws.credentials.secret
             name: secret
-            label: secret
+            label: Secret
             kind: scalar
             type: string
             default: '""'
@@ -351,7 +351,7 @@ fields:
             secret: true
           - path: aws.credentials.token
             name: token
-            label: token
+            label: Token
             kind: scalar
             type: string
             default: '""'
@@ -369,7 +369,7 @@ fields:
               Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
           - path: aws.credentials.role
             name: role
-            label: role
+            label: Role
             kind: scalar
             type: string
             default: '""'
@@ -378,7 +378,7 @@ fields:
               A role ARN to assume.
           - path: aws.credentials.role_external_id
             name: role_external_id
-            label: role_external_id
+            label: Role_external_id
             kind: scalar
             type: string
             default: '""'

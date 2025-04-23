@@ -17,7 +17,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -32,7 +32,7 @@ fields:
       The URL of the target Redis server. Database is optional and is supplied as the URL path.
   - path: kind
     name: kind
-    label: kind
+    label: Kind
     kind: scalar
     type: string
     default: '"simple"'
@@ -46,7 +46,7 @@ fields:
           - failover
   - path: master
     name: master
-    label: master
+    label: Master
     kind: scalar
     type: string
     default: '""'
@@ -160,7 +160,7 @@ fields:
   
   - path: stream
     name: stream
-    label: stream
+    label: Stream
     kind: scalar
     type: string
     optional: false
@@ -168,7 +168,7 @@ fields:
       The stream to add messages to.
   - path: body_key
     name: body_key
-    label: body_key
+    label: Body Key
     kind: scalar
     type: string
     default: '"body"'
@@ -177,7 +177,7 @@ fields:
       A key to set the raw body of the message to.
   - path: max_length
     name: max_length
-    label: max_length
+    label: Max Length
     kind: scalar
     type: int
     default: '0'
@@ -186,7 +186,7 @@ fields:
       When greater than zero enforces a rough cap on the length of the target stream.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -195,7 +195,7 @@ fields:
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
   - path: metadata
     name: metadata
-    label: metadata
+    label: Metadata
     kind: scalar
     type: object
     optional: false
@@ -213,7 +213,7 @@ fields:
           Provide a list of explicit metadata key prefixes to be excluded when adding metadata to sent messages.
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false

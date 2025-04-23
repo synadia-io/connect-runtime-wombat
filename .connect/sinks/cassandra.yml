@@ -17,7 +17,7 @@ description: |-
 fields:
   - path: addresses
     name: addresses
-    label: addresses
+    label: Addresses
     kind: list
     type: string
     optional: false
@@ -133,7 +133,7 @@ fields:
   
   - path: password_authenticator
     name: password_authenticator
-    label: password_authenticator
+    label: Password_authenticator
     kind: scalar
     type: object
     optional: false
@@ -142,7 +142,7 @@ fields:
     fields:
       - path: password_authenticator.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -151,7 +151,7 @@ fields:
           Whether to use password authentication
       - path: password_authenticator.username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -160,7 +160,7 @@ fields:
           The username to authenticate as.
       - path: password_authenticator.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -170,7 +170,7 @@ fields:
         secret: true
   - path: disable_initial_host_lookup
     name: disable_initial_host_lookup
-    label: disable_initial_host_lookup
+    label: Disable Initial Host Lookup
     kind: scalar
     type: bool
     default: 'false'
@@ -179,7 +179,7 @@ fields:
       If enabled the driver will not attempt to get host info from the system.peers table. This can speed up queries but will mean that data_centre, rack and token information will not be available.
   - path: max_retries
     name: max_retries
-    label: max_retries
+    label: Max Retries
     kind: scalar
     type: int
     default: '3'
@@ -188,7 +188,7 @@ fields:
       The maximum number of retries before giving up on a request.
   - path: backoff
     name: backoff
-    label: backoff
+    label: Backoff
     kind: scalar
     type: object
     optional: false
@@ -197,7 +197,7 @@ fields:
     fields:
       - path: backoff.initial_interval
         name: initial_interval
-        label: initial_interval
+        label: Initial Interval
         kind: scalar
         type: string
         default: '"1s"'
@@ -206,7 +206,7 @@ fields:
           The initial period to wait between retry attempts.
       - path: backoff.max_interval
         name: max_interval
-        label: max_interval
+        label: Max Interval
         kind: scalar
         type: string
         default: '"5s"'
@@ -215,7 +215,7 @@ fields:
           The maximum period to wait between retry attempts.
   - path: timeout
     name: timeout
-    label: timeout
+    label: Timeout
     kind: scalar
     type: string
     default: '"600ms"'
@@ -224,7 +224,7 @@ fields:
       The client connection timeout.
   - path: query
     name: query
-    label: query
+    label: Query
     kind: scalar
     type: string
     optional: false
@@ -232,7 +232,7 @@ fields:
       A query to execute for each message.
   - path: args_mapping
     name: args_mapping
-    label: args_mapping
+    label: Args Mapping
     kind: scalar
     type: string
     optional: false
@@ -240,7 +240,7 @@ fields:
       A xref:guides:bloblang/about.adoc[Bloblang mapping] that can be used to provide arguments to Cassandra queries. The result of the query must be an array containing a matching number of elements to the query arguments.
   - path: consistency
     name: consistency
-    label: consistency
+    label: Consistency
     kind: scalar
     type: string
     default: '"QUORUM"'
@@ -260,7 +260,7 @@ fields:
           - LOCAL_ONE
   - path: logged_batch
     name: logged_batch
-    label: logged_batch
+    label: Logged Batch
     kind: scalar
     type: bool
     default: 'true'
@@ -269,7 +269,7 @@ fields:
       If enabled the driver will perform a logged batch. Disabling this prompts unlogged batches to be used instead, which are less efficient but necessary for alternative storages that do not support logged batches.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -278,7 +278,7 @@ fields:
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false

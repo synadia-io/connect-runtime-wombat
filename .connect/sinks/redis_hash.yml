@@ -20,9 +20,9 @@ description: |-
           content: ${!json("document.text")}
     ```
     
-    If the field `walk_metadata` is set to `true` then Redpanda Connect will walk all metadata fields of messages and add them to the list of hash fields to set.
+    If the field `walk_metadata` is set to `true` then the connector will walk all metadata fields of messages and add them to the list of hash fields to set.
     
-    If the field `walk_json_object` is set to `true` then Redpanda Connect will walk each message as a JSON object, extracting keys and the string representation of their value and adds them to the list of hash fields to set.
+    If the field `walk_json_object` is set to `true` then the connector will walk each message as a JSON object, extracting keys and the string representation of their value and adds them to the list of hash fields to set.
     
     The order of hash field extraction is as follows:
     
@@ -38,7 +38,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -53,7 +53,7 @@ fields:
       The URL of the target Redis server. Database is optional and is supplied as the URL path.
   - path: kind
     name: kind
-    label: kind
+    label: Kind
     kind: scalar
     type: string
     default: '"simple"'
@@ -67,7 +67,7 @@ fields:
           - failover
   - path: master
     name: master
-    label: master
+    label: Master
     kind: scalar
     type: string
     default: '""'
@@ -181,7 +181,7 @@ fields:
   
   - path: key
     name: key
-    label: key
+    label: Key
     kind: scalar
     type: string
     optional: false
@@ -193,7 +193,7 @@ fields:
       The key for each message, function interpolations should be used to create a unique key per message.
   - path: walk_metadata
     name: walk_metadata
-    label: walk_metadata
+    label: Walk Metadata
     kind: scalar
     type: bool
     default: 'false'
@@ -202,7 +202,7 @@ fields:
       Whether all metadata fields of messages should be walked and added to the list of hash fields to set.
   - path: walk_json_object
     name: walk_json_object
-    label: walk_json_object
+    label: Walk JSON Object
     kind: scalar
     type: bool
     default: 'false'
@@ -211,7 +211,7 @@ fields:
       Whether to walk each message as a JSON object and add each key/value pair to the list of hash fields to set.
   - path: fields
     name: fields
-    label: fields
+    label: Fields
     kind: scalar
     type: object
     default: '{}'
@@ -220,7 +220,7 @@ fields:
       A map of key/value pairs to set as hash fields.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'

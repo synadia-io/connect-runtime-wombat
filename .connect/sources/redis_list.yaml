@@ -8,7 +8,7 @@ description: |-
 fields:
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     optional: false
@@ -23,7 +23,7 @@ fields:
       The URL of the target Redis server. Database is optional and is supplied as the URL path.
   - path: kind
     name: kind
-    label: kind
+    label: Kind
     kind: scalar
     type: string
     default: '"simple"'
@@ -37,7 +37,7 @@ fields:
           - failover
   - path: master
     name: master
-    label: master
+    label: Master
     kind: scalar
     type: string
     default: '""'
@@ -151,7 +151,7 @@ fields:
   
   - path: key
     name: key
-    label: key
+    label: Key
     kind: scalar
     type: string
     optional: false
@@ -159,7 +159,7 @@ fields:
       The key of a list to read from.
   - path: auto_replay_nacks
     name: auto_replay_nacks
-    label: auto_replay_nacks
+    label: Auto Replay Nacks
     kind: scalar
     type: bool
     default: 'true'
@@ -168,16 +168,16 @@ fields:
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '0'
     optional: true
     description: |-
-      Optionally sets a limit on the number of messages that can be flowing through a Redpanda Connect stream pending acknowledgment from the input at any given time. Once a message has been either acknowledged or rejected (nacked) it is no longer considered pending. If the input produces logical batches then each batch is considered a single count against the maximum. **WARNING**: Batching policies at the output level will stall if this field limits the number of messages below the batching threshold. Zero (default) or lower implies no limit.
+      Optionally sets a limit on the number of messages that can be flowing through a connector pending acknowledgment from the input at any given time. Once a message has been either acknowledged or rejected (nacked) it is no longer considered pending. If the input produces logical batches then each batch is considered a single count against the maximum. **WARNING**: Batching policies at the output level will stall if this field limits the number of messages below the batching threshold. Zero (default) or lower implies no limit.
   - path: timeout
     name: timeout
-    label: timeout
+    label: Timeout
     kind: scalar
     type: string
     default: '"5s"'
@@ -186,7 +186,7 @@ fields:
       The length of time to poll for new messages before reattempting.
   - path: command
     name: command
-    label: command
+    label: Command
     kind: scalar
     type: string
     default: '"blpop"'

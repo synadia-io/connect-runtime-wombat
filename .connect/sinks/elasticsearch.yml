@@ -19,7 +19,7 @@ description: |-
 fields:
   - path: urls
     name: urls
-    label: urls
+    label: URLs
     kind: list
     type: string
     optional: false
@@ -29,7 +29,7 @@ fields:
       A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: index
     name: index
-    label: index
+    label: Index
     kind: scalar
     type: string
     optional: false
@@ -37,7 +37,7 @@ fields:
       The index to place messages.
   - path: action
     name: action
-    label: action
+    label: Action
     kind: scalar
     type: string
     default: '"index"'
@@ -46,7 +46,7 @@ fields:
       The action to take on the document. This field must resolve to one of the following action types: `create`, `index`, `update`, `upsert` or `delete`.
   - path: pipeline
     name: pipeline
-    label: pipeline
+    label: Pipeline
     kind: scalar
     type: string
     default: '""'
@@ -55,7 +55,7 @@ fields:
       An optional pipeline id to preprocess incoming documents.
   - path: id
     name: id
-    label: id
+    label: ID
     kind: scalar
     type: string
     default: '"${!counter()}-${!timestamp_unix()}"'
@@ -64,7 +64,7 @@ fields:
       The ID for indexed messages. Interpolation should be used in order to create a unique ID for each message.
   - path: type
     name: type
-    label: type
+    label: Type
     kind: scalar
     type: string
     default: '""'
@@ -73,7 +73,7 @@ fields:
       The document mapping type. This field is required for versions of elasticsearch earlier than 6.0.0, but are invalid for versions 7.0.0 or later.
   - path: routing
     name: routing
-    label: routing
+    label: Routing
     kind: scalar
     type: string
     default: '""'
@@ -82,16 +82,16 @@ fields:
       The routing key to use for the document.
   - path: sniff
     name: sniff
-    label: sniff
+    label: Sniff
     kind: scalar
     type: bool
     default: 'true'
     optional: true
     description: |-
-      Prompts Redpanda Connect to sniff for brokers to connect to when establishing a connection.
+      Prompts the connector to sniff for brokers to connect to when establishing a connection.
   - path: healthcheck
     name: healthcheck
-    label: healthcheck
+    label: Healthcheck
     kind: scalar
     type: bool
     default: 'true'
@@ -100,7 +100,7 @@ fields:
       Whether to enable healthchecks.
   - path: timeout
     name: timeout
-    label: timeout
+    label: Timeout
     kind: scalar
     type: string
     default: '"5s"'
@@ -109,7 +109,7 @@ fields:
       The maximum time to wait before abandoning a request (and trying again).
   - path: api_key
     name: api_key
-    label: api_key
+    label: API Key
     kind: scalar
     type: string
     optional: false
@@ -221,7 +221,7 @@ fields:
   
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -230,7 +230,7 @@ fields:
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
   - path: max_retries
     name: max_retries
-    label: max_retries
+    label: Max Retries
     kind: scalar
     type: int
     default: '0'
@@ -239,7 +239,7 @@ fields:
       The maximum number of retries before giving up on the request. If set to zero there is no discrete limit.
   - path: backoff
     name: backoff
-    label: backoff
+    label: Backoff
     kind: scalar
     type: object
     optional: false
@@ -248,7 +248,7 @@ fields:
     fields:
       - path: backoff.initial_interval
         name: initial_interval
-        label: initial_interval
+        label: Initial Interval
         kind: scalar
         type: string
         default: '"1s"'
@@ -257,7 +257,7 @@ fields:
           The initial period to wait between retry attempts.
       - path: backoff.max_interval
         name: max_interval
-        label: max_interval
+        label: Max Interval
         kind: scalar
         type: string
         default: '"5s"'
@@ -275,7 +275,7 @@ fields:
           The maximum period to wait before retry attempts are abandoned. If zero then no limit is used.
   - path: basic_auth
     name: basic_auth
-    label: basic_auth
+    label: Basic Auth
     kind: scalar
     type: object
     optional: false
@@ -284,7 +284,7 @@ fields:
     fields:
       - path: basic_auth.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -293,7 +293,7 @@ fields:
           Whether to use basic authentication in requests.
       - path: basic_auth.username
         name: username
-        label: username
+        label: Username
         kind: scalar
         type: string
         default: '""'
@@ -302,7 +302,7 @@ fields:
           A username to authenticate as.
       - path: basic_auth.password
         name: password
-        label: password
+        label: Password
         kind: scalar
         type: string
         default: '""'
@@ -312,7 +312,7 @@ fields:
         secret: true
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
@@ -372,7 +372,7 @@ fields:
           A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
   - path: aws
     name: aws
-    label: aws
+    label: AWS
     kind: scalar
     type: object
     optional: false
@@ -381,7 +381,7 @@ fields:
     fields:
       - path: aws.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -390,7 +390,7 @@ fields:
           Whether to connect to Amazon Elastic Service.
       - path: aws.region
         name: region
-        label: region
+        label: Region
         kind: scalar
         type: string
         default: '""'
@@ -408,7 +408,7 @@ fields:
           Allows you to specify a custom endpoint for the AWS API.
       - path: aws.credentials
         name: credentials
-        label: credentials
+        label: Credentials
         kind: scalar
         type: object
         optional: false
@@ -426,7 +426,7 @@ fields:
               A profile from `~/.aws/credentials` to use.
           - path: aws.credentials.id
             name: id
-            label: id
+            label: ID
             kind: scalar
             type: string
             default: '""'
@@ -435,7 +435,7 @@ fields:
               The ID of credentials to use.
           - path: aws.credentials.secret
             name: secret
-            label: secret
+            label: Secret
             kind: scalar
             type: string
             default: '""'
@@ -445,7 +445,7 @@ fields:
             secret: true
           - path: aws.credentials.token
             name: token
-            label: token
+            label: Token
             kind: scalar
             type: string
             default: '""'
@@ -463,7 +463,7 @@ fields:
               Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
           - path: aws.credentials.role
             name: role
-            label: role
+            label: Role
             kind: scalar
             type: string
             default: '""'
@@ -472,7 +472,7 @@ fields:
               A role ARN to assume.
           - path: aws.credentials.role_external_id
             name: role_external_id
-            label: role_external_id
+            label: Role_external_id
             kind: scalar
             type: string
             default: '""'
@@ -481,7 +481,7 @@ fields:
               An external ID to provide when assuming a role.
   - path: gzip_compression
     name: gzip_compression
-    label: gzip_compression
+    label: Gzip Compression
     kind: scalar
     type: bool
     default: 'false'

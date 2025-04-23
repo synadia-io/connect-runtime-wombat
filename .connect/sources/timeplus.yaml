@@ -14,7 +14,7 @@ description: |-
 fields:
   - path: query
     name: query
-    label: query
+    label: Query
     kind: scalar
     type: string
     optional: false
@@ -25,7 +25,7 @@ fields:
       The query to run
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     default: '"tcp://localhost:8463"'
@@ -34,7 +34,7 @@ fields:
       The url should always include schema and host.
   - path: workspace
     name: workspace
-    label: workspace
+    label: Workspace
     kind: scalar
     type: string
     optional: false
@@ -42,7 +42,7 @@ fields:
       ID of the workspace. Required when reads from Timeplus Enterprise.
   - path: apikey
     name: apikey
-    label: apikey
+    label: API Key
     kind: scalar
     type: string
     optional: false
@@ -51,7 +51,7 @@ fields:
     secret: true
   - path: username
     name: username
-    label: username
+    label: Username
     kind: scalar
     type: string
     optional: false
@@ -59,7 +59,7 @@ fields:
       The username. Required when reads from Timeplus Enterprise (self-hosted) or Timeplusd
   - path: password
     name: password
-    label: password
+    label: Password
     kind: scalar
     type: string
     optional: false

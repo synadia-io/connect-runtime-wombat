@@ -35,7 +35,7 @@ description: |-
 fields:
   - path: urls
     name: urls
-    label: urls
+    label: URLs
     kind: list
     type: string
     optional: false
@@ -48,7 +48,7 @@ fields:
       A list of URLs to connect to. The first URL to successfully establish a connection will be used until the connection is closed. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: queue
     name: queue
-    label: queue
+    label: Queue
     kind: scalar
     type: string
     optional: false
@@ -57,7 +57,7 @@ fields:
     fields:
       - path: queue_declare.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -84,7 +84,7 @@ fields:
           Whether the declared queue will auto-delete.
   - path: queue_declare
     name: queue_declare
-    label: queue_declare
+    label: Queue_declare
     kind: scalar
     type: object
     optional: false
@@ -93,7 +93,7 @@ fields:
     fields:
       - path: queue_declare.enabled
         name: enabled
-        label: enabled
+        label: Enabled
         kind: scalar
         type: bool
         default: 'false'
@@ -120,7 +120,7 @@ fields:
           Whether the declared queue will auto-delete.
   - path: bindings_declare
     name: bindings_declare
-    label: bindings_declare
+    label: Bindings Declare
     kind: list
     type: string
     optional: false
@@ -141,7 +141,7 @@ fields:
           The exchange of the declared binding.
       - path: bindings_declare[].key
         name: key
-        label: key
+        label: Key
         kind: scalar
         type: string
         default: '""'
@@ -150,7 +150,7 @@ fields:
           The key of the declared binding.
   - path: consumer_tag
     name: consumer_tag
-    label: consumer_tag
+    label: Consumer Tag
     kind: scalar
     type: string
     default: '""'
@@ -159,7 +159,7 @@ fields:
       A consumer tag.
   - path: auto_ack
     name: auto_ack
-    label: auto_ack
+    label: Auto Ack
     kind: scalar
     type: bool
     default: 'false'
@@ -168,7 +168,7 @@ fields:
       Acknowledge messages automatically as they are consumed rather than waiting for acknowledgments from downstream. This can improve throughput and prevent the pipeline from blocking but at the cost of eliminating delivery guarantees.
   - path: nack_reject_patterns
     name: nack_reject_patterns
-    label: nack_reject_patterns
+    label: Nack Reject Patterns
     kind: list
     type: string
     default: '[]'
@@ -179,7 +179,7 @@ fields:
       A list of regular expression patterns whereby if a message that has failed to be delivered by the connector has an error that matches it will be dropped (or delivered to a dead-letter queue if one exists). By default failed messages are nacked with requeue enabled.
   - path: prefetch_count
     name: prefetch_count
-    label: prefetch_count
+    label: Prefetch Count
     kind: scalar
     type: int
     default: '10'
@@ -188,7 +188,7 @@ fields:
       The maximum number of pending messages to have consumed at a time.
   - path: prefetch_size
     name: prefetch_size
-    label: prefetch_size
+    label: Prefetch Size
     kind: scalar
     type: int
     default: '0'

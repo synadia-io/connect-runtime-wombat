@@ -13,7 +13,7 @@ description: |-
 fields:
   - path: hosts
     name: hosts
-    label: hosts
+    label: Hosts
     kind: list
     type: string
     optional: false
@@ -23,7 +23,7 @@ fields:
       A list of target host addresses to connect to.
   - path: user
     name: user
-    label: user
+    label: User
     kind: scalar
     type: string
     default: '""'
@@ -32,7 +32,7 @@ fields:
       A user ID to connect as.
   - path: directory
     name: directory
-    label: directory
+    label: Directory
     kind: scalar
     type: string
     optional: false
@@ -40,7 +40,7 @@ fields:
       A directory to store message files within. If the directory does not exist it will be created.
   - path: path
     name: path
-    label: path
+    label: Path
     kind: scalar
     type: string
     default: '"${!counter()}-${!timestamp_unix_nano()}.txt"'
@@ -49,7 +49,7 @@ fields:
       The path to upload messages as, interpolation functions should be used in order to generate unique file paths.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -58,7 +58,7 @@ fields:
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false

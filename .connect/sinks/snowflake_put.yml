@@ -137,7 +137,7 @@ description: |-
 fields:
   - path: account
     name: account
-    label: account
+    label: Account
     kind: scalar
     type: string
     optional: false
@@ -149,7 +149,7 @@ fields:
         populated using the `<account_locator>` part.
   - path: region
     name: region
-    label: region
+    label: Region
     kind: scalar
     type: string
     optional: false
@@ -162,7 +162,7 @@ fields:
         (`<account_locator>.<region_id>.<cloud>`).
   - path: cloud
     name: cloud
-    label: cloud
+    label: Cloud
     kind: scalar
     type: string
     optional: false
@@ -177,7 +177,7 @@ fields:
         (`<account_locator>.<region_id>.<cloud>`).
   - path: user
     name: user
-    label: user
+    label: User
     kind: scalar
     type: string
     optional: false
@@ -185,7 +185,7 @@ fields:
       Username.
   - path: password
     name: password
-    label: password
+    label: Password
     kind: scalar
     type: string
     optional: false
@@ -194,7 +194,7 @@ fields:
     secret: true
   - path: private_key_file
     name: private_key_file
-    label: private_key_file
+    label: Private Key File
     kind: scalar
     type: string
     optional: false
@@ -202,7 +202,7 @@ fields:
       The path to a file containing the private SSH key.
   - path: private_key_pass
     name: private_key_pass
-    label: private_key_pass
+    label: Private Key Password
     kind: scalar
     type: string
     optional: false
@@ -211,7 +211,7 @@ fields:
     secret: true
   - path: role
     name: role
-    label: role
+    label: Role
     kind: scalar
     type: string
     optional: false
@@ -219,7 +219,7 @@ fields:
       Role.
   - path: database
     name: database
-    label: database
+    label: Database
     kind: scalar
     type: string
     optional: false
@@ -227,7 +227,7 @@ fields:
       Database.
   - path: warehouse
     name: warehouse
-    label: warehouse
+    label: Warehouse
     kind: scalar
     type: string
     optional: false
@@ -235,7 +235,7 @@ fields:
       Warehouse.
   - path: schema
     name: schema
-    label: schema
+    label: Schema
     kind: scalar
     type: string
     optional: false
@@ -243,7 +243,7 @@ fields:
       Schema.
   - path: stage
     name: stage
-    label: stage
+    label: Stage
     kind: scalar
     type: string
     optional: false
@@ -252,7 +252,7 @@ fields:
         [supported](https://docs.snowflake.com/en/user-guide/data-load-local-file-system-create-stage.html) stage types.
   - path: path
     name: path
-    label: path
+    label: Path
     kind: scalar
     type: string
     default: '""'
@@ -261,7 +261,7 @@ fields:
       Stage path.
   - path: file_name
     name: file_name
-    label: file_name
+    label: File Name
     kind: scalar
     type: string
     default: '""'
@@ -270,7 +270,7 @@ fields:
       Stage file name. Will be equal to the Request ID if not set or empty.
   - path: file_extension
     name: file_extension
-    label: file_extension
+    label: File Extension
     kind: scalar
     type: string
     default: '""'
@@ -282,7 +282,7 @@ fields:
       Stage file extension. Will be derived from the configured `compression` if not set or empty.
   - path: upload_parallel_threads
     name: upload_parallel_threads
-    label: upload_parallel_threads
+    label: Upload Parallel Threads
     kind: scalar
     type: int
     default: '4'
@@ -291,7 +291,7 @@ fields:
       Specifies the number of threads to use for uploading files.
   - path: compression
     name: compression
-    label: compression
+    label: Compression
     kind: scalar
     type: string
     default: '"AUTO"'
@@ -300,7 +300,7 @@ fields:
       Compression type.
   - path: request_id
     name: request_id
-    label: request_id
+    label: Request ID
     kind: scalar
     type: string
     default: '""'
@@ -309,7 +309,7 @@ fields:
       Request ID. Will be assigned a random UUID (v4) string if not set or empty.
   - path: snowpipe
     name: snowpipe
-    label: snowpipe
+    label: Snowpipe
     kind: scalar
     type: string
     optional: false
@@ -317,7 +317,7 @@ fields:
       An optional Snowpipe name. Use the `<snowpipe>` part from `<database>.<schema>.<snowpipe>`.
   - path: client_session_keep_alive
     name: client_session_keep_alive
-    label: client_session_keep_alive
+    label: Client Session Keep Alive
     kind: scalar
     type: bool
     default: 'false'
@@ -326,7 +326,7 @@ fields:
       Enable Snowflake keepalive mechanism to prevent the client session from expiring after 4 hours (error 390114).
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
@@ -386,7 +386,7 @@ fields:
           A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '1'

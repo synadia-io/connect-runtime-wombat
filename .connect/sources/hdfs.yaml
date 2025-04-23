@@ -18,7 +18,7 @@ description: |-
 fields:
   - path: hosts
     name: hosts
-    label: hosts
+    label: Hosts
     kind: list
     type: string
     optional: false
@@ -28,7 +28,7 @@ fields:
       A list of target host addresses to connect to.
   - path: user
     name: user
-    label: user
+    label: User
     kind: scalar
     type: string
     default: '""'
@@ -37,7 +37,7 @@ fields:
       A user ID to connect as.
   - path: directory
     name: directory
-    label: directory
+    label: Directory
     kind: scalar
     type: string
     optional: false

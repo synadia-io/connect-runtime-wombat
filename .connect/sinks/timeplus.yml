@@ -12,7 +12,7 @@ description: |-
 fields:
   - path: target
     name: target
-    label: target
+    label: Target
     kind: scalar
     type: string
     default: '"timeplus"'
@@ -25,7 +25,7 @@ fields:
           - timeplusd
   - path: url
     name: url
-    label: url
+    label: URL
     kind: scalar
     type: string
     default: '"https://us-west-2.timeplus.cloud"'
@@ -37,7 +37,7 @@ fields:
       The url should always include schema and host.
   - path: workspace
     name: workspace
-    label: workspace
+    label: Workspace
     kind: scalar
     type: string
     optional: false
@@ -45,7 +45,7 @@ fields:
       ID of the workspace. Required if target is `timeplus`.
   - path: stream
     name: stream
-    label: stream
+    label: Stream
     kind: scalar
     type: string
     optional: false
@@ -53,7 +53,7 @@ fields:
       The name of the stream. Make sure the schema of the stream matches the input
   - path: apikey
     name: apikey
-    label: apikey
+    label: API Key
     kind: scalar
     type: string
     optional: false
@@ -62,7 +62,7 @@ fields:
     secret: true
   - path: username
     name: username
-    label: username
+    label: Username
     kind: scalar
     type: string
     optional: false
@@ -70,7 +70,7 @@ fields:
       The username. Required if you are sending message to Timeplus Enterprise (self-hosted) or timeplusd
   - path: password
     name: password
-    label: password
+    label: Password
     kind: scalar
     type: string
     optional: false
@@ -79,7 +79,7 @@ fields:
     secret: true
   - path: max_in_flight
     name: max_in_flight
-    label: max_in_flight
+    label: Max In Flight
     kind: scalar
     type: int
     default: '64'
@@ -88,7 +88,7 @@ fields:
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
   - path: batching
     name: batching
-    label: batching
+    label: Batching
     kind: scalar
     type: object
     optional: false
