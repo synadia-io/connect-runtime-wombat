@@ -1,0 +1,679 @@
+model_version: '1'
+kind: source
+label: HTTP / ReST
+name: http_client
+status: preview
+description: |-
+  Connects to a server and continuously performs requests for a single message.
+
+  The URL and header values of this type can be dynamically set using function interpolations described xref:configuration:interpolation.adoc#bloblang-queries[here].
+
+  # Streaming
+
+  If you enable streaming then the connector will consume the body of the response as a continuous stream of data, breaking messages out following a chosen scanner. This allows you to consume APIs that provide long lived streamed data feeds (such as Twitter).
+
+  # Pagination
+
+  This input supports interpolation functions in the `url` and `headers` fields where data from the previous successfully consumed message (if there was one) can be referenced. This can be used in order to support basic levels of pagination. However, in cases where pagination depends on logic it is recommended that you use an xref:components:processors/http.adoc[`http` processor] instead, often combined with a xref:components:inputs/generate.adoc[`generate` input] in order to schedule the processor.
+fields:
+  - path: url
+    name: url
+    label: url
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The URL to connect to.
+  - path: verb
+    name: verb
+    label: verb
+    kind: scalar
+    type: string
+    default: '"GET"'
+    optional: true
+    examples:
+      - POST
+      - GET
+      - DELETE
+    description: |-
+      A verb to connect with
+  - path: headers
+    name: headers
+    label: headers
+    kind: scalar
+    type: object
+    default: '{}'
+    optional: true
+    examples:
+      - Content-Type: application/octet-stream
+        traceparent: ${! tracing_span().traceparent }
+    description: |-
+      A map of headers to add to the request.
+  - path: metadata
+    name: metadata
+    label: metadata
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Specify optional matching rules to determine which metadata keys should be added to the HTTP request as headers.
+    fields:
+      - path: metadata.include_prefixes
+        name: include_prefixes
+        label: include_prefixes
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - foo_
+              - bar_
+          -   - kafka_
+          -   - content-
+        description: |-
+          Provide a list of explicit metadata key prefixes to match against.
+      - path: metadata.include_patterns
+        name: include_patterns
+        label: include_patterns
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - .*
+          -   - _timestamp_unix$
+        description: |-
+          Provide a list of explicit metadata key regular expression (re2) patterns to match against.
+  - path: dump_request_log_level
+    name: dump_request_log_level
+    label: dump_request_log_level
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      EXPERIMENTAL: Optionally set a level at which the request and response payload of each request made will be logged.
+    constraints:
+      - enum:
+          - TRACE
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+          - FATAL
+          - ''
+  - path: oauth
+    name: oauth
+    label: oauth
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Allows you to specify open authentication via OAuth version 1.
+    fields:
+      - path: oauth.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use OAuth version 1 in requests.
+      - path: oauth.consumer_key
+        name: consumer_key
+        label: consumer_key
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A value used to identify the client to the service provider.
+      - path: oauth.consumer_secret
+        name: consumer_secret
+        label: consumer_secret
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A secret used to establish ownership of the consumer key.
+        secret: true
+      - path: oauth.access_token
+        name: access_token
+        label: access_token
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A value used to gain access to the protected resources on behalf of the user.
+      - path: oauth.access_token_secret
+        name: access_token_secret
+        label: access_token_secret
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A secret provided in order to establish ownership of a given access token.
+        secret: true
+      - path: oauth2.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use OAuth version 2 in requests.
+      - path: oauth2.client_key
+        name: client_key
+        label: client_key
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A value used to identify the client to the token provider.
+      - path: oauth2.client_secret
+        name: client_secret
+        label: client_secret
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A secret used to establish ownership of the client key.
+        secret: true
+      - path: oauth2.token_url
+        name: token_url
+        label: token_url
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The URL of the token provider.
+      - path: oauth2.scopes
+        name: scopes
+        label: scopes
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        description: |-
+          A list of optional requested permissions.
+      - path: oauth2.endpoint_params
+        name: endpoint_params
+        label: endpoint_params
+        kind: scalar
+        type: object
+        default: '{}'
+        optional: true
+        examples:
+          - bar:
+              - woof
+            foo:
+              - meow
+              - quack
+        description: |-
+          A list of optional endpoint parameters, values should be arrays of strings.
+  - path: oauth2
+    name: oauth2
+    label: oauth2
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Allows you to specify open authentication via OAuth version 2 using the client credentials token flow.
+    fields:
+      - path: oauth2.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use OAuth version 2 in requests.
+      - path: oauth2.client_key
+        name: client_key
+        label: client_key
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A value used to identify the client to the token provider.
+      - path: oauth2.client_secret
+        name: client_secret
+        label: client_secret
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A secret used to establish ownership of the client key.
+        secret: true
+      - path: oauth2.token_url
+        name: token_url
+        label: token_url
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The URL of the token provider.
+      - path: oauth2.scopes
+        name: scopes
+        label: scopes
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        description: |-
+          A list of optional requested permissions.
+      - path: oauth2.endpoint_params
+        name: endpoint_params
+        label: endpoint_params
+        kind: scalar
+        type: object
+        default: '{}'
+        optional: true
+        examples:
+          - bar:
+              - woof
+            foo:
+              - meow
+              - quack
+        description: |-
+          A list of optional endpoint parameters, values should be arrays of strings.
+  - path: basic_auth
+    name: basic_auth
+    label: basic_auth
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Allows you to specify basic authentication.
+    fields:
+      - path: basic_auth.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use basic authentication in requests.
+      - path: basic_auth.username
+        name: username
+        label: username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A username to authenticate as.
+      - path: basic_auth.password
+        name: password
+        label: password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A password to authenticate with.
+        secret: true
+  - path: jwt
+    name: jwt
+    label: jwt
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      BETA: Allows you to specify JWT authentication.
+    fields:
+      - path: jwt.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use JWT authentication in requests.
+      - path: jwt.private_key_file
+        name: private_key_file
+        label: private_key_file
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A file with the PEM encoded via PKCS1 or PKCS8 as private key.
+      - path: jwt.signing_method
+        name: signing_method
+        label: signing_method
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A method used to sign the token such as RS256, RS384, RS512 or EdDSA.
+      - path: jwt.claims
+        name: claims
+        label: claims
+        kind: scalar
+        type: object
+        default: '{}'
+        optional: true
+        description: |-
+          A value used to identify the claims that issued the JWT.
+      - path: jwt.headers
+        name: headers
+        label: headers
+        kind: scalar
+        type: object
+        default: '{}'
+        optional: true
+        description: |-
+          Add optional key/value headers to the JWT.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: extract_headers
+    name: extract_headers
+    label: extract_headers
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Specify which response headers should be added to resulting messages as metadata. Header keys are lowercased before matching, so ensure that your patterns target lowercased versions of the header keys that you expect.
+    fields:
+      - path: extract_headers.include_prefixes
+        name: include_prefixes
+        label: include_prefixes
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - foo_
+              - bar_
+          -   - kafka_
+          -   - content-
+        description: |-
+          Provide a list of explicit metadata key prefixes to match against.
+      - path: extract_headers.include_patterns
+        name: include_patterns
+        label: include_patterns
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - .*
+          -   - _timestamp_unix$
+        description: |-
+          Provide a list of explicit metadata key regular expression (re2) patterns to match against.
+  - path: rate_limit
+    name: rate_limit
+    label: rate_limit
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      An optional xref:components:rate_limits/about.adoc[rate limit] to throttle requests by.
+  - path: timeout
+    name: timeout
+    label: timeout
+    kind: scalar
+    type: string
+    default: '"5s"'
+    optional: true
+    description: |-
+      A static timeout to apply to requests.
+  - path: retry_period
+    name: retry_period
+    label: retry_period
+    kind: scalar
+    type: string
+    default: '"1s"'
+    optional: true
+    description: |-
+      The base period to wait between failed requests.
+  - path: max_retry_backoff
+    name: max_retry_backoff
+    label: max_retry_backoff
+    kind: scalar
+    type: string
+    default: '"300s"'
+    optional: true
+    description: |-
+      The maximum period to wait between failed requests.
+  - path: retries
+    name: retries
+    label: retries
+    kind: scalar
+    type: int
+    default: '3'
+    optional: true
+    description: |-
+      The maximum number of retry attempts to make.
+  - path: follow_redirects
+    name: follow_redirects
+    label: follow_redirects
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether or not to transparently follow redirects, i.e. responses with 300-399 status codes. If disabled, the response message will contain the body, status, and headers from the redirect response and the processor will not make a request to the URL set in the Location header of the response.
+  - path: backoff_on
+    name: backoff_on
+    label: backoff_on
+    kind: list
+    type: int
+    default: '[429]'
+    optional: true
+    description: |-
+      A list of status codes whereby the request should be considered to have failed and retries should be attempted, but the period between them should be increased gradually.
+  - path: drop_on
+    name: drop_on
+    label: drop_on
+    kind: list
+    type: int
+    default: '[]'
+    optional: true
+    description: |-
+      A list of status codes whereby the request should be considered to have failed but retries should not be attempted. This is useful for preventing wasted retries for requests that will never succeed. Note that with these status codes the _request_ is dropped, but _message_ that caused the request will not be dropped.
+  - path: successful_on
+    name: successful_on
+    label: successful_on
+    kind: list
+    type: int
+    default: '[]'
+    optional: true
+    description: |-
+      A list of status codes whereby the attempt should be considered successful, this is useful for dropping requests that return non-2XX codes indicating that the message has been dealt with, such as a 303 See Other or a 409 Conflict. All 2XX codes are considered successful unless they are present within `backoff_on` or `drop_on`, regardless of this field.
+  - path: proxy_url
+    name: proxy_url
+    label: proxy_url
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      An optional HTTP proxy URL.
+  - path: disable_http2
+    name: disable_http2
+    label: disable_http2
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Whether or not to disable disable HTTP/2
+  - path: payload
+    name: payload
+    label: payload
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      An optional payload to deliver for each request.
+  - path: drop_empty_bodies
+    name: drop_empty_bodies
+    label: drop_empty_bodies
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether empty payloads received from the target server should be dropped.
+  - path: stream
+    name: stream
+    label: stream
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Allows you to set streaming mode, where requests are kept open and messages are processed line-by-line.
+    fields:
+      - path: stream.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Enables streaming mode.
+      - path: stream.reconnect
+        name: reconnect
+        label: reconnect
+        kind: scalar
+        type: bool
+        default: 'true'
+        optional: true
+        description: |-
+          Sets whether to re-establish the connection once it is lost.
+      - path: stream.scanner
+        name: scanner
+        label: scanner
+        kind: scalar
+        type: scanner
+        default: '{"lines":{}}'
+        optional: true
+        description: |-
+          The xref:components:scanners/about.adoc[scanner] by which the stream of bytes consumed will be broken out into individual messages. Scanners are useful for processing large sources of data without holding the entirety of it within memory. For example, the `csv` scanner allows you to process individual CSV rows without loading the entire CSV file in memory at once.
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: auto_replay_nacks
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

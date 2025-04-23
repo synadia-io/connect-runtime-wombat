@@ -1,0 +1,68 @@
+model_version: '1'
+kind: source
+label: timeplus
+name: Timeplus
+status: experimental
+description: |-
+  Executes a query on Timeplus Enterprise and creates a message from each row received
+
+  This input can execute a query on Timeplus Enterprise Cloud, Timeplus Enterprise (self-hosted) or Timeplusd. A 
+  structured message will be created from each row received.
+
+  If it is a streaming query, this input will keep running until the query is terminated. If it is a table query, 
+  this input will shut down once the rows from the query are exhausted.
+fields:
+  - path: query
+    name: query
+    label: query
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - select * from iot
+      - select count(*) from table(iot)
+    description: |-
+      The query to run
+  - path: url
+    name: url
+    label: url
+    kind: scalar
+    type: string
+    default: '"tcp://localhost:8463"'
+    optional: true
+    description: |-
+      The url should always include schema and host.
+  - path: workspace
+    name: workspace
+    label: workspace
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      ID of the workspace. Required when reads from Timeplus Enterprise.
+  - path: apikey
+    name: apikey
+    label: apikey
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The API key. Required when reads from Timeplus Enterprise Cloud
+    secret: true
+  - path: username
+    name: username
+    label: username
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The username. Required when reads from Timeplus Enterprise (self-hosted) or Timeplusd
+  - path: password
+    name: password
+    label: password
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The password. Required when reads from Timeplus Enterprise (self-hosted) or Timeplusd
+    secret: true

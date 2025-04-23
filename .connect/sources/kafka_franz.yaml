@@ -1,0 +1,508 @@
+model_version: '1'
+kind: source
+label: Kafka
+name: kafka_franz
+status: preview
+description: |-
+  A Kafka input using the https://github.com/twmb/franz-go[Franz Kafka client library^].
+
+  When a consumer group is specified this input consumes one or more topics where partitions will automatically balance across any other connected clients with the same consumer group. When a consumer group is not specified topics can either be consumed in their entirety or with explicit partitions.
+
+  This input often out-performs the traditional `kafka` input as well as providing more useful logs and error messages.
+
+  # Metadata
+
+  This input adds the following metadata fields to each message:
+
+  ```text
+  - kafka_key
+  - kafka_topic
+  - kafka_partition
+  - kafka_offset
+  - kafka_timestamp_ms
+  - kafka_timestamp_unix
+  - kafka_tombstone_message
+  - All record headers
+  ```
+fields:
+  - path: seed_brokers
+    name: seed_brokers
+    label: seed_brokers
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - localhost:9092
+      -   - foo:9092
+          - bar:9092
+      -   - foo:9092,bar:9092
+    description: |-
+      A list of broker addresses to connect to in order to establish connections. If an item of the list contains commas it will be expanded into multiple addresses.
+  - path: client_id
+    name: client_id
+    label: client_id
+    kind: scalar
+    type: string
+    default: '"benthos"'
+    optional: true
+    description: |-
+      An identifier for the client connection.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: sasl
+    name: sasl
+    label: sasl
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - mechanism: SCRAM-SHA-512
+            password: bar
+            username: foo
+    description: |-
+      Specify one or more methods of SASL authentication. SASL is tried in order; if the broker supports the first mechanism, all connections will use that mechanism. If the first mechanism fails, the client will pick the first supported mechanism. If the broker does not support any client mechanisms, connections will fail.
+    fields:
+      - path: sasl[].mechanism
+        name: mechanism
+        label: mechanism
+        kind: scalar
+        type: string
+        optional: false
+        description: |-
+          The SASL mechanism to use.
+      - path: sasl[].username
+        name: username
+        label: username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A username to provide for PLAIN or SCRAM-* authentication.
+      - path: sasl[].password
+        name: password
+        label: password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A password to provide for PLAIN or SCRAM-* authentication.
+        secret: true
+      - path: sasl[].token
+        name: token
+        label: token
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The token to use for a single session's OAUTHBEARER authentication.
+      - path: sasl[].extensions
+        name: extensions
+        label: extensions
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Key/value pairs to add to OAUTHBEARER authentication requests.
+      - path: sasl[].aws
+        name: aws
+        label: aws
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Contains AWS specific fields for when the `mechanism` is set to `AWS_MSK_IAM`.
+        fields:
+          - path: sasl[].aws.region
+            name: region
+            label: region
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The AWS region to target.
+          - path: sasl[].aws.endpoint
+            name: endpoint
+            label: endpoint
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              Allows you to specify a custom endpoint for the AWS API.
+          - path: sasl[].aws.credentials
+            name: credentials
+            label: credentials
+            kind: scalar
+            type: object
+            default: ''
+            optional: false
+            description: |-
+              Optional manual configuration of AWS credentials to use. More information can be found in xref:guides:cloud/aws.adoc[].
+            fields:
+              - path: sasl[].aws.credentials.profile
+                name: profile
+                label: profile
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  A profile from `~/.aws/credentials` to use.
+              - path: sasl[].aws.credentials.id
+                name: id
+                label: id
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  The ID of credentials to use.
+              - path: sasl[].aws.credentials.secret
+                name: secret
+                label: secret
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  The secret for the credentials being used.
+                secret: true
+              - path: sasl[].aws.credentials.token
+                name: token
+                label: token
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  The token for the credentials being used, required when using short term credentials.
+              - path: sasl[].aws.credentials.from_ec2_role
+                name: from_ec2_role
+                label: from_ec2_role
+                kind: scalar
+                type: bool
+                default: 'false'
+                optional: true
+                description: |-
+                  Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
+              - path: sasl[].aws.credentials.role
+                name: role
+                label: role
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  A role ARN to assume.
+              - path: sasl[].aws.credentials.role_external_id
+                name: role_external_id
+                label: role_external_id
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  An external ID to provide when assuming a role.
+  - path: metadata_max_age
+    name: metadata_max_age
+    label: metadata_max_age
+    kind: scalar
+    type: string
+    default: '"5m"'
+    optional: true
+    description: |-
+      The maximum age of metadata before it is refreshed.
+  - path: topics
+    name: topics
+    label: topics
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - foo
+          - bar
+      -   - things.*
+      -   - foo,bar
+      -   - foo:0
+          - bar:1
+          - bar:3
+      -   - foo:0,bar:1,bar:3
+      -   - foo:0-5
+    description: |-
+      A list of topics to consume from. Multiple comma separated topics can be listed in a single element. When a `consumer_group` is specified partitions are automatically distributed across consumers of a topic, otherwise all partitions are consumed.
+
+      Alternatively, it's possible to specify explicit partitions to consume from with a colon after the topic name, e.g. `foo:0` would consume the partition 0 of the topic foo. This syntax supports ranges, e.g. `foo:0-10` would consume partitions 0 through to 10 inclusive.
+
+      Finally, it's also possible to specify an explicit offset to consume from by adding another colon after the partition, e.g. `foo:0:10` would consume the partition 0 of the topic foo starting from the offset 10. If the offset is not present (or remains unspecified) then the field `start_from_oldest` determines which offset to start from.
+  - path: regexp_topics
+    name: regexp_topics
+    label: regexp_topics
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Whether listed topics should be interpreted as regular expression patterns for matching multiple topics. When topics are specified with explicit partitions this field must remain set to `false`.
+  - path: rack_id
+    name: rack_id
+    label: rack_id
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      A rack specifies where the client is physically located and changes fetch requests to consume from the closest replica as opposed to the leader replica.
+  - path: start_from_oldest
+    name: start_from_oldest
+    label: start_from_oldest
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Determines whether to consume from the oldest available offset, otherwise messages are consumed from the latest offset. The setting is applied when creating a new consumer group or the saved offset no longer exists.
+  - path: fetch_max_bytes
+    name: fetch_max_bytes
+    label: fetch_max_bytes
+    kind: scalar
+    type: string
+    default: '"50MiB"'
+    optional: true
+    description: |-
+      Sets the maximum amount of bytes a broker will try to send during a fetch. Note that brokers may not obey this limit if it has records larger than this limit. This is the equivalent to the Java fetch.max.bytes setting.
+  - path: fetch_max_wait
+    name: fetch_max_wait
+    label: fetch_max_wait
+    kind: scalar
+    type: string
+    default: '"5s"'
+    optional: true
+    description: |-
+      Sets the maximum amount of time a broker will wait for a fetch response to hit the minimum number of required bytes. This is the equivalent to the Java fetch.max.wait.ms setting.
+  - path: fetch_min_bytes
+    name: fetch_min_bytes
+    label: fetch_min_bytes
+    kind: scalar
+    type: string
+    default: '"1B"'
+    optional: true
+    description: |-
+      Sets the minimum amount of bytes a broker will try to send during a fetch. This is the equivalent to the Java fetch.min.bytes setting.
+  - path: fetch_max_partition_bytes
+    name: fetch_max_partition_bytes
+    label: fetch_max_partition_bytes
+    kind: scalar
+    type: string
+    default: '"1MiB"'
+    optional: true
+    description: |-
+      Sets the maximum amount of bytes that will be consumed for a single partition in a fetch request. Note that if a single batch is larger than this number, that batch will still be returned so the client can make progress. This is the equivalent to the Java fetch.max.partition.bytes setting.
+  - path: consumer_group
+    name: consumer_group
+    label: consumer_group
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      An optional consumer group to consume as. When specified the partitions of specified topics are automatically distributed across consumers sharing a consumer group, and partition offsets are automatically committed and resumed under this name. Consumer groups are not supported when specifying explicit partitions to consume from in the `topics` field.
+  - path: checkpoint_limit
+    name: checkpoint_limit
+    label: checkpoint_limit
+    kind: scalar
+    type: int
+    default: '1024'
+    optional: true
+    description: |-
+      Determines how many messages of the same partition can be processed in parallel before applying back pressure. When a message of a given offset is delivered to the output the offset is only allowed to be committed when all messages of prior offsets have also been delivered, this ensures at-least-once delivery guarantees. However, this mechanism also increases the likelihood of duplicates in the event of crashes or server faults, reducing the checkpoint limit will mitigate this.
+  - path: commit_period
+    name: commit_period
+    label: commit_period
+    kind: scalar
+    type: string
+    default: '"5s"'
+    optional: true
+    description: |-
+      The period of time between each commit of the current partition offsets. Offsets are always committed during shutdown.
+  - path: multi_header
+    name: multi_header
+    label: multi_header
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Decode headers into lists to allow handling of multiple values with the same key
+  - path: batching
+    name: batching
+    label: batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [https://wombat.dev/pipelines/learn/batching/#batch-policy](batching policy) that applies to individual topic partitions in order to batch messages together before flushing them for processing. Batching can be beneficial for performance as well as useful for windowed processing, and doing so this way preserves the ordering of topic partitions.
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: auto_replay_nacks
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

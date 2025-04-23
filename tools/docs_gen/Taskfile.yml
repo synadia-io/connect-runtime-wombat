@@ -1,0 +1,23 @@
+version: "3"
+tasks:
+  build:
+    desc: Build the docs generator tool
+    cmds:
+      - go mod tidy
+      - go build -tags "{{.TAGS}}" -o ../../target/docs_gen *.go
+
+  test:
+    cmds:
+      - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4
+
+  models:deps:
+    cmds:
+      - go install github.com/atombender/go-jsonschema@84c8d2b98bf0373873df8a353b122530a7110c70
+
+  models:generate:
+    deps: ["models:deps"]
+    cmds:
+      - go-jsonschema --struct-name-from-title
+        --package model
+        --schema-output=io.synadia.connect.v1.library.spec=model/component_spec.go
+        model/schemas/*.schema.json

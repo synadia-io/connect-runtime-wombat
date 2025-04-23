@@ -1,11 +1,12 @@
-model_version: "1"
-name: aws_sqs
-label: AWS SQS
+model_version: '1'
 kind: sink
+label: AWS SQS
+name: aws_sqs
+icon: 
+  data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjMwOSIKICAgaGVpZ2h0PSIzMDkiCiAgIHZpZXdCb3g9IjAgMCAzMDkgMzA5IgogICB2ZXJzaW9uPSIxLjEiCiAgIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIgogICBpZD0ic3ZnMjIiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImF3cy1zcXMuc3ZnIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKDE6MS4xKzIwMjEwNTI2MTUxNytjZTY2NjNiM2I3KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMjYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcyNCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICB3aWR0aD0iMzA5cHgiCiAgICAgaW5rc2NhcGU6em9vbT0iMi4wNTI2NjkyIgogICAgIGlua3NjYXBlOmN4PSIxMjcuMzk1MSIKICAgICBpbmtzY2FwZTpjeT0iMTY1LjYzNzk5IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDE2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyNyIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzIyIiAvPgogIDxnCiAgICAgaWQ9ImcyMCIKICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi41LC0wLjAwMTUpIj4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45OTEsMTAwLjIxMSAtNC4xMTIsLTAuMDY5IC0xMjMuNzkyLC0zNi42NSAtMC4wNzQsLTEuNjk2IFYgMCBMIDI1Niw2NC4wMDYgbCAtMC4wMDksMzYuMjA1IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDEyOCw2NS41IDEyOC4wMTMsMCAwLjAxNyw2My45ODEgMCwyNDQuOTk2IGwgMC4wNjQsMC4wMzIgdiAwLjAwMiBsIDEyNy45MjMsNjMuOTczIDAuNDI1LC0wLjU5MSAtMC4xNjUsLTYwLjg3MSAtMC4yNTEsLTAuMzM5IEwgMTIwLDI0MS41IDIxLDIxMiAyMS41LDk3LjUgMTI4LDY1LjUiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGg0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Ik0gMTQ3LjE0MSwxOTUuMjk4IDE2LjM1MSwyMTMuNjk3IDE2LjM2LDk1LjI4IGwgMTMwLjc5LDE4LjQyNCAtMC4wMDksODEuNTk0IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoNiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDgwLjg2NCwxODcuODEzIDQ3LjEzMiw2IDAuMDA4LC03OC42NTggLTQ3LjEzMSw1Ljk5NSAtMC4wMDksNjYuNjYzIgogICAgICAgZmlsbD0iIzg3NjkyOSIKICAgICAgIGlkPSJwYXRoOCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDMzLjM4NSwxODEuNzcxIDMwLjU4NywzLjg4OCAwLjAwOSwtNjIuMzYzIC0zMC41OTYsMy44OTcgdiA1NC41NzgiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGgxMCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDE2LjM2LDk1LjI4IDEyOC4wMTMsNjEuNzk2IDI1NS45OTEsMTAwLjIxMSAxNDcuMjMxLDExMy43MTMgMTYuMzYsOTUuMjgiCiAgICAgICBmaWxsPSIjNjI0YTFlIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45MjcsMTc3LjM3NiAtMTI3LjkzMSwxNi4xNDUgMC4wMDgsLTc4LjM2NiAxMjcuOTIzLDE2LjI5NiB2IDQ1LjkyNSIKICAgICAgIGZpbGw9IiNkOWE3NDEiCiAgICAgICBpZD0icGF0aDE0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Im0gMjU1LjkxOCwyMDguODM0IC0yLjc1MywwLjExOSAtMTI0Ljc3NiwzNy43NyAtMC4zOTMsMC40NzkgLTAuMDA5LDYxLjgwMSAxMjcuOTMxLC02My45NTEgdiAtMzYuMjE4IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMTYiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSAxNi4zNTEsMjEzLjY5NyAxMjcuOTk2LDI0Ny4yMDIgMjU1LjkxOCwyMDguODM0IDE0Ny4xNDEsMTk1LjI5OCAxNi4zNTEsMjEzLjY5NyIKICAgICAgIGZpbGw9IiNmYWQ3OTEiCiAgICAgICBpZD0icGF0aDE4IiAvPgogIDwvZz4KPC9zdmc+Cg==
 status: stable
 description: >-
   Sends messages to an SQS queue.
-icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjMwOSIKICAgaGVpZ2h0PSIzMDkiCiAgIHZpZXdCb3g9IjAgMCAzMDkgMzA5IgogICB2ZXJzaW9uPSIxLjEiCiAgIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIgogICBpZD0ic3ZnMjIiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImF3cy1zcXMuc3ZnIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKDE6MS4xKzIwMjEwNTI2MTUxNytjZTY2NjNiM2I3KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMjYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcyNCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICB3aWR0aD0iMzA5cHgiCiAgICAgaW5rc2NhcGU6em9vbT0iMi4wNTI2NjkyIgogICAgIGlua3NjYXBlOmN4PSIxMjcuMzk1MSIKICAgICBpbmtzY2FwZTpjeT0iMTY1LjYzNzk5IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDE2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyNyIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzIyIiAvPgogIDxnCiAgICAgaWQ9ImcyMCIKICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi41LC0wLjAwMTUpIj4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45OTEsMTAwLjIxMSAtNC4xMTIsLTAuMDY5IC0xMjMuNzkyLC0zNi42NSAtMC4wNzQsLTEuNjk2IFYgMCBMIDI1Niw2NC4wMDYgbCAtMC4wMDksMzYuMjA1IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDEyOCw2NS41IDEyOC4wMTMsMCAwLjAxNyw2My45ODEgMCwyNDQuOTk2IGwgMC4wNjQsMC4wMzIgdiAwLjAwMiBsIDEyNy45MjMsNjMuOTczIDAuNDI1LC0wLjU5MSAtMC4xNjUsLTYwLjg3MSAtMC4yNTEsLTAuMzM5IEwgMTIwLDI0MS41IDIxLDIxMiAyMS41LDk3LjUgMTI4LDY1LjUiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGg0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Ik0gMTQ3LjE0MSwxOTUuMjk4IDE2LjM1MSwyMTMuNjk3IDE2LjM2LDk1LjI4IGwgMTMwLjc5LDE4LjQyNCAtMC4wMDksODEuNTk0IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoNiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDgwLjg2NCwxODcuODEzIDQ3LjEzMiw2IDAuMDA4LC03OC42NTggLTQ3LjEzMSw1Ljk5NSAtMC4wMDksNjYuNjYzIgogICAgICAgZmlsbD0iIzg3NjkyOSIKICAgICAgIGlkPSJwYXRoOCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDMzLjM4NSwxODEuNzcxIDMwLjU4NywzLjg4OCAwLjAwOSwtNjIuMzYzIC0zMC41OTYsMy44OTcgdiA1NC41NzgiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGgxMCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDE2LjM2LDk1LjI4IDEyOC4wMTMsNjEuNzk2IDI1NS45OTEsMTAwLjIxMSAxNDcuMjMxLDExMy43MTMgMTYuMzYsOTUuMjgiCiAgICAgICBmaWxsPSIjNjI0YTFlIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45MjcsMTc3LjM3NiAtMTI3LjkzMSwxNi4xNDUgMC4wMDgsLTc4LjM2NiAxMjcuOTIzLDE2LjI5NiB2IDQ1LjkyNSIKICAgICAgIGZpbGw9IiNkOWE3NDEiCiAgICAgICBpZD0icGF0aDE0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Im0gMjU1LjkxOCwyMDguODM0IC0yLjc1MywwLjExOSAtMTI0Ljc3NiwzNy43NyAtMC4zOTMsMC40NzkgLTAuMDA5LDYxLjgwMSAxMjcuOTMxLC02My45NTEgdiAtMzYuMjE4IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMTYiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSAxNi4zNTEsMjEzLjY5NyAxMjcuOTk2LDI0Ny4yMDIgMjU1LjkxOCwyMDguODM0IDE0Ny4xNDEsMTk1LjI5OCAxNi4zNTEsMjEzLjY5NyIKICAgICAgIGZpbGw9IiNmYWQ3OTEiCiAgICAgICBpZD0icGF0aDE4IiAvPgogIDwvZz4KPC9zdmc+Cg=="
 fields:
   - path: url
     name: url
@@ -13,7 +14,6 @@ fields:
     type: string
     description: >-
       The URL of the target SQS queue.
-
   - path: message_group_id
     name: message_group_id
     label: Message Group ID
@@ -21,7 +21,6 @@ fields:
     optional: true
     description: >-
       An optional group ID to set for messages.
-
   - path: message_deduplication_id
     name: message_deduplication_id
     label: Message Deduplication ID
@@ -29,7 +28,6 @@ fields:
     optional: true
     description: >-
       An optional deduplication ID to set for messages.
-
   - path: delay_seconds
     name: delay_seconds
     label: Delay Seconds
@@ -37,17 +35,15 @@ fields:
     optional: true
     description: >-
       An optional delay time in seconds for message. Value between 0 and 900
-
   - path: max_in_flight
     name: max_in_flight
     label: Max in Flight
     type: int
-    optional: true
     default: 64
+    optional: true
     description: >-
       The maximum number of parallel message batches to have in flight at
       any given time.
-
   - path: metadata
     name: metadata
     label: Metadata
@@ -65,20 +61,17 @@ fields:
         description: >-
           Provide a list of explicit metadata key prefixes to be excluded when
           adding metadata to sent messages.
-
   - path: region
     name: region
     label: Region
     type: string
     description: >-
       The AWS region to target.
-
   - path: endpoint
     name: endpoint
     label: Endpoint
     type: string
     optional: true
-    default: ""
     description: >-
       Allows you to specify a custom endpoint for the AWS API.
   - path: credentials
@@ -94,7 +87,6 @@ fields:
         label: ID
         type: string
         optional: true
-        default: ""
         description: >-
           The ID of credentials to use.
       - path: credentials.secret
@@ -102,7 +94,6 @@ fields:
         label: Secret
         type: string
         optional: true
-        default: ""
         description: >-
           The secret for the credentials being used.
       - path: credentials.token
@@ -110,7 +101,6 @@ fields:
         label: Token
         type: string
         optional: true
-        default: ""
         description: >-
           The token for the credentials being used, required when using short
           term credentials.

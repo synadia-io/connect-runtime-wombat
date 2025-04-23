@@ -1,0 +1,338 @@
+model_version: '1'
+label: cassandra
+name: cassandra
+status: preview
+description: |-
+  Runs a query against a Cassandra database for each message in order to insert data.
+    
+    Query arguments can be set using a bloblang array for the fields using the `args_mapping` field.
+    
+    When populating timestamp columns the value must either be a string in ISO 8601 format (2006-01-02T15:04:05Z07:00), or an integer representing unix time in seconds.
+    
+    # Performance
+    
+    This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
+    
+    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more xref:configuration:batching.adoc[in this doc].
+fields:
+  - path: addresses
+    name: addresses
+    label: addresses
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - localhost:9042
+      -   - foo:9042
+          - bar:9042
+      -   - foo:9042,bar:9042
+    description: |-
+      A list of Cassandra nodes to connect to. Multiple comma separated addresses can be specified on a single line.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: password_authenticator
+    name: password_authenticator
+    label: password_authenticator
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Optional configuration of Cassandra authentication parameters.
+    fields:
+      - path: password_authenticator.enabled
+        name: enabled
+        label: enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use password authentication
+      - path: password_authenticator.username
+        name: username
+        label: username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The username to authenticate as.
+      - path: password_authenticator.password
+        name: password
+        label: password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The password to authenticate with.
+        secret: true
+  - path: disable_initial_host_lookup
+    name: disable_initial_host_lookup
+    label: disable_initial_host_lookup
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      If enabled the driver will not attempt to get host info from the system.peers table. This can speed up queries but will mean that data_centre, rack and token information will not be available.
+  - path: max_retries
+    name: max_retries
+    label: max_retries
+    kind: scalar
+    type: int
+    default: '3'
+    optional: true
+    description: |-
+      The maximum number of retries before giving up on a request.
+  - path: backoff
+    name: backoff
+    label: backoff
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Control time intervals between retry attempts.
+    fields:
+      - path: backoff.initial_interval
+        name: initial_interval
+        label: initial_interval
+        kind: scalar
+        type: string
+        default: '"1s"'
+        optional: true
+        description: |-
+          The initial period to wait between retry attempts.
+      - path: backoff.max_interval
+        name: max_interval
+        label: max_interval
+        kind: scalar
+        type: string
+        default: '"5s"'
+        optional: true
+        description: |-
+          The maximum period to wait between retry attempts.
+  - path: timeout
+    name: timeout
+    label: timeout
+    kind: scalar
+    type: string
+    default: '"600ms"'
+    optional: true
+    description: |-
+      The client connection timeout.
+  - path: query
+    name: query
+    label: query
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A query to execute for each message.
+  - path: args_mapping
+    name: args_mapping
+    label: args_mapping
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A xref:guides:bloblang/about.adoc[Bloblang mapping] that can be used to provide arguments to Cassandra queries. The result of the query must be an array containing a matching number of elements to the query arguments.
+  - path: consistency
+    name: consistency
+    label: consistency
+    kind: scalar
+    type: string
+    default: '"QUORUM"'
+    optional: true
+    description: |-
+      The consistency level to use.
+    constraints:
+      - enum:
+          - ANY
+          - ONE
+          - TWO
+          - THREE
+          - QUORUM
+          - ALL
+          - LOCAL_QUORUM
+          - EACH_QUORUM
+          - LOCAL_ONE
+  - path: logged_batch
+    name: logged_batch
+    label: logged_batch
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      If enabled the driver will perform a logged batch. Disabling this prompts unlogged batches to be used instead, which are less efficient but necessary for alternative storages that do not support logged batches.
+  - path: max_in_flight
+    name: max_in_flight
+    label: max_in_flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
+  - path: batching
+    name: batching
+    label: batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [https://wombat.dev/pipelines/learn/batching/#batch-policy](batching policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.

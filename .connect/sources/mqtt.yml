@@ -1,84 +1,77 @@
-model_version: "1"
-name: mqtt
-label: MQTT
+model_version: '1'
 kind: source
+label: MQTT
+name: mqtt
+icon: 
+  data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI1MDAiIHZpZXdCb3g9IjguNzM4IC01LjAzNjIyODM0IDE3LjQ1OTkyNDIyIDM5LjQwNjE5NDg0IiB3aWR0aD0iMjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTUuOS4wODcuODU0IDEuNjA0Yy4xOTIuMjk2LjQuNTU4LjY0NS44MDJhMjIuNDA2IDIyLjQwNiAwIDAgMSAyLjAwNCAyLjI2NmMxLjQ0NyAxLjkgMi40MjMgNC4wMSAzLjEyIDYuMjkyLjQxOCAxLjM5NC42NDUgMi44MjQuNjYyIDQuMjcuMDcgNC4zMjMtMS40MTIgOC4wMzUtNC40IDExLjEyYTEyLjcgMTIuNyAwIDAgMSAtMS41NyAxLjM0MmMtLjI5NiAwLS40MzYtLjIyNy0uNTU4LS40MzZhMy41ODkgMy41ODkgMCAwIDEgLS40MzYtMS4yNTVjLS4xMDUtLjUyMy0uMTc0LTEuMDQ2LS4xNC0xLjU4NnYtLjI0NGMtLjAyNC0uMDUyLS4yODUtMjQuMDUyLS4xODEtMjQuMTc1eiIgZmlsbD0iIzU5OTYzNiIvPjxwYXRoIGQ9Im0xNS45LjAzNGMtLjAzNS0uMDctLjA3LS4wMTctLjEwNS4wMTcuMDE3LjM1LS4xMDUuNjYyLS4yOTYuOTYtLjIxLjI5Ni0uNDg4LjUyMy0uNzY3Ljc2Ny0xLjU1IDEuMzQyLTIuNzcgMi45NjMtMy43NDcgNC43NzYtMS4zIDIuNDQtMS45NyA1LjA1NS0yLjE2IDcuODA4LS4wODcuOTkzLjMxNCA0LjQ5Ny42MjcgNS41MDguODU0IDIuNjg0IDIuMzg4IDQuOTMzIDQuMzc1IDYuODg1LjQ4OC40NyAxLjAxLjkwNiAxLjU1IDEuMzI1LjE1NyAwIC4xNzQtLjE0LjIxLS4yNDRhNC43OCA0Ljc4IDAgMCAwIC4xNTctLjY4bC4zNS0yLjYxNHoiIGZpbGw9IiM2Y2FjNDgiLz48cGF0aCBkPSJtMTYuNzU0IDI4Ljg0NWMuMDM1LS40LjIyNy0uNzMyLjQzNi0xLjA2My0uMjEtLjA4Ny0uMzY2LS4yNi0uNDg4LS40NTNhMy4yMzUgMy4yMzUgMCAwIDEgLS4yNi0uNTc1Yy0uMjQ0LS43MzItLjI5Ni0xLjUtLjM2Ni0yLjI0OHYtLjQ1M2MtLjA4Ny4wNy0uMTA1LjY2Mi0uMTA1Ljc1YTE3LjM3IDE3LjM3IDAgMCAxIC0uMzE0IDIuMzUzYy0uMDUyLjMxNC0uMDg3LjYyNy0uMjguOTA2IDAgLjAzNSAwIC4wNy4wMTcuMTIyLjMxNC45MjQuNCAxLjg2NS40NTMgMi44MjR2LjM1YzAgLjQxOC0uMDE3LjMzLjMzLjQ3LjE0LjA1Mi4yOTYuMDcuNDM2LjE3NC4xMDUgMCAuMTIyLS4wODcuMTIyLS4xNTdsLS4wNTItLjU3NXYtMS42MDRjLS4wMTctLjI4LjAzNS0uNTU4LjA3LS44MnoiIGZpbGw9IiNjMmJmYmYiLz48L3N2Zz4=
 status: preview
-description: >-
+description: |-
   Subscribe to topics on MQTT brokers.
-icon: "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI1MDAiIHZpZXdCb3g9IjguNzM4IC01LjAzNjIyODM0IDE3LjQ1OTkyNDIyIDM5LjQwNjE5NDg0IiB3aWR0aD0iMjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTUuOS4wODcuODU0IDEuNjA0Yy4xOTIuMjk2LjQuNTU4LjY0NS44MDJhMjIuNDA2IDIyLjQwNiAwIDAgMSAyLjAwNCAyLjI2NmMxLjQ0NyAxLjkgMi40MjMgNC4wMSAzLjEyIDYuMjkyLjQxOCAxLjM5NC42NDUgMi44MjQuNjYyIDQuMjcuMDcgNC4zMjMtMS40MTIgOC4wMzUtNC40IDExLjEyYTEyLjcgMTIuNyAwIDAgMSAtMS41NyAxLjM0MmMtLjI5NiAwLS40MzYtLjIyNy0uNTU4LS40MzZhMy41ODkgMy41ODkgMCAwIDEgLS40MzYtMS4yNTVjLS4xMDUtLjUyMy0uMTc0LTEuMDQ2LS4xNC0xLjU4NnYtLjI0NGMtLjAyNC0uMDUyLS4yODUtMjQuMDUyLS4xODEtMjQuMTc1eiIgZmlsbD0iIzU5OTYzNiIvPjxwYXRoIGQ9Im0xNS45LjAzNGMtLjAzNS0uMDctLjA3LS4wMTctLjEwNS4wMTcuMDE3LjM1LS4xMDUuNjYyLS4yOTYuOTYtLjIxLjI5Ni0uNDg4LjUyMy0uNzY3Ljc2Ny0xLjU1IDEuMzQyLTIuNzcgMi45NjMtMy43NDcgNC43NzYtMS4zIDIuNDQtMS45NyA1LjA1NS0yLjE2IDcuODA4LS4wODcuOTkzLjMxNCA0LjQ5Ny42MjcgNS41MDguODU0IDIuNjg0IDIuMzg4IDQuOTMzIDQuMzc1IDYuODg1LjQ4OC40NyAxLjAxLjkwNiAxLjU1IDEuMzI1LjE1NyAwIC4xNzQtLjE0LjIxLS4yNDRhNC43OCA0Ljc4IDAgMCAwIC4xNTctLjY4bC4zNS0yLjYxNHoiIGZpbGw9IiM2Y2FjNDgiLz48cGF0aCBkPSJtMTYuNzU0IDI4Ljg0NWMuMDM1LS40LjIyNy0uNzMyLjQzNi0xLjA2My0uMjEtLjA4Ny0uMzY2LS4yNi0uNDg4LS40NTNhMy4yMzUgMy4yMzUgMCAwIDEgLS4yNi0uNTc1Yy0uMjQ0LS43MzItLjI5Ni0xLjUtLjM2Ni0yLjI0OHYtLjQ1M2MtLjA4Ny4wNy0uMTA1LjY2Mi0uMTA1Ljc1YTE3LjM3IDE3LjM3IDAgMCAxIC0uMzE0IDIuMzUzYy0uMDUyLjMxNC0uMDg3LjYyNy0uMjguOTA2IDAgLjAzNSAwIC4wNy4wMTcuMTIyLjMxNC45MjQuNCAxLjg2NS40NTMgMi44MjR2LjM1YzAgLjQxOC0uMDE3LjMzLjMzLjQ3LjE0LjA1Mi4yOTYuMDcuNDM2LjE3NC4xMDUgMCAuMTIyLS4wODcuMTIyLS4xNTdsLS4wNTItLjU3NXYtMS42MDRjLS4wMTctLjI4LjAzNS0uNTU4LjA3LS44MnoiIGZpbGw9IiNjMmJmYmYiLz48L3N2Zz4="
 fields:
   - path: urls
     name: urls
     label: URLs
-    type: string
     kind: list
-    description: >-
-      A list of URLs to connect to. The format should be `scheme://host:port` where `scheme` is one of `tcp`, `ssl`, or `ws`, `host` is the ip-address (or hostname) and `port` is the port on which the broker is accepting connections. If an item of the list contains commas it will be expanded into multiple URLs.
+    type: string
     examples:
-      - - "tcp://localhost:1883"
-        - "tcp://localhost:1884"
+      -   - tcp://localhost:1883
+          - tcp://localhost:1884
 
+    description: |-
+      A list of URLs to connect to. The format should be `scheme://host:port` where `scheme` is one of `tcp`, `ssl`, or `ws`, `host` is the ip-address (or hostname) and `port` is the port on which the broker is accepting connections. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: client_id
     name: client_id
     label: Client ID
     type: string
-    default: ""
     optional: true
-    description: >-
+    description: |-
       An identifier for the client connection. If not provided a random client ID will be generated.
-
   - path: dynamic_client_id_suffix
     name: dynamic_client_id_suffix
     label: Client ID Suffix
     type: string
     optional: true
-    description: >-
+    description: |-
       Append a dynamically generated suffix to the specified `client_id` on each run of the pipeline. This can be useful when running multiple instances of this source.
     constraints:
       - enum:
-          - "nanoid"
+          - nanoid
 
   - path: connect_timeout
     name: connect_timeout
     label: Connect Timeout
     type: string
+    default: 30s
     optional: true
-    default: "30s"
-    description: >-
+    description: |-
       The maximum amount of time to wait in order to establish a connection before the attempt is abandoned.
-
   - path: user
     name: username
     label: Username
     type: string
     optional: true
-    default: ""
-    description: >-
+    description: |-
       The username to authenticate with the broker.
-
   - path: password
     name: password
     label: Password
     type: string
     optional: true
-    default: ""
-    description: >-
+    description: |-
       The password to authenticate with the broker.
-
   - path: keepalive
     name: keepalive
     label: Keep Alive
     type: int
     default: 30
-    description: >-
+    description: |-
       The maximum amount of time in seconds that the client will wait before sending a PINGREQ message to the broker.
-
   - path: will
     name: will
     label: Last Will and Testament
     type: object
     optional: true
-    description: >-
+    description: |-
       Set last will message in case of unexpected disconnection.
     fields:
       - path: will.enabled
@@ -87,22 +80,21 @@ fields:
         type: bool
         default: false
         optional: true
-        description: >-
+        description: |-
           Whether to enable the last will message.
-
       - path: will.qos
         name: qos
         label: QoS
         type: int
         default: 0
         optional: true
-        description: >-
+        description: |-
           The QoS level to use for the last will message.
         constraints:
           - enum:
-              - "0"
-              - "1"
-              - "2"
+              - '0'
+              - '1'
+              - '2'
 
       - path: will.retained
         name: retained
@@ -110,49 +102,46 @@ fields:
         type: bool
         default: false
         optional: true
-        description: >-
+        description: |-
           Whether the last will message should be retained.
-
       - path: will.topic
         name: topic
         label: Topic
         type: string
         optional: true
-        description: >-
+        description: |-
           The topic to publish the last will message to.
-
       - path: will.payload
         name: payload
         label: Payload
         type: string
         optional: true
-        description: >-
+        description: |-
           The payload of the last will message.
-
   - path: topics
     name: topics
     label: Topics
-    type: string
     kind: list
-    description: >-
-      A list of topics to subscribe to.
+    type: string
     examples:
-      - "my/topic"
-      - "another/topic"
+      - my/topic
+      - another/topic
 
+    description: |-
+      A list of topics to subscribe to.
   - path: qos
     name: qos
     label: QoS
     type: int
     default: 1
     optional: true
-    description: >-
+    description: |-
       The level of assurance for message delivery.
     constraints:
       - enum:
-          - "0"
-          - "1"
-          - "2"
+          - '0'
+          - '1'
+          - '2'
 
   - path: clean_session
     name: clean_session
@@ -160,17 +149,13 @@ fields:
     type: bool
     default: true
     optional: true
-    description: >-
+    description: |-
       Set whether the connection is non-persistent.
-
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
     type: bool
     default: true
     optional: true
-    description: >-
-      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
-      eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these 
-      messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high 
-      throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely,  eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these  messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high  throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

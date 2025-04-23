@@ -1,0 +1,124 @@
+model_version: '1'
+label: splunk_hec
+name: splunk_hec
+status: experimental
+description: |-
+  Writes messages to a Splunk HTTP Endpoint Collector.
+    
+    This output POSTs messages to a Splunk HTTP Endpoint Collector (HEC) using token based authentication. The format of the message must be a [valid event JSON](https://docs.splunk.com/Documentation/SplunkCloud/latest/Data/FormateventsforHTTPEventCollector). Raw is not supported.
+fields:
+  - path: url
+    name: url
+    label: url
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Full HTTP Endpoint Collector (HEC) URL, ie. https://foobar.splunkcloud.com/services/collector/event
+  - path: token
+    name: token
+    label: token
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A bot token used for authentication.
+  - path: gzip
+    name: gzip
+    label: gzip
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Enable gzip compression
+  - path: event_host
+    name: event_host
+    label: event_host
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      Set the host value to assign to the event data. Overrides existing host field if present.
+  - path: event_source
+    name: event_source
+    label: event_source
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      Set the source value to assign to the event data. Overrides existing source field if present.
+  - path: event_sourcetype
+    name: event_sourcetype
+    label: event_sourcetype
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      Set the sourcetype value to assign to the event data. Overrides existing sourcetype field if present.
+  - path: event_index
+    name: event_index
+    label: event_index
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      Set the index value to assign to the event data. Overrides existing index field if present.
+  - path: batching_count
+    name: batching_count
+    label: batching_count
+    kind: scalar
+    type: int
+    default: '100'
+    optional: true
+    description: |-
+      A number of messages at which the batch should be flushed. If 0 disables count based batching.
+  - path: batching_period
+    name: batching_period
+    label: batching_period
+    kind: scalar
+    type: string
+    default: '"30s"'
+    optional: true
+    description: |-
+      A period in which an incomplete batch should be flushed regardless of its size.
+  - path: batching_byte_size
+    name: batching_byte_size
+    label: batching_byte_size
+    kind: scalar
+    type: int
+    default: '1000000'
+    optional: true
+    description: |-
+      An amount of bytes at which the batch should be flushed. If 0 disables size based batching. Splunk Cloud recommends limiting content length of HEC payload to 1 MB.
+  - path: rate_limit
+    name: rate_limit
+    label: rate_limit
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      An optional rate limit resource to restrict API requests with.
+  - path: max_in_flight
+    name: max_in_flight
+    label: max_in_flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of parallel message batches to have in flight at any given time.
+  - path: skip_cert_verify
+    name: skip_cert_verify
+    label: skip_cert_verify
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Whether to skip server side certificate verification.

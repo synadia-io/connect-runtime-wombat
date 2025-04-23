@@ -1,0 +1,203 @@
+model_version: '1'
+kind: source
+label: Pulsar
+name: pulsar
+status: experimental
+description: |-
+  Reads messages from an Apache Pulsar server.
+
+  # Metadata
+
+  This input adds the following metadata fields to each message:
+
+  ```text
+  - pulsar_message_id
+  - pulsar_key
+  - pulsar_ordering_key
+  - pulsar_event_time_unix
+  - pulsar_publish_time_unix
+  - pulsar_topic
+  - pulsar_producer_name
+  - pulsar_redelivery_count
+  - All properties of the message
+  ```
+
+  You can access these metadata fields using
+  xref:configuration:interpolation.adoc#bloblang-queries[function interpolation].
+fields:
+  - path: url
+    name: url
+    label: url
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - pulsar://localhost:6650
+      - pulsar://pulsar.us-west.example.com:6650
+      - pulsar+ssl://pulsar.us-west.example.com:6651
+    description: |-
+      A URL to connect to.
+  - path: topics
+    name: topics
+    label: topics
+    kind: list
+    type: string
+    optional: false
+    description: |-
+      A list of topics to subscribe to. This or topics_pattern must be set.
+  - path: topics_pattern
+    name: topics_pattern
+    label: topics_pattern
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A regular expression matching the topics to subscribe to. This or topics must be set.
+  - path: subscription_name
+    name: subscription_name
+    label: subscription_name
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Specify the subscription name for this consumer.
+  - path: subscription_type
+    name: subscription_type
+    label: subscription_type
+    kind: scalar
+    type: string
+    default: '"shared"'
+    optional: true
+    description: |-
+      Specify the subscription type for this consumer.
+
+      > NOTE: Using a `key_shared` subscription type will __allow out-of-order delivery__ since nack-ing messages sets non-zero nack delivery delay - this can potentially cause consumers to stall. See https://pulsar.apache.org/docs/en/2.8.1/concepts-messaging/#negative-acknowledgement[Pulsar documentation^] and https://github.com/apache/pulsar/issues/12208[this Github issue^] for more details.
+    constraints:
+      - enum:
+          - shared
+          - key_shared
+          - failover
+          - exclusive
+  - path: subscription_initial_position
+    name: subscription_initial_position
+    label: subscription_initial_position
+    kind: scalar
+    type: string
+    default: '"latest"'
+    optional: true
+    description: |-
+      Specify the subscription initial position for this consumer.
+    constraints:
+      - enum:
+          - latest
+          - earliest
+  - path: tls
+    name: tls
+    label: tls
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Specify the path to a custom CA certificate to trust broker TLS service.
+    fields:
+      - path: tls.root_cas_file
+        name: root_cas_file
+        label: root_cas_file
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - ./root_cas.pem
+        description: |-
+          An optional path of a root certificate authority file to use. This is a file, often with a .pem extension, containing a certificate chain from the parent trusted root certificate, to possible intermediate signing certificates, to the host certificate.
+  - path: auth
+    name: auth
+    label: auth
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Optional configuration of Pulsar authentication methods.
+    fields:
+      - path: auth.oauth2
+        name: oauth2
+        label: oauth2
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Parameters for Pulsar OAuth2 authentication.
+        fields:
+          - path: auth.oauth2.enabled
+            name: enabled
+            label: enabled
+            kind: scalar
+            type: bool
+            default: 'false'
+            optional: true
+            description: |-
+              Whether OAuth2 is enabled.
+          - path: auth.oauth2.audience
+            name: audience
+            label: audience
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              OAuth2 audience.
+          - path: auth.oauth2.issuer_url
+            name: issuer_url
+            label: issuer_url
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              OAuth2 issuer URL.
+          - path: auth.oauth2.scope
+            name: scope
+            label: scope
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              OAuth2 scope to request.
+          - path: auth.oauth2.private_key_file
+            name: private_key_file
+            label: private_key_file
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The path to a file containing a private key.
+      - path: auth.token
+        name: token
+        label: token
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Parameters for Pulsar Token authentication.
+        fields:
+          - path: auth.token.enabled
+            name: enabled
+            label: enabled
+            kind: scalar
+            type: bool
+            default: 'false'
+            optional: true
+            description: |-
+              Whether Token Auth is enabled.
+          - path: auth.token.token
+            name: token
+            label: token
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              Actual base64 encoded token.

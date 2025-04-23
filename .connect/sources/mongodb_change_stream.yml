@@ -1,53 +1,47 @@
-model_version: "1"
-name: mongodb_change_stream
-label: MongoDB Change Stream
+model_version: '1'
 kind: source
+label: MongoDB Change Stream
+name: mongodb_change_stream
+icon: 
+  data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI1MDAiIHZpZXdCb3g9IjguNzM4IC01LjAzNjIyODM0IDE3LjQ1OTkyNDIyIDM5LjQwNjE5NDg0IiB3aWR0aD0iMjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTUuOS4wODcuODU0IDEuNjA0Yy4xOTIuMjk2LjQuNTU4LjY0NS44MDJhMjIuNDA2IDIyLjQwNiAwIDAgMSAyLjAwNCAyLjI2NmMxLjQ0NyAxLjkgMi40MjMgNC4wMSAzLjEyIDYuMjkyLjQxOCAxLjM5NC42NDUgMi44MjQuNjYyIDQuMjcuMDcgNC4zMjMtMS40MTIgOC4wMzUtNC40IDExLjEyYTEyLjcgMTIuNyAwIDAgMSAtMS41NyAxLjM0MmMtLjI5NiAwLS40MzYtLjIyNy0uNTU4LS40MzZhMy41ODkgMy41ODkgMCAwIDEgLS40MzYtMS4yNTVjLS4xMDUtLjUyMy0uMTc0LTEuMDQ2LS4xNC0xLjU4NnYtLjI0NGMtLjAyNC0uMDUyLS4yODUtMjQuMDUyLS4xODEtMjQuMTc1eiIgZmlsbD0iIzU5OTYzNiIvPjxwYXRoIGQ9Im0xNS45LjAzNGMtLjAzNS0uMDctLjA3LS4wMTctLjEwNS4wMTcuMDE3LjM1LS4xMDUuNjYyLS4yOTYuOTYtLjIxLjI5Ni0uNDg4LjUyMy0uNzY3Ljc2Ny0xLjU1IDEuMzQyLTIuNzcgMi45NjMtMy43NDcgNC43NzYtMS4zIDIuNDQtMS45NyA1LjA1NS0yLjE2IDcuODA4LS4wODcuOTkzLjMxNCA0LjQ5Ny42MjcgNS41MDguODU0IDIuNjg0IDIuMzg4IDQuOTMzIDQuMzc1IDYuODg1LjQ4OC40NyAxLjAxLjkwNiAxLjU1IDEuMzI1LjE1NyAwIC4xNzQtLjE0LjIxLS4yNDRhNC43OCA0Ljc4IDAgMCAwIC4xNTctLjY4bC4zNS0yLjYxNHoiIGZpbGw9IiM2Y2FjNDgiLz48cGF0aCBkPSJtMTYuNzU0IDI4Ljg0NWMuMDM1LS40LjIyNy0uNzMyLjQzNi0xLjA2My0uMjEtLjA4Ny0uMzY2LS4yNi0uNDg4LS40NTNhMy4yMzUgMy4yMzUgMCAwIDEgLS4yNi0uNTc1Yy0uMjQ0LS43MzItLjI5Ni0xLjUtLjM2Ni0yLjI0OHYtLjQ1M2MtLjA4Ny4wNy0uMTA1LjY2Mi0uMTA1Ljc1YTE3LjM3IDE3LjM3IDAgMCAxIC0uMzE0IDIuMzUzYy0uMDUyLjMxNC0uMDg3LjYyNy0uMjguOTA2IDAgLjAzNSAwIC4wNy4wMTcuMTIyLjMxNC45MjQuNCAxLjg2NS40NTMgMi44MjR2LjM1YzAgLjQxOC0uMDE3LjMzLjMzLjQ3LjE0LjA1Mi4yOTYuMDcuNDM2LjE3NC4xMDUgMCAuMTIyLS4wODcuMTIyLS4xNTdsLS4wNTItLjU3NXYtMS42MDRjLS4wMTctLjI4LjAzNS0uNTU4LjA3LS44MnoiIGZpbGw9IiNjMmJmYmYiLz48L3N2Zz4=
 status: preview
-description: >-
+description: |-
   Consume the MongoDB ChangeStream.
-  
-  This input is capable of reading change events from a MongoDB client, database, or collection.
-  When a database as well as a collection is provided, only changes to that collection will be read.
-  When only a database is provided, changes to all collections in that database will be read.
-  When neither a database nor a collection is provided, changes to all databases and collections will be read.
-icon: "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI1MDAiIHZpZXdCb3g9IjguNzM4IC01LjAzNjIyODM0IDE3LjQ1OTkyNDIyIDM5LjQwNjE5NDg0IiB3aWR0aD0iMjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTUuOS4wODcuODU0IDEuNjA0Yy4xOTIuMjk2LjQuNTU4LjY0NS44MDJhMjIuNDA2IDIyLjQwNiAwIDAgMSAyLjAwNCAyLjI2NmMxLjQ0NyAxLjkgMi40MjMgNC4wMSAzLjEyIDYuMjkyLjQxOCAxLjM5NC42NDUgMi44MjQuNjYyIDQuMjcuMDcgNC4zMjMtMS40MTIgOC4wMzUtNC40IDExLjEyYTEyLjcgMTIuNyAwIDAgMSAtMS41NyAxLjM0MmMtLjI5NiAwLS40MzYtLjIyNy0uNTU4LS40MzZhMy41ODkgMy41ODkgMCAwIDEgLS40MzYtMS4yNTVjLS4xMDUtLjUyMy0uMTc0LTEuMDQ2LS4xNC0xLjU4NnYtLjI0NGMtLjAyNC0uMDUyLS4yODUtMjQuMDUyLS4xODEtMjQuMTc1eiIgZmlsbD0iIzU5OTYzNiIvPjxwYXRoIGQ9Im0xNS45LjAzNGMtLjAzNS0uMDctLjA3LS4wMTctLjEwNS4wMTcuMDE3LjM1LS4xMDUuNjYyLS4yOTYuOTYtLjIxLjI5Ni0uNDg4LjUyMy0uNzY3Ljc2Ny0xLjU1IDEuMzQyLTIuNzcgMi45NjMtMy43NDcgNC43NzYtMS4zIDIuNDQtMS45NyA1LjA1NS0yLjE2IDcuODA4LS4wODcuOTkzLjMxNCA0LjQ5Ny42MjcgNS41MDguODU0IDIuNjg0IDIuMzg4IDQuOTMzIDQuMzc1IDYuODg1LjQ4OC40NyAxLjAxLjkwNiAxLjU1IDEuMzI1LjE1NyAwIC4xNzQtLjE0LjIxLS4yNDRhNC43OCA0Ljc4IDAgMCAwIC4xNTctLjY4bC4zNS0yLjYxNHoiIGZpbGw9IiM2Y2FjNDgiLz48cGF0aCBkPSJtMTYuNzU0IDI4Ljg0NWMuMDM1LS40LjIyNy0uNzMyLjQzNi0xLjA2My0uMjEtLjA4Ny0uMzY2LS4yNi0uNDg4LS40NTNhMy4yMzUgMy4yMzUgMCAwIDEgLS4yNi0uNTc1Yy0uMjQ0LS43MzItLjI5Ni0xLjUtLjM2Ni0yLjI0OHYtLjQ1M2MtLjA4Ny4wNy0uMTA1LjY2Mi0uMTA1Ljc1YTE3LjM3IDE3LjM3IDAgMCAxIC0uMzE0IDIuMzUzYy0uMDUyLjMxNC0uMDg3LjYyNy0uMjguOTA2IDAgLjAzNSAwIC4wNy4wMTcuMTIyLjMxNC45MjQuNCAxLjg2NS40NTMgMi44MjR2LjM1YzAgLjQxOC0uMDE3LjMzLjMzLjQ3LjE0LjA1Mi4yOTYuMDcuNDM2LjE3NC4xMDUgMCAuMTIyLS4wODcuMTIyLS4xNTdsLS4wNTItLjU3NXYtMS42MDRjLS4wMTctLjI4LjAzNS0uNTU4LjA3LS44MnoiIGZpbGw9IiNjMmJmYmYiLz48L3N2Zz4="
+  This input is capable of reading change events from a MongoDB client, database, or collection. When a database as well as a collection is provided, only changes to that collection will be read. When only a database is provided, changes to all collections in that database will be read. When neither a database nor a collection is provided, changes to all databases and collections will be read.
 fields:
   - path: uri
     name: uri
     label: URI
     type: string
-    description: >-
-      MongoDB connection URI
     examples:
-      - "mongodb://localhost:27017"
+      - mongodb://localhost:27017
 
+    description: |-
+      MongoDB connection URI
   - path: database
     name: database
     label: Database
     type: string
     optional: true
-    description: >-
-      The database to watch.
     examples:
-      - "my_db"
+      - my_db
 
+    description: |-
+      The database to watch.
   - path: collection
     name: collection
     label: Collection
     type: string
     optional: true
-    description: >-
-      The collection to watch.
     examples:
-      - "my_collection"
+      - my_collection
 
+    description: |-
+      The collection to watch.
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
     type: bool
     default: true
-    description: >-
-      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, 
-      eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these 
-      messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high 
-      throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely,  eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these  messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high  throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

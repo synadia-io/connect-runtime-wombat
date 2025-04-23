@@ -1,0 +1,509 @@
+model_version: '1'
+label: kafka_franz
+name: kafka_franz
+status: preview
+description: |-
+  A Kafka output using the https://github.com/twmb/franz-go[Franz Kafka client library^].
+    
+    Writes a batch of messages to Kafka brokers and waits for acknowledgement before propagating it back to the input.
+    
+    This output often out-performs the traditional `kafka` output as well as providing more useful logs and error messages.
+fields:
+  - path: seed_brokers
+    name: seed_brokers
+    label: seed_brokers
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - localhost:9092
+      -   - foo:9092
+          - bar:9092
+      -   - foo:9092,bar:9092
+    description: |-
+      A list of broker addresses to connect to in order to establish connections. If an item of the list contains commas it will be expanded into multiple addresses.
+  - path: client_id
+    name: client_id
+    label: client_id
+    kind: scalar
+    type: string
+    default: '"benthos"'
+    optional: true
+    description: |-
+      An identifier for the client connection.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+
+  - path: sasl
+    name: sasl
+    label: sasl
+    kind: list
+    type: object
+    optional: false
+    examples:
+      -   - mechanism: SCRAM-SHA-512
+            password: bar
+            username: foo
+    description: |-
+      Specify one or more methods of SASL authentication. SASL is tried in order; if the broker supports the first mechanism, all connections will use that mechanism. If the first mechanism fails, the client will pick the first supported mechanism. If the broker does not support any client mechanisms, connections will fail.
+    fields:
+      - path: sasl[].mechanism
+        name: mechanism
+        label: mechanism
+        kind: scalar
+        type: string
+        optional: false
+        description: |-
+          The SASL mechanism to use.
+      - path: sasl[].username
+        name: username
+        label: username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A username to provide for PLAIN or SCRAM-* authentication.
+      - path: sasl[].password
+        name: password
+        label: password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A password to provide for PLAIN or SCRAM-* authentication.
+        secret: true
+      - path: sasl[].token
+        name: token
+        label: token
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The token to use for a single session's OAUTHBEARER authentication.
+      - path: sasl[].extensions
+        name: extensions
+        label: extensions
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Key/value pairs to add to OAUTHBEARER authentication requests.
+      - path: sasl[].aws
+        name: aws
+        label: aws
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Contains AWS specific fields for when the `mechanism` is set to `AWS_MSK_IAM`.
+        fields:
+          - path: sasl[].aws.region
+            name: region
+            label: region
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The AWS region to target.
+          - path: sasl[].aws.endpoint
+            name: endpoint
+            label: endpoint
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              Allows you to specify a custom endpoint for the AWS API.
+          - path: sasl[].aws.credentials
+            name: credentials
+            label: credentials
+            kind: scalar
+            type: object
+            default: ''
+            optional: false
+            description: |-
+              Optional manual configuration of AWS credentials to use. More information can be found in xref:guides:cloud/aws.adoc[].
+            fields:
+              - path: sasl[].aws.credentials.profile
+                name: profile
+                label: profile
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  A profile from `~/.aws/credentials` to use.
+              - path: sasl[].aws.credentials.id
+                name: id
+                label: id
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  The ID of credentials to use.
+              - path: sasl[].aws.credentials.secret
+                name: secret
+                label: secret
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  The secret for the credentials being used.
+                secret: true
+              - path: sasl[].aws.credentials.token
+                name: token
+                label: token
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  The token for the credentials being used, required when using short term credentials.
+              - path: sasl[].aws.credentials.from_ec2_role
+                name: from_ec2_role
+                label: from_ec2_role
+                kind: scalar
+                type: bool
+                default: 'false'
+                optional: true
+                description: |-
+                  Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
+              - path: sasl[].aws.credentials.role
+                name: role
+                label: role
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  A role ARN to assume.
+              - path: sasl[].aws.credentials.role_external_id
+                name: role_external_id
+                label: role_external_id
+                kind: scalar
+                type: string
+                default: '""'
+                optional: true
+                description: |-
+                  An external ID to provide when assuming a role.
+  - path: metadata_max_age
+    name: metadata_max_age
+    label: metadata_max_age
+    kind: scalar
+    type: string
+    default: '"5m"'
+    optional: true
+    description: |-
+      The maximum age of metadata before it is refreshed.
+  - path: topic
+    name: topic
+    label: topic
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A topic to write messages to.
+  - path: key
+    name: key
+    label: key
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      An optional key to populate for each message.
+  - path: partition
+    name: partition
+    label: partition
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - ${! meta("partition") }
+    description: |-
+      An optional explicit partition to set for each message. This field is only relevant when the `partitioner` is set to `manual`. The provided interpolation string must be a valid integer.
+  - path: metadata
+    name: metadata
+    label: metadata
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Determine which (if any) metadata values should be added to messages as headers.
+    fields:
+      - path: metadata.include_prefixes
+        name: include_prefixes
+        label: include_prefixes
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - foo_
+              - bar_
+          -   - kafka_
+          -   - content-
+        description: |-
+          Provide a list of explicit metadata key prefixes to match against.
+      - path: metadata.include_patterns
+        name: include_patterns
+        label: include_patterns
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - .*
+          -   - _timestamp_unix$
+        description: |-
+          Provide a list of explicit metadata key regular expression (re2) patterns to match against.
+  - path: timestamp_ms
+    name: timestamp_ms
+    label: timestamp_ms
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - ${! timestamp_unix_milli() }
+      - ${! metadata("kafka_timestamp_ms") }
+    description: |-
+      An optional timestamp to set for each message expressed in milliseconds. When left empty, the current timestamp is used.
+  - path: max_in_flight
+    name: max_in_flight
+    label: max_in_flight
+    kind: scalar
+    type: int
+    default: '10'
+    optional: true
+    description: |-
+      The maximum number of batches to be sending in parallel at any given time.
+  - path: batching
+    name: batching
+    label: batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [https://wombat.dev/pipelines/learn/batching/#batch-policy](batching policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.
+  - path: partitioner
+    name: partitioner
+    label: partitioner
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Override the default murmur2 hashing partitioner.
+  - path: idempotent_write
+    name: idempotent_write
+    label: idempotent_write
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Enable the idempotent write producer option. This requires the `IDEMPOTENT_WRITE` permission on `CLUSTER` and can be disabled if this permission is not available.
+  - path: compression
+    name: compression
+    label: compression
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Optionally set an explicit compression type. The default preference is to use snappy when the broker supports it, and fall back to none if not.
+    constraints:
+      - enum:
+          - lz4
+          - snappy
+          - gzip
+          - none
+          - zstd
+  - path: timeout
+    name: timeout
+    label: timeout
+    kind: scalar
+    type: string
+    default: '"10s"'
+    optional: true
+    description: |-
+      The maximum period of time to wait for message sends before abandoning the request and retrying
+  - path: max_message_bytes
+    name: max_message_bytes
+    label: max_message_bytes
+    kind: scalar
+    type: string
+    default: '"1MB"'
+    optional: true
+    examples:
+      - 100MB
+      - 50mib
+    description: |-
+      The maximum space in bytes than an individual message may take, messages larger than this value will be rejected. This field corresponds to Kafka's `max.message.bytes`.
+  - path: broker_write_max_bytes
+    name: broker_write_max_bytes
+    label: broker_write_max_bytes
+    kind: scalar
+    type: string
+    default: '"100MB"'
+    optional: true
+    examples:
+      - 128MB
+      - 50mib
+    description: |-
+      The upper bound for the number of bytes written to a broker connection in a single write. This field corresponds to Kafka's `socket.request.max.bytes`.

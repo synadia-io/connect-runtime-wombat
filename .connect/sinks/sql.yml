@@ -1,0 +1,141 @@
+model_version: '1'
+label: sql
+name: sql
+status: deprecated
+description: |-
+  Executes an arbitrary SQL query for each message.
+    
+    # Alternatives
+    
+    For basic inserts use the xref:components:outputs/sql.adoc[`sql_insert`] output. For more complex queries use the xref:components:outputs/sql_raw.adoc[`sql_raw`] output.
+fields:
+  - path: driver
+    name: driver
+    label: driver
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A database <<drivers, driver>> to use.
+    constraints:
+      - enum:
+          - mysql
+          - postgres
+          - clickhouse
+          - mssql
+          - sqlite
+          - oracle
+          - snowflake
+          - trino
+          - gocosmos
+          - spanner
+  - path: data_source_name
+    name: data_source_name
+    label: data_source_name
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Data source name.
+  - path: query
+    name: query
+    label: query
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - INSERT INTO footable (foo, bar, baz) VALUES (?, ?, ?);
+    description: |-
+      The query to execute. The style of placeholder to use depends on the driver, some drivers require question marks (`?`) whereas others expect incrementing dollar signs (`$1`, `$2`, and so on) or colons (`:1`, `:2` and so on). The style to use is outlined in this table:
+        
+        | Driver | Placeholder Style |
+        |---|---|
+        | `clickhouse` | Dollar sign |
+        | `mysql` | Question mark |
+        | `postgres` | Dollar sign |
+        | `mssql` | Question mark |
+        | `sqlite` | Question mark |
+        | `oracle` | Colon |
+        | `snowflake` | Question mark |
+        | `trino` | Question mark |
+        | `gocosmos` | Colon |
+  - path: args_mapping
+    name: args_mapping
+    label: args_mapping
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - root = [ this.cat.meow, this.doc.woofs[0] ]
+      - root = [ meta("user.id") ]
+    description: |-
+      An optional xref:guides:bloblang/about.adoc[Bloblang mapping] which should evaluate to an array of values matching in size to the number of placeholder arguments in the field `query`.
+  - path: max_in_flight
+    name: max_in_flight
+    label: max_in_flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of inserts to run in parallel.
+  - path: batching
+    name: batching
+    label: batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [https://wombat.dev/pipelines/learn/batching/#batch-policy](batching policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries](Bloblang query) that should return a boolean value indicating whether a message should end a batch.

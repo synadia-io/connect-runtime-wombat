@@ -1,191 +1,155 @@
-model_version: "1"
-name: aws_kinesis
-label: AWS Kinesis
+model_version: '1'
 kind: source
-status: stable
-description: >-
+label: AWS Kinesis
+name: aws_kinesis
+icon: 
+  data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMzA5cHgiIHZpZXdCb3g9IjAgMCAyNTYgMzA5IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIj4KCTxnPgoJCTxwb2x5Z29uIGZpbGw9IiNGQ0JGOTIiIHBvaW50cz0iMCAxNzIuMDg2NSAxMjcuNzU0IDIzMC44OTY1IDI1NS41MDYgMTcyLjA4NjUgMTI3Ljc1NCAxNjYuNzkzNSI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiM5RDUwMjUiIHBvaW50cz0iMTI4LjE0NjUgMC4wMDAyIDAuMDU4NSA2My44ODEyIDAuMDU4NSAxNTQuMDE3MiAxNTMuNjQ3NSAxNTQuMDE3MiAxNTMuNjQ3NSAxMi43NTEyIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iI0ZDQkY5MiIgcG9pbnRzPSIwLjA1ODUgMjE3LjU1OSAxMjguMjIxNSAzMDguMjM0IDI1NS45OTk1IDIxNy41NTkgMTI3Ljk0NDUgMTk4LjkyNiI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiM5RDUwMjUiIHBvaW50cz0iMTI4LjE0NjQgMTU0LjAxNyAxOTUuNzIzNCAxNTQuMDE3IDE5NS43MjM0IDU3LjgzNiAxNzUuOTkwNCA0OS45NDMgMTI4LjE0NjQgNjMuODk4Ij48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iIzlENTAyNSIgcG9pbnRzPSIxNzUuOTkwMSAxNTQuMDE3IDIyOC4yMjMxIDE1NC4wMTcgMjI4LjIyMzEgOTEuNjMyIDIxMy4yODIxIDg3LjE1MSAxNzUuOTkwMSA5My40ODEiPjwvcG9seWdvbj4KCQk8cG9seWdvbiBmaWxsPSIjOUQ1MDI1IiBwb2ludHM9IjIxMy4yODIgODIuMjYwMiAyMTMuMjgyIDE1NC4wMTcyIDI1NS41MDYgMTU0LjAxNzIgMjU2IDgxLjk0MTIgMjQzLjE3NCA3Ni44MTcyIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iI0Y2ODUzNCIgcG9pbnRzPSIxMjguMTQ2NSAwLjAwMDIgMTI4LjE0NjUgMTU0LjAxNzIgMTUzLjY0NzUgMTU0LjAxNzIgMTUzLjY0NzUgMTIuNzUxMiI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiNGNjg1MzQiIHBvaW50cz0iMTk1LjcyMzUgNTcuODM2MyAxNzUuOTkwNSA0OS45NDIzIDE3NS45OTA1IDE1NC4wMTczIDE5NS43MjM1IDE1NC4wMTczIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iI0Y2ODUzNCIgcG9pbnRzPSIyMjguMjIzNSA5MS42MzIyIDIxMy4yODI1IDg3LjE1MTIgMjEzLjI4MjUgMTU0LjAxNzIgMjI4LjIyMzUgMTU0LjAxNzIiPjwvcG9seWdvbj4KCQk8cG9seWdvbiBmaWxsPSIjRjY4NTM0IiBwb2ludHM9IjI0My4xNzM3IDE1NC4wMTcyIDI1NS45OTk3IDE1NC4wMTcyIDI1NS45OTk3IDgxLjk0MTIgMjQzLjE3MzcgNzYuODE3MiI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiNGNjg1MzQiIHBvaW50cz0iMTI3Ljc1NDEgMTg0Ljg2MjkgMTI3Ljc1NDEgMjMwLjg5NTkgMjU1LjUwNjEgMTk5LjA1MTkgMjU1LjUwNjEgMTcyLjA4NjkiPjwvcG9seWdvbj4KCQk8cG9seWdvbiBmaWxsPSIjRjY4NTM0IiBwb2ludHM9IjEyNy43NTQxIDI2Mi43ODEzIDEyNy43NTQxIDMwOC4yMzQzIDI1NS45OTkxIDI0NC4xMTQzIDI1NS45OTkxIDIxNy41NTkzIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iIzlENTAyNSIgcG9pbnRzPSIwLjA1ODUgMjQ0LjM5MDcgMTI3Ljc1NDUgMzA4LjIzMzcgMTI3Ljc1NDUgMjYyLjQ0NzcgMC4wNTg1IDIxNy41NTg3Ij48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iIzlENTAyNSIgcG9pbnRzPSIwIDE5OS4wNTE0IDEyNy43NTQgMjMwLjg5NjQgMTI3Ljc1NCAxODQuODYyNCAwIDE3Mi4wODY0Ij48L3BvbHlnb24+Cgk8L2c+Cjwvc3ZnPgo=
+status: preview
+description: |-
   Receive messages from one or more Kinesis streams.
-icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMzA5cHgiIHZpZXdCb3g9IjAgMCAyNTYgMzA5IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIj4KCTxnPgoJCTxwb2x5Z29uIGZpbGw9IiNGQ0JGOTIiIHBvaW50cz0iMCAxNzIuMDg2NSAxMjcuNzU0IDIzMC44OTY1IDI1NS41MDYgMTcyLjA4NjUgMTI3Ljc1NCAxNjYuNzkzNSI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiM5RDUwMjUiIHBvaW50cz0iMTI4LjE0NjUgMC4wMDAyIDAuMDU4NSA2My44ODEyIDAuMDU4NSAxNTQuMDE3MiAxNTMuNjQ3NSAxNTQuMDE3MiAxNTMuNjQ3NSAxMi43NTEyIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iI0ZDQkY5MiIgcG9pbnRzPSIwLjA1ODUgMjE3LjU1OSAxMjguMjIxNSAzMDguMjM0IDI1NS45OTk1IDIxNy41NTkgMTI3Ljk0NDUgMTk4LjkyNiI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiM5RDUwMjUiIHBvaW50cz0iMTI4LjE0NjQgMTU0LjAxNyAxOTUuNzIzNCAxNTQuMDE3IDE5NS43MjM0IDU3LjgzNiAxNzUuOTkwNCA0OS45NDMgMTI4LjE0NjQgNjMuODk4Ij48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iIzlENTAyNSIgcG9pbnRzPSIxNzUuOTkwMSAxNTQuMDE3IDIyOC4yMjMxIDE1NC4wMTcgMjI4LjIyMzEgOTEuNjMyIDIxMy4yODIxIDg3LjE1MSAxNzUuOTkwMSA5My40ODEiPjwvcG9seWdvbj4KCQk8cG9seWdvbiBmaWxsPSIjOUQ1MDI1IiBwb2ludHM9IjIxMy4yODIgODIuMjYwMiAyMTMuMjgyIDE1NC4wMTcyIDI1NS41MDYgMTU0LjAxNzIgMjU2IDgxLjk0MTIgMjQzLjE3NCA3Ni44MTcyIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iI0Y2ODUzNCIgcG9pbnRzPSIxMjguMTQ2NSAwLjAwMDIgMTI4LjE0NjUgMTU0LjAxNzIgMTUzLjY0NzUgMTU0LjAxNzIgMTUzLjY0NzUgMTIuNzUxMiI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiNGNjg1MzQiIHBvaW50cz0iMTk1LjcyMzUgNTcuODM2MyAxNzUuOTkwNSA0OS45NDIzIDE3NS45OTA1IDE1NC4wMTczIDE5NS43MjM1IDE1NC4wMTczIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iI0Y2ODUzNCIgcG9pbnRzPSIyMjguMjIzNSA5MS42MzIyIDIxMy4yODI1IDg3LjE1MTIgMjEzLjI4MjUgMTU0LjAxNzIgMjI4LjIyMzUgMTU0LjAxNzIiPjwvcG9seWdvbj4KCQk8cG9seWdvbiBmaWxsPSIjRjY4NTM0IiBwb2ludHM9IjI0My4xNzM3IDE1NC4wMTcyIDI1NS45OTk3IDE1NC4wMTcyIDI1NS45OTk3IDgxLjk0MTIgMjQzLjE3MzcgNzYuODE3MiI+PC9wb2x5Z29uPgoJCTxwb2x5Z29uIGZpbGw9IiNGNjg1MzQiIHBvaW50cz0iMTI3Ljc1NDEgMTg0Ljg2MjkgMTI3Ljc1NDEgMjMwLjg5NTkgMjU1LjUwNjEgMTk5LjA1MTkgMjU1LjUwNjEgMTcyLjA4NjkiPjwvcG9seWdvbj4KCQk8cG9seWdvbiBmaWxsPSIjRjY4NTM0IiBwb2ludHM9IjEyNy43NTQxIDI2Mi43ODEzIDEyNy43NTQxIDMwOC4yMzQzIDI1NS45OTkxIDI0NC4xMTQzIDI1NS45OTkxIDIxNy41NTkzIj48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iIzlENTAyNSIgcG9pbnRzPSIwLjA1ODUgMjQ0LjM5MDcgMTI3Ljc1NDUgMzA4LjIzMzcgMTI3Ljc1NDUgMjYyLjQ0NzcgMC4wNTg1IDIxNy41NTg3Ij48L3BvbHlnb24+CgkJPHBvbHlnb24gZmlsbD0iIzlENTAyNSIgcG9pbnRzPSIwIDE5OS4wNTE0IDEyNy43NTQgMjMwLjg5NjQgMTI3Ljc1NCAxODQuODYyNCAwIDE3Mi4wODY0Ij48L3BvbHlnb24+Cgk8L2c+Cjwvc3ZnPgo="
 fields:
   - path: streams
     name: streams
     label: Streams
-    type: string
     kind: list
-    description: >-
-      One or more Kinesis data streams to consume from. Streams can either
-      be specified by their name or full ARN. Shards of a stream are automatically balanced
-      across consumers by coordinating through the provided DynamoDB table. Multiple
-      comma separated streams can be listed in a single element. Shards are automatically
-      distributed across consumers of a stream by coordinating through the provided
-      DynamoDB table. Alternatively, it's possible to specify an explicit shard to consume
-      from with a colon after the stream name, e.g. `foo:0` would consume the shard
-      `0` of the stream `foo`.
+    type: string
     examples:
-      - - "foo"
-        - "arn:aws:kinesis:*:111122223333:stream/my-stream"
+      -   - foo
+          - arn:aws:kinesis:*:111122223333:stream/my-stream
 
+    description: |-
+      One or more Kinesis data streams to consume from. Streams can either be specified by their name or full ARN. Shards of a stream are automatically balanced across consumers by coordinating through the provided DynamoDB table. Multiple comma separated streams can be listed in a single element. Shards are automatically distributed across consumers of a stream by coordinating through the provided DynamoDB table. Alternatively, it's possible to specify an explicit shard to consume from with a colon after the stream name, e.g. `foo:0` would consume the shard `0` of the stream `foo`.
   - path: dynamodb
     name: dynamodb
     label: DynamoDB
     type: object
     optional: true
-    description: >-
-      Determines the table used for storing and accessing the latest consumed
-      sequence for shards, and for coordinating balanced consumers of streams.
+    description: |-
+      Determines the table used for storing and accessing the latest consumed sequence for shards, and for coordinating balanced consumers of streams.
     fields:
       - path: dynamodb.table
         name: table
         label: Table
         type: string
-        description: >-
+        description: |-
           The name of the table to access.
       - path: dynamodb.create
         name: create
         label: Create
-        optional: true
-        default: false
         type: bool
-        description: >-
+        default: false
+        optional: true
+        description: |-
           Whether, if the table does not exist, it should be created.
       - path: dynamodb.billing_mode
         name: billing_mode
         label: Billing Mode
         type: string
+        default: PAY_PER_REQUEST
         optional: true
-        default: "PAY_PER_REQUEST"
-        description: >-
+        description: |-
           When creating the table determines the billing mode.
       - path: dynamodb.read_capacity_units
         name: read_capacity_units
         label: Read Capacity Units
-        optional: true
-        default: 0
         type: int
-        description: >-
-          Set the provisioned read capacity when creating the table with a
-          `billing_mode` of `PROVISIONED`.
+        default: 0
+        optional: true
+        description: |-
+          Set the provisioned read capacity when creating the table with a `billing_mode` of `PROVISIONED`.
       - path: dynamodb.write_capacity_units
         name: write_capacity_units
         label: Write Capacity Units
         type: int
         default: 0
-        description: >-
-          Set the provisioned write capacity when creating the table with a
-          `billing_mode` of `PROVISIONED`.
-
+        description: |-
+          Set the provisioned write capacity when creating the table with a `billing_mode` of `PROVISIONED`.
   - path: checkpoint_limit
     name: checkpoint_limit
     label: Checkpoint Limit
-    optional: true
-    default: 1024
     type: int
-    description: >-
-      The maximum gap between the in flight sequence versus the latest acknowledged
-      sequence at a given time. Increasing this limit enables parallel processing and
-      batching at the output level to work on individual shards. Any given sequence
-      will not be committed unless all messages under that offset are delivered in order
-      to preserve at least once delivery guarantees.
-
+    default: 1024
+    optional: true
+    description: |-
+      The maximum gap between the in flight sequence versus the latest acknowledged sequence at a given time. Increasing this limit enables parallel processing and batching at the output level to work on individual shards. Any given sequence will not be committed unless all messages under that offset are delivered in order to preserve at least once delivery guarantees.
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
-    optional: true
-    default: true
     type: bool
-    description: >-
-      Whether messages that are rejected (nacked) at the output level should
-      be automatically replayed indefinitely, eventually resulting in back pressure
-      if the cause of the rejections is persistent. If set to `false` these messages
-      will instead be deleted. Disabling auto replays can greatly improve memory efficiency
-      of high throughput streams as the original shape of the data can be discarded
-      immediately upon consumption and mutation.
-
+    default: true
+    optional: true
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
   - path: commit_period
     name: commit_period
     label: Commit Period
     type: string
-    optional: true
     default: 5s
-    description: >-
+    optional: true
+    description: |-
       The period of time between each update to the checkpoint table.
-
   - path: rebalance_period
     name: rebalance_period
     label: Rebalance Period
     type: string
-    optional: true
     default: 30s
-    description: >-
+    optional: true
+    description: |-
       The period of time between each attempt to rebalance shards across clients.
-
   - path: lease_period
     name: lease_period
     label: Lease Period
     type: string
-    optional: true
     default: 30s
-    description: >-
-      The period of time after which a client that has failed to update a
-      shard checkpoint is assumed to be inactive.
-
+    optional: true
+    description: |-
+      The period of time after which a client that has failed to update a shard checkpoint is assumed to be inactive.
   - path: start_from_oldest
     name: start_from_oldest
     label: Start From Oldest
     type: bool
-    optional: true
     default: true
-    description: >-
-      Whether to consume from the oldest message when a sequence does not
-      yet exist for the stream.
-
+    optional: true
+    description: |-
+      Whether to consume from the oldest message when a sequence does not yet exist for the stream.
   - path: region
     name: region
     label: Region
     type: string
-    description: >-
+    description: |-
       The AWS region to target.
-
   - path: endpoint
     name: endpoint
     label: Endpoint
     type: string
     optional: true
-    default: ""
-    description: >-
+    description: |-
       Allows you to specify a custom endpoint for the AWS API.
-
   - path: credentials
     name: credentials
     label: Credentials
     type: object
-    description: >-
-      Optional manual configuration of AWS credentials to use. More information
-      can be found in xref:guides:cloud/aws.adoc[].
+    description: |-
+      Optional manual configuration of AWS credentials to use. More information can be found in xref:guides:cloud/aws.adoc[].
     fields:
       - path: credentials.id
         name: id
         label: ID
         type: string
         optional: true
-        default: ""
-        description: >-
+        description: |-
           The ID of credentials to use.
       - path: credentials.secret
         name: secret
         label: Secret
         type: string
         optional: true
-        default: ""
-        description: >-
+        description: |-
           The secret for the credentials being used.
       - path: credentials.token
         name: token
         label: Token
         type: string
         optional: true
-        default: ""
-        description: >-
-          The token for the credentials being used, required when using short
-          term credentials.
-
+        description: |-
+          The token for the credentials being used, required when using short term credentials.

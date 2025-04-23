@@ -1,0 +1,326 @@
+model_version: '1'
+label: amqp_0_9
+name: amqp_0_9
+status: stable
+description: |-
+  Sends messages to an AMQP (0.91) exchange. 
+
+  AMQP is a messaging protocol used by various message brokers, including RabbitMQ. The metadata from each message 
+  are delivered as headers.
+    
+  It's possible for this output type to create the target exchange by setting `exchange_declare.enabled` to `true`, if 
+  the exchange already exists then the declaration passively verifies that the settings match.
+    
+  TLS is automatic when connecting to an `amqps` URL, but custom settings can be enabled in the `tls` section.
+fields:
+  - path: urls
+    name: urls
+    label: URLs
+    kind: list
+    type: string
+    examples:
+      -   - amqp://guest:guest@127.0.0.1:5672/
+      -   - amqp://127.0.0.1:5672/,amqp://127.0.0.2:5672/
+      -   - amqp://127.0.0.1:5672/
+          - amqp://127.0.0.2:5672/
+
+    description: >-
+      A list of URLs to connect to.  The first URL to successfully establish a connection
+      will be used until the connection is closed. If an item of  the list contains
+      commas it will be expanded into multiple URLs.
+  - path: exchange
+    name: exchange
+    label: Exchange
+    type: expression
+    description: >-
+      An AMQP exchange to publish to.
+  - path: exchange_declare
+    name: exchange_declare
+    label: Declare Exchange
+    type: object
+    optional: true
+    description: >-
+      Optionally declare the target exchange (passive).
+    fields:
+      - path: exchange_declare.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: >-
+          Whether to declare the exchange.
+      - path: exchange_declare.type
+        name: type
+        label: Type
+        type: string
+        default: '"direct"'
+        optional: true
+        description: >-
+          The type of the exchange.
+        constraints:
+          - enum:
+              - direct
+              - fanout
+              - topic
+              - x-custom
+      - path: exchange_declare.durable
+        name: durable
+        label: Durable
+        type: bool
+        default: 'true'
+        optional: true
+        description: >-
+          Whether the exchange should be durable.
+  - path: key
+    name: key
+    label: Key
+    type: expression
+    default: '""'
+    optional: true
+    description: >-
+      The binding key to set for each message.
+  - path: type
+    name: type
+    label: Type
+    type: expression
+    default: '""'
+    optional: true
+    description: >-
+      The type property to set for each message.
+  - path: content_type
+    name: content_type
+    label: Content Type
+    type: string
+    default: '"application/octet-stream"'
+    optional: true
+    description: >-
+      The content type attribute to set for each message.
+  - path: content_encoding
+    name: content_encoding
+    label: Content Encoding
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      The content encoding attribute to set for each message.
+  - path: correlation_id
+    name: correlation_id
+    label: Correlation ID
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      Set the correlation ID of each message with a dynamic interpolated expression.
+  - path: reply_to
+    name: reply_to
+    label: Reply To
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      Carries response queue name - set with a dynamic interpolated expression.
+  - path: expiration
+    name: expiration
+    label: Expiration
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      Set the per-message TTL
+  - path: message_id
+    name: message_id
+    label: Message ID
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      Set the message ID of each message with a dynamic interpolated expression.
+  - path: user_id
+    name: user_id
+    label: User ID
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      Set the user ID to the name of the publisher.   If this property is set by a
+      publisher, its value must be equal to the name of the user used  to open the
+      connection.
+  - path: app_id
+    name: app_id
+    label: Application ID
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      Set the application ID of each message with a dynamic interpolated expression.
+  - path: metadata
+    name: metadata
+    label: Metadata
+    type: object
+    description: >-
+      Specify criteria for which metadata values are attached to messages as headers.
+    fields:
+      - path: metadata.exclude_prefixes
+        name: exclude_prefixes
+        label: Exclude Prefixes
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        description: >-
+          Provide a list of explicit metadata key prefixes to be excluded when adding
+          metadata to sent messages.
+  - path: priority
+    name: priority
+    label: Priority
+    type: expression
+    default: '""'
+    optional: true
+    examples:
+      - '0'
+      - ${! meta("amqp_priority") }
+      - ${! json("doc.priority") }
+
+    description: >-
+      Set the priority of each message with a dynamic interpolated expression.
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    type: int
+    default: '64'
+    optional: true
+    description: >-
+      The maximum number of messages to have in flight at a given time.  Increasing
+      the max in flight might improve throughput. However, if message ordering needs
+      to be guaranteed, then
+      this should be set to `1`.    
+  - path: persistent
+    name: persistent
+    label: Persistent
+    type: bool
+    default: 'false'
+    optional: true
+    description: >-
+      Whether message delivery should be persistent (transient by default).
+  - path: mandatory
+    name: mandatory
+    label: Mandatory
+    type: bool
+    default: 'false'
+    optional: true
+    description: >-
+      Whether to set the mandatory flag on published messages. When set if a published
+      message  is routed to zero queues it is returned.
+  - path: immediate
+    name: immediate
+    label: Immediate
+    type: bool
+    default: 'false'
+    optional: true
+    description: >-
+      Whether to set the immediate flag on published messages. When set if there are
+      no ready consumers of  a queue then the message is dropped instead of waiting.
+  - path: timeout
+    name: timeout
+    label: Timeout
+    type: string
+    default: '""'
+    optional: true
+    description: >-
+      The maximum period to wait before abandoning it and reattempting. If not set,
+      wait indefinitely.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE-----'
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+        secret: true
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          -   - cert: foo
+                key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+          - path: tls.client_certs[].key
+            name: key
+            label: Key
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate key to use.
+            secret: true
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+            secret: true

@@ -1,0 +1,242 @@
+model_version: '1'
+kind: source
+label: Redis Streams
+name: redis_streams
+status: preview
+description: |-
+  Pulls messages from Redis (v5.0+) streams with the XREADGROUP command. The `client_id` should be unique for each consumer of a group.
+
+  Redis stream entries are key/value pairs, as such it is necessary to specify the key that contains the body of the message. All other keys/value pairs are saved as metadata fields.
+fields:
+  - path: url
+    name: url
+    label: url
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - redis://:6379
+      - redis://localhost:6379
+      - redis://foousername:foopassword@redisplace:6379
+      - redis://:foopassword@redisplace:6379
+      - redis://localhost:6379/1
+      - redis://localhost:6379/1,redis://localhost:6380/1
+    description: |-
+      The URL of the target Redis server. Database is optional and is supplied as the URL path.
+  - path: kind
+    name: kind
+    label: kind
+    kind: scalar
+    type: string
+    default: '"simple"'
+    optional: true
+    description: |-
+      Specifies a simple, cluster-aware, or failover-aware redis client.
+    constraints:
+      - enum:
+          - simple
+          - cluster
+          - failover
+  - path: master
+    name: master
+    label: master
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    examples:
+      - mymaster
+    description: |-
+      Name of the redis master when `kind` is `failover`
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: body_key
+    name: body_key
+    label: body_key
+    kind: scalar
+    type: string
+    default: '"body"'
+    optional: true
+    description: |-
+      The field key to extract the raw message from. All other keys will be stored in the message as metadata.
+  - path: streams
+    name: streams
+    label: streams
+    kind: list
+    type: string
+    optional: false
+    description: |-
+      A list of streams to consume from.
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: auto_replay_nacks
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
+  - path: limit
+    name: limit
+    label: limit
+    kind: scalar
+    type: int
+    default: '10'
+    optional: true
+    description: |-
+      The maximum number of messages to consume from a single request.
+  - path: client_id
+    name: client_id
+    label: client_id
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      An identifier for the client connection.
+  - path: consumer_group
+    name: consumer_group
+    label: consumer_group
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      An identifier for the consumer group of the stream.
+  - path: create_streams
+    name: create_streams
+    label: create_streams
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Create subscribed streams if they do not exist (MKSTREAM option).
+  - path: start_from_oldest
+    name: start_from_oldest
+    label: start_from_oldest
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      If an offset is not found for a stream, determines whether to consume from the oldest available offset, otherwise messages are consumed from the latest offset.
+  - path: commit_period
+    name: commit_period
+    label: commit_period
+    kind: scalar
+    type: string
+    default: '"1s"'
+    optional: true
+    description: |-
+      The period of time between each commit of the current offset. Offsets are always committed during shutdown.
+  - path: timeout
+    name: timeout
+    label: timeout
+    kind: scalar
+    type: string
+    default: '"1s"'
+    optional: true
+    description: |-
+      The length of time to poll for new messages before reattempting.

@@ -1,0 +1,164 @@
+model_version: '1'
+label: pulsar
+name: pulsar
+status: experimental
+description: |-
+  Write messages to an Apache Pulsar server.
+fields:
+  - path: url
+    name: url
+    label: url
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - pulsar://localhost:6650
+      - pulsar://pulsar.us-west.example.com:6650
+      - pulsar+ssl://pulsar.us-west.example.com:6651
+    description: |-
+      A URL to connect to.
+  - path: topic
+    name: topic
+    label: topic
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The topic to publish to.
+  - path: tls
+    name: tls
+    label: tls
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Specify the path to a custom CA certificate to trust broker TLS service.
+    fields:
+      - path: tls.root_cas_file
+        name: root_cas_file
+        label: root_cas_file
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - ./root_cas.pem
+        description: |-
+          An optional path of a root certificate authority file to use. This is a file, often with a .pem extension, containing a certificate chain from the parent trusted root certificate, to possible intermediate signing certificates, to the host certificate.
+  - path: key
+    name: key
+    label: key
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      The key to publish messages with.
+  - path: ordering_key
+    name: ordering_key
+    label: ordering_key
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      The ordering key to publish messages with.
+  - path: max_in_flight
+    name: max_in_flight
+    label: max_in_flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
+  - path: auth
+    name: auth
+    label: auth
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Optional configuration of Pulsar authentication methods.
+    fields:
+      - path: auth.oauth2
+        name: oauth2
+        label: oauth2
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Parameters for Pulsar OAuth2 authentication.
+        fields:
+          - path: auth.oauth2.enabled
+            name: enabled
+            label: enabled
+            kind: scalar
+            type: bool
+            default: 'false'
+            optional: true
+            description: |-
+              Whether OAuth2 is enabled.
+          - path: auth.oauth2.audience
+            name: audience
+            label: audience
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              OAuth2 audience.
+          - path: auth.oauth2.issuer_url
+            name: issuer_url
+            label: issuer_url
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              OAuth2 issuer URL.
+          - path: auth.oauth2.scope
+            name: scope
+            label: scope
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              OAuth2 scope to request.
+          - path: auth.oauth2.private_key_file
+            name: private_key_file
+            label: private_key_file
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The path to a file containing a private key.
+      - path: auth.token
+        name: token
+        label: token
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Parameters for Pulsar Token authentication.
+        fields:
+          - path: auth.token.enabled
+            name: enabled
+            label: enabled
+            kind: scalar
+            type: bool
+            default: 'false'
+            optional: true
+            description: |-
+              Whether Token Auth is enabled.
+          - path: auth.token.token
+            name: token
+            label: token
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              Actual base64 encoded token.
