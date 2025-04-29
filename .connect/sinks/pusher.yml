@@ -1,0 +1,136 @@
+model_version: '1'
+label: Pusher
+name: pusher
+status: experimental
+description: |-
+  Output for publishing messages to Pusher API (https://pusher.com)
+fields:
+  - path: batching
+    name: batching
+    label: Batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      maximum batch size is 10 (limit of the pusher library)
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.
+  - path: channel
+    name: channel
+    label: Channel
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - my_channel
+      - ${!json("id")}
+    description: |-
+      Pusher channel to publish to. Interpolation functions can also be used
+  - path: event
+    name: event
+    label: Event
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Event to publish to
+  - path: appId
+    name: appId
+    label: Application ID
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Pusher app id
+  - path: key
+    name: key
+    label: Key
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Pusher key
+  - path: secret
+    name: secret
+    label: Secret
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Pusher secret
+  - path: cluster
+    name: cluster
+    label: Cluster
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Pusher cluster
+  - path: secure
+    name: secure
+    label: Secure
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Enable SSL encryption
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '1'
+    optional: true
+    description: |-
+      The maximum number of parallel message batches to have in flight at any given time.

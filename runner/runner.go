@@ -20,7 +20,7 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
 
     mux := http.NewServeMux()
     server := http.Server{
-        Addr:    ":4195",
+        Addr:    ":0",
         Handler: mux,
     }
 

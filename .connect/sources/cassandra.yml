@@ -1,0 +1,227 @@
+model_version: '1'
+kind: source
+label: Cassandra
+name: cassandra
+status: preview
+description: |-
+  Executes a find query and creates a message for each row received.
+fields:
+  - path: addresses
+    name: addresses
+    label: Addresses
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - localhost:9042
+      -   - foo:9042
+          - bar:9042
+      -   - foo:9042,bar:9042
+    description: |-
+      A list of Cassandra nodes to connect to. Multiple comma separated addresses can be specified on a single line.
+  - path: tls
+    name: tls
+    label: TLS
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Cert Verify
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - |-
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+        description: |-
+          An optional root certificate authority to use. This is a string, representing a certificate chain from the parent trusted root certificate, to possible intermediate signing certificates, to the host certificate.
+        secret: true
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: string
+        default: '[]'
+        optional: true
+        examples:
+          -   - cert: foo
+                key: bar
+        description: |-
+          A list of client certificates to use.
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+          - path: tls.client_certs[].key
+            name: key
+            label: Key
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate key to use.
+            secret: true
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the ciphertext, it is vulnerable to padding oracle attacks that can let an attacker recover the plaintext.
+            secret: true
+  - path: password_authenticator
+    name: password_authenticator
+    label: Password Authenticator
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Optional configuration of Cassandra authentication parameters.
+    fields:
+      - path: password_authenticator.enabled
+        name: enabled
+        label: Enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use password authentication
+      - path: password_authenticator.username
+        name: username
+        label: Username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The username to authenticate as.
+      - path: password_authenticator.password
+        name: password
+        label: Password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The password to authenticate with.
+        secret: true
+  - path: disable_initial_host_lookup
+    name: disable_initial_host_lookup
+    label: Disable Initial Host Lookup
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      If enabled the driver will not attempt to get host info from the system.peers table. This can speed up queries but will mean that data_centre, rack and token information will not be available.
+  - path: max_retries
+    name: max_retries
+    label: Max Retries
+    kind: scalar
+    type: int
+    default: '3'
+    optional: true
+    description: |-
+      The maximum number of retries before giving up on a request.
+  - path: backoff
+    name: backoff
+    label: Backoff
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Control time intervals between retry attempts.
+    fields:
+      - path: backoff.initial_interval
+        name: initial_interval
+        label: Initial Interval
+        kind: scalar
+        type: string
+        default: '"1s"'
+        optional: true
+        description: |-
+          The initial period to wait between retry attempts.
+      - path: backoff.max_interval
+        name: max_interval
+        label: Max Interval
+        kind: scalar
+        type: string
+        default: '"5s"'
+        optional: true
+        description: |-
+          The maximum period to wait between retry attempts.
+  - path: timeout
+    name: timeout
+    label: Timeout
+    kind: scalar
+    type: string
+    default: '"600ms"'
+    optional: true
+    description: |-
+      The client connection timeout.
+  - path: query
+    name: query
+    label: Query
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A query to execute.
+  - path: auto_replay_nacks
+    name: auto_replay_nacks
+    label: Auto Replay Nacks
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

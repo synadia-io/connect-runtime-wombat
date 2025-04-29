@@ -1,11 +1,12 @@
-model_version: "1"
-name: aws_dynamodb
-label: AWS DynamoDB
+model_version: '1'
 kind: sink
+label: AWS DynamoDB
+name: aws_dynamodb
+icon: 
+  data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI1NnB4IiBoZWlnaHQ9IjI4OXB4IiB2aWV3Qm94PSIwIDAgMjU2IDI4OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+Cgk8Zz4KCQk8cGF0aCBkPSJNMTY1LjI1OCwyODguNTAxIEwxNjguNzY2LDI4OC41MDEgTDIyNi4wMjcsMjU5Ljg2NyBMMjI2Ljk4LDI1OC41MiBMMjI2Ljk4LDI5Ljk2NCBMMjI2LjAyNywyOC42MSBMMTY4Ljc2NiwwIEwxNjUuMjE1LDAgTDE2NS4yNTgsMjg4LjUwMSIgZmlsbD0iIzUyOTRDRiI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik05MC43NDEsMjg4LjUwMSBMODcuMTg0LDI4OC41MDEgTDI5Ljk3MiwyNTkuODY3IEwyOC44MTEsMjU3Ljg3IEwyOC4yMjIsMzEuMTI4IEwyOS45NzIsMjguNjEgTDg3LjE4NCwwIEw5MC43ODUsMCBMOTAuNzQxLDI4OC41MDEiIGZpbGw9IiMxRjVCOTgiPjwvcGF0aD4KCQk8cGF0aCBkPSJNODcuMjg1LDAgTDE2OC43MTEsMCBMMTY4LjcxMSwyODguNTAxIEw4Ny4yODUsMjg4LjUwMSBMODcuMjg1LDAgWiIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0yNTYsMTM3Ljc2OSBMMjU0LjA2NSwxMzcuMzQgTDIyNi40MzcsMTM0Ljc2NCBMMjI2LjAyNywxMzQuOTY4IEwxNjguNzE1LDEzMi42NzYgTDg3LjI4NSwxMzIuNjc2IEwyOS45NzIsMTM0Ljk2OCBMMjkuOTcyLDkxLjI2NCBMMjkuOTEyLDkxLjI5NiBMMjkuOTcyLDkxLjE2OCBMODcuMjg1LDc3Ljg4OCBMMTY4LjcxNSw3Ny44ODggTDIyNi4wMjcsOTEuMTY4IEwyNDcuMDk2LDEwMi4zNjcgTDI0Ny4wOTYsOTUuMTY3IEwyNTYsOTQuMTkzIEwyNTUuMDc4LDkyLjM5NSBMMjI2Ljg4Niw3Mi4yMzYgTDIyNi4wMjcsNzIuNTE1IEwxNjguNzE1LDU0Ljc1NiBMODcuMjg1LDU0Ljc1NiBMMjkuOTcyLDcyLjUxNSBMMjkuOTcyLDI4LjYxIEwwLDYzLjcyMyBMMCw5NC4zODkgTDAuMjMyLDk0LjIyMSBMOC45MDQsOTUuMTY3IEw4LjkwNCwxMDIuNTE1IEwwLDEwNy4yOCBMMCwxMzcuNzkzIEwwLjIzMiwxMzcuNzY5IEw4LjkwNCwxMzcuODk3IEw4LjkwNCwxNTAuNzA0IEwxLjQyMiwxNTAuODE2IEwwLDE1MC42OCBMMCwxODEuMjA1IEw4LjkwNCwxODUuOTkzIEw4LjkwNCwxOTMuNDI2IEwwLjM3MywxOTQuMzY4IEwwLDE5NC4wODggTDAsMjI0Ljc0OSBMMjkuOTcyLDI1OS44NjcgTDI5Ljk3MiwyMTUuOTY2IEw4Ny4yODUsMjMzLjcyNSBMMTY4LjcxNSwyMzMuNzI1IEwyMjYuMTk2LDIxNS45MTQgTDIyNi45NiwyMTYuMjQ5IEwyNTQuNzgxLDE5Ni4zODcgTDI1NiwxOTQuNDA4IEwyNDcuMDk2LDE5My40MjYgTDI0Ny4wOTYsMTg2LjE0MiBMMjQ1LjkyOSwxODUuNjc2IEwyMjYuODg2LDE5NS45NDEgTDIyNi4xOTYsMTk3LjM4MSBMMTY4LjcxNSwyMTAuNTg0IEwxNjguNzE1LDIxMC42IEw4Ny4yODUsMjEwLjYgTDg3LjI4NSwyMTAuNTg0IEwyOS45NzIsMTk3LjMyNSBMMjkuOTcyLDE1My40NjEgTDg3LjI4NSwxNTUuNzQ1IEw4Ny4yODUsMTU1LjgwMSBMMTY4LjcxNSwxNTUuODAxIEwyMjYuMDI3LDE1My40NjEgTDIyNy4zMzIsMTU0LjA2MSBMMjU0LjExMSwxNTEuNzU1IEwyNTYsMTUwLjgzMiBMMjQ3LjA5NiwxNTAuNzA0IEwyNDcuMDk2LDEzNy44OTcgTDI1NiwxMzcuNzY5IiBmaWxsPSIjMUE0NzZGIj48L3BhdGg+CgkJPHBhdGggZD0iTTIyNi4wMjcsMjE1Ljk2NiBMMjI2LjAyNywyNTkuODY3IEwyNTYsMjI0Ljc0OSBMMjU2LDE5NC4yODggTDIyNi4yLDIxNS45MTQgTDIyNi4wMjcsMjE1Ljk2NiIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0yMjYuMDI3LDE5Ny40MjEgTDIyNi4yLDE5Ny4zODEgTDI1NiwxODEuMzUzIEwyNTYsMTUwLjcwNCBMMjI2LjAyNywxNTMuNDYxIEwyMjYuMDI3LDE5Ny40MjEiIGZpbGw9IiMyRDcyQjgiPjwvcGF0aD4KCQk8cGF0aCBkPSJNMjI2LjIsOTEuMjA4IEwyMjYuMDI3LDkxLjE2OCBMMjI2LjAyNywxMzQuOTY4IEwyNTYsMTM3Ljc2OSBMMjU2LDEwNy4xMzUgTDIyNi4yLDkxLjIwOCIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0yMjYuMiw3Mi42ODcgTDI1Niw5NC4xOTMgTDI1Niw2My43MzEgTDIyNi4wMjcsMjguNjEgTDIyNi4wMjcsNzIuNTE1IEwyMjYuMiw3Mi41NzUgTDIyNi4yLDcyLjY4NyIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJPC9nPgo8L3N2Zz4=
 status: stable
 description: >-
   Inserts items into a DynamoDB table.
-icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI1NnB4IiBoZWlnaHQ9IjI4OXB4IiB2aWV3Qm94PSIwIDAgMjU2IDI4OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+Cgk8Zz4KCQk8cGF0aCBkPSJNMTY1LjI1OCwyODguNTAxIEwxNjguNzY2LDI4OC41MDEgTDIyNi4wMjcsMjU5Ljg2NyBMMjI2Ljk4LDI1OC41MiBMMjI2Ljk4LDI5Ljk2NCBMMjI2LjAyNywyOC42MSBMMTY4Ljc2NiwwIEwxNjUuMjE1LDAgTDE2NS4yNTgsMjg4LjUwMSIgZmlsbD0iIzUyOTRDRiI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik05MC43NDEsMjg4LjUwMSBMODcuMTg0LDI4OC41MDEgTDI5Ljk3MiwyNTkuODY3IEwyOC44MTEsMjU3Ljg3IEwyOC4yMjIsMzEuMTI4IEwyOS45NzIsMjguNjEgTDg3LjE4NCwwIEw5MC43ODUsMCBMOTAuNzQxLDI4OC41MDEiIGZpbGw9IiMxRjVCOTgiPjwvcGF0aD4KCQk8cGF0aCBkPSJNODcuMjg1LDAgTDE2OC43MTEsMCBMMTY4LjcxMSwyODguNTAxIEw4Ny4yODUsMjg4LjUwMSBMODcuMjg1LDAgWiIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0yNTYsMTM3Ljc2OSBMMjU0LjA2NSwxMzcuMzQgTDIyNi40MzcsMTM0Ljc2NCBMMjI2LjAyNywxMzQuOTY4IEwxNjguNzE1LDEzMi42NzYgTDg3LjI4NSwxMzIuNjc2IEwyOS45NzIsMTM0Ljk2OCBMMjkuOTcyLDkxLjI2NCBMMjkuOTEyLDkxLjI5NiBMMjkuOTcyLDkxLjE2OCBMODcuMjg1LDc3Ljg4OCBMMTY4LjcxNSw3Ny44ODggTDIyNi4wMjcsOTEuMTY4IEwyNDcuMDk2LDEwMi4zNjcgTDI0Ny4wOTYsOTUuMTY3IEwyNTYsOTQuMTkzIEwyNTUuMDc4LDkyLjM5NSBMMjI2Ljg4Niw3Mi4yMzYgTDIyNi4wMjcsNzIuNTE1IEwxNjguNzE1LDU0Ljc1NiBMODcuMjg1LDU0Ljc1NiBMMjkuOTcyLDcyLjUxNSBMMjkuOTcyLDI4LjYxIEwwLDYzLjcyMyBMMCw5NC4zODkgTDAuMjMyLDk0LjIyMSBMOC45MDQsOTUuMTY3IEw4LjkwNCwxMDIuNTE1IEwwLDEwNy4yOCBMMCwxMzcuNzkzIEwwLjIzMiwxMzcuNzY5IEw4LjkwNCwxMzcuODk3IEw4LjkwNCwxNTAuNzA0IEwxLjQyMiwxNTAuODE2IEwwLDE1MC42OCBMMCwxODEuMjA1IEw4LjkwNCwxODUuOTkzIEw4LjkwNCwxOTMuNDI2IEwwLjM3MywxOTQuMzY4IEwwLDE5NC4wODggTDAsMjI0Ljc0OSBMMjkuOTcyLDI1OS44NjcgTDI5Ljk3MiwyMTUuOTY2IEw4Ny4yODUsMjMzLjcyNSBMMTY4LjcxNSwyMzMuNzI1IEwyMjYuMTk2LDIxNS45MTQgTDIyNi45NiwyMTYuMjQ5IEwyNTQuNzgxLDE5Ni4zODcgTDI1NiwxOTQuNDA4IEwyNDcuMDk2LDE5My40MjYgTDI0Ny4wOTYsMTg2LjE0MiBMMjQ1LjkyOSwxODUuNjc2IEwyMjYuODg2LDE5NS45NDEgTDIyNi4xOTYsMTk3LjM4MSBMMTY4LjcxNSwyMTAuNTg0IEwxNjguNzE1LDIxMC42IEw4Ny4yODUsMjEwLjYgTDg3LjI4NSwyMTAuNTg0IEwyOS45NzIsMTk3LjMyNSBMMjkuOTcyLDE1My40NjEgTDg3LjI4NSwxNTUuNzQ1IEw4Ny4yODUsMTU1LjgwMSBMMTY4LjcxNSwxNTUuODAxIEwyMjYuMDI3LDE1My40NjEgTDIyNy4zMzIsMTU0LjA2MSBMMjU0LjExMSwxNTEuNzU1IEwyNTYsMTUwLjgzMiBMMjQ3LjA5NiwxNTAuNzA0IEwyNDcuMDk2LDEzNy44OTcgTDI1NiwxMzcuNzY5IiBmaWxsPSIjMUE0NzZGIj48L3BhdGg+CgkJPHBhdGggZD0iTTIyNi4wMjcsMjE1Ljk2NiBMMjI2LjAyNywyNTkuODY3IEwyNTYsMjI0Ljc0OSBMMjU2LDE5NC4yODggTDIyNi4yLDIxNS45MTQgTDIyNi4wMjcsMjE1Ljk2NiIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0yMjYuMDI3LDE5Ny40MjEgTDIyNi4yLDE5Ny4zODEgTDI1NiwxODEuMzUzIEwyNTYsMTUwLjcwNCBMMjI2LjAyNywxNTMuNDYxIEwyMjYuMDI3LDE5Ny40MjEiIGZpbGw9IiMyRDcyQjgiPjwvcGF0aD4KCQk8cGF0aCBkPSJNMjI2LjIsOTEuMjA4IEwyMjYuMDI3LDkxLjE2OCBMMjI2LjAyNywxMzQuOTY4IEwyNTYsMTM3Ljc2OSBMMjU2LDEwNy4xMzUgTDIyNi4yLDkxLjIwOCIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJCTxwYXRoIGQ9Ik0yMjYuMiw3Mi42ODcgTDI1Niw5NC4xOTMgTDI1Niw2My43MzEgTDIyNi4wMjcsMjguNjEgTDIyNi4wMjcsNzIuNTE1IEwyMjYuMiw3Mi41NzUgTDIyNi4yLDcyLjY4NyIgZmlsbD0iIzJENzJCOCI+PC9wYXRoPgoJPC9nPgo8L3N2Zz4="
 fields:
   - path: table
     name: table
@@ -13,40 +14,39 @@ fields:
     type: string
     description: >-
       The table to store messages in.
-
   - path: string_columns
     name: string_columns
     label: String Columns
-    type: expression
     kind: map
-    description: >-
-      A map of column keys to string values to store.
+    type: expression
     examples:
-      - full_content: "${!content()}"
+      - full_content: ${!content()}
         id: ${!json("id")}
         title: ${!json("body.title")}
         topic: ${!meta("kafka_topic")}
 
+    description: >-
+      A map of column keys to string values to store.
   - path: json_map_columns
     name: json_map_columns
     label: Json Map Columns
-    type: string
     kind: map
-    description: >-
-      A map of column keys to field paths pointing to value data within messages.
+    type: string
     examples:
       - user: path.to.user
-        whole_document: "."
-      - '': "."
+        whole_document: .
+      - '': .
 
+    description: >-
+      A map of column keys to field paths pointing to value data within messages.
   - path: ttl
     name: ttl
     label: TTL
     type: string
     optional: true
     description: >-
-      An optional TTL to set for items, calculated from the moment the message is sent.
-
+      An optional TTL to set for items, calculated from the moment the message is
+      sent.
   - path: ttl_key
     name: ttl_key
     label: TTL Key
@@ -54,47 +54,41 @@ fields:
     optional: true
     description: >-
       The column key to place the TTL value within.
-
   - path: max_in_flight
     name: max_in_flight
     label: Max in Flight
     type: int
-    optional: true
     default: 64
+    optional: true
     description: >-
       The maximum number of parallel message batches to have in flight at
       any given time.
-
   - path: region
     name: region
     label: Region
     type: string
     description: >-
       The AWS region to target.
-
   - path: endpoint
     name: endpoint
     label: Endpoint
     type: string
     optional: true
-    default: ""
     description: >-
       Allows you to specify a custom endpoint for the AWS API.
-
   - path: credentials
     name: credentials
     label: Credentials
     type: object
     description: >-
       Optional manual configuration of AWS credentials to use. More information
-      can be found in xref:guides:cloud/aws.adoc[].
+      can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
     fields:
       - path: credentials.id
         name: id
         label: ID
         type: string
         optional: true
-        default: ""
         description: >-
           The ID of credentials to use.
       - path: credentials.secret
@@ -102,7 +96,6 @@ fields:
         label: Secret
         type: string
         optional: true
-        default: ""
         description: >-
           The secret for the credentials being used.
       - path: credentials.token
@@ -110,7 +103,6 @@ fields:
         label: Token
         type: string
         optional: true
-        default: ""
         description: >-
           The token for the credentials being used, required when using short
           term credentials.

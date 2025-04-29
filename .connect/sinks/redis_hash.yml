@@ -1,0 +1,225 @@
+model_version: '1'
+label: Redis Hash
+name: redis_hash
+status: stable
+description: |-
+  Sets Redis hash objects using the HMSET command.
+    
+    The field `fields` allows you to specify an explicit map of field names to interpolated values, also evaluated per message of a batch:
+    
+    ```yaml
+    output:
+      redis_hash:
+        url: tcp://localhost:6379
+        key: ${!json("id")}
+        fields:
+          topic: ${!meta("kafka_topic")}
+          partition: ${!meta("kafka_partition")}
+          content: ${!json("document.text")}
+    ```
+    
+    If the field `walk_metadata` is set to `true` then the connector will walk all metadata fields of messages and 
+    add them to the list of hash fields to set.
+    
+    If the field `walk_json_object` is set to `true` then the connector will walk each message as a JSON object, 
+    extracting keys and the string representation of their value and adds them to the list of hash fields to set.
+    
+    The order of hash field extraction is as follows:
+    
+    1. Metadata (if enabled)
+    2. JSON object (if enabled)
+    3. Explicit fields
+    
+    Where latter stages will overwrite matching field names of a former stage.
+fields:
+  - path: url
+    name: url
+    label: URL
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - redis://:6379
+      - redis://localhost:6379
+      - redis://foousername:foopassword@redisplace:6379
+      - redis://:foopassword@redisplace:6379
+      - redis://localhost:6379/1
+      - redis://localhost:6379/1,redis://localhost:6380/1
+    description: |-
+      The URL of the target Redis server. Database is optional and is supplied as the URL path.
+  - path: kind
+    name: kind
+    label: Kind
+    kind: scalar
+    type: string
+    default: '"simple"'
+    optional: true
+    description: |-
+      Specifies a simple, cluster-aware, or failover-aware redis client.
+    constraints:
+      - enum:
+          - simple
+          - cluster
+          - failover
+  - path: master
+    name: master
+    label: Master
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    examples:
+      - mymaster
+    description: |-
+      Name of the redis master when `kind` is `failover`
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: key
+    name: key
+    label: Key
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - ${! @.kafka_key )}
+      - ${! this.doc.id }
+      - ${! counter() }
+    description: |-
+      The key for each message, function interpolations should be used to create a unique key per message.
+  - path: walk_metadata
+    name: walk_metadata
+    label: Walk Metadata
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Whether all metadata fields of messages should be walked and added to the list of hash fields to set.
+  - path: walk_json_object
+    name: walk_json_object
+    label: Walk JSON Object
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Whether to walk each message as a JSON object and add each key/value pair to the list of hash fields to set.
+  - path: fields
+    name: fields
+    label: Fields
+    kind: scalar
+    type: object
+    default: '{}'
+    optional: true
+    description: |-
+      A map of key/value pairs to set as hash fields.
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.

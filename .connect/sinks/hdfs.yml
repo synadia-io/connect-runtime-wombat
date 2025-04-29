@@ -1,0 +1,116 @@
+model_version: '1'
+label: HDFS
+name: hdfs
+status: stable
+description: |-
+  Sends message parts as files to a HDFS directory.
+    
+    Each file is written with the path specified with the 'path' field, in order to have a different path for 
+    each object you should use function interpolations described 
+    [here](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
+fields:
+  - path: hosts
+    name: hosts
+    label: Hosts
+    kind: list
+    type: string
+    optional: false
+    examples:
+      - localhost:9000
+    description: |-
+      A list of target host addresses to connect to.
+  - path: user
+    name: user
+    label: User
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      A user ID to connect as.
+  - path: directory
+    name: directory
+    label: Directory
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A directory to store message files within. If the directory does not exist it will be created.
+  - path: path
+    name: path
+    label: Path
+    kind: scalar
+    type: string
+    default: '"${!counter()}-${!timestamp_unix_nano()}.txt"'
+    optional: true
+    description: |-
+      The path to upload messages as, interpolation functions should be used in order to generate unique file paths.
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
+  - path: batching
+    name: batching
+    label: Batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [batching policy](https://wombat.dev/pipelines/learn/batching/#batch-policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.

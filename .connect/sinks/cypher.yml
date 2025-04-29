@@ -1,0 +1,273 @@
+model_version: '1'
+label: Cypher
+name: cypher
+status: experimental
+description: |-
+  The cypher output type writes a batch of messages to any graph database that supports the Neo4j or Bolt protocols.
+fields:
+  - path: uri
+    name: uri
+    label: URI
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - neo4j://demo.neo4jlabs.com
+      - neo4j+s://aura.databases.neo4j.io
+      - neo4j+ssc://self-signed.demo.neo4jlabs.com
+      - bolt://127.0.0.1:7687
+      - bolt+s://core.db.server:7687
+      - bolt+ssc://10.0.0.43
+    description: |-
+      The connection URI to connect to.
+        See https://neo4j.com/docs/go-manual/current/connect-advanced/[Neo4j's documentation^] for more information.
+  - path: cypher
+    name: cypher
+    label: Cypher
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - 'MERGE (p:Person {name: $name})'
+      - "MATCH (o:Organization {id: $orgId})\nMATCH (p:Person {name: $name})\nMERGE
+        (p)-[:WORKS_FOR]->(o)"
+    description: |-
+      The cypher expression to execute against the graph database.
+  - path: database_name
+    name: database_name
+    label: Database Name
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      Set the target database for which expressions are evaluated against.
+  - path: args_mapping
+    name: args_mapping
+    label: Args Mapping
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - root.name = this.displayName
+      - 'root = {"orgId": this.org.id, "name": this.user.name}'
+    description: |-
+      The mapping from the message to the data that is passed in as parameters to the cypher expression. Must be an object. By default the entire payload is used.
+  - path: basic_auth
+    name: basic_auth
+    label: Basic Auth
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Allows you to specify basic authentication.
+    fields:
+      - path: basic_auth.enabled
+        name: enabled
+        label: Enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use basic authentication in requests.
+      - path: basic_auth.username
+        name: username
+        label: Username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A username to authenticate as.
+      - path: basic_auth.password
+        name: password
+        label: Password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A password to authenticate with.
+        secret: true
+      - path: basic_auth.realm
+        name: realm
+        label: realm
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The realm for authentication challenges.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: batching
+    name: batching
+    label: Batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [batching policy](https://wombat.dev/pipelines/learn/batching/#batch-policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.

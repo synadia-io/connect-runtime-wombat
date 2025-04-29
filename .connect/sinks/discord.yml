@@ -1,0 +1,27 @@
+model_version: '1'
+label: Discord
+name: discord
+status: experimental
+description: |-
+  Writes messages to a Discord channel.
+    
+    This output POSTs messages to the `/channels/\{channel_id}/messages` Discord API endpoint authenticated as a bot using token based authentication.
+    
+    If the format of a message is a JSON object matching the [Discord API message type](https://discord.com/developers/docs/resources/channel#message-object) then it is sent directly, otherwise an object matching the API type is created with the content of the message added as a string.
+fields:
+  - path: channel_id
+    name: channel_id
+    label: Channel ID
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A discord channel ID to write messages to.
+  - path: bot_token
+    name: bot_token
+    label: Bot Token
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      A bot token used for authentication.

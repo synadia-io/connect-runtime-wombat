@@ -1,0 +1,76 @@
+model_version: '1'
+label: SFTP
+name: sftp
+status: preview
+description: |-
+  Writes files to an SFTP server.
+    
+    In order to have a different path for each object you should use function interpolations described 
+    [here](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries).
+fields:
+  - path: address
+    name: address
+    label: Address
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The address of the server to connect to.
+  - path: path
+    name: path
+    label: Path
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The file to save the messages to on the server.
+  - path: codec
+    name: codec
+    label: Codec
+    kind: scalar
+    type: string
+    default: '"all-bytes"'
+    optional: true
+    examples:
+      - lines
+      - "delim:\t"
+      - delim:foobar
+    description: |-
+      The way in which the bytes of messages should be written out into the output data stream. It's possible to write lines using a custom delimiter with the `delim:x` codec, where x is the character sequence custom delimiter.
+  - path: credentials
+    name: credentials
+    label: Credentials
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      The credentials to use to log into the target server.
+    fields:
+      - path: credentials.username
+        name: username
+        label: Username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The username to connect to the SFTP server.
+      - path: credentials.password
+        name: password
+        label: Password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The password for the username to connect to the SFTP server.
+        secret: true
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.

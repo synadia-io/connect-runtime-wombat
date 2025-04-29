@@ -1,33 +1,24 @@
-model_version: "1"
-name: decompress
+model_version: '1'
 label: Decompress
-kind: scanner
+name: decompress
 status: stable
-description: >-
-  Decompress incoming data.
+description: |-
+  Decompress the data according to an algorithm, before feeding it into a child scanner.
 fields:
   - path: algorithm
     name: algorithm
     label: Algorithm
+    kind: scalar
     type: string
-    default: "gzip"
-    optional: true
-    description: >-
-      The compression algorithm used to decompress incoming data.
-    constraints:
-      - enum:
-          - gzip
-          - pgzip
-          - zlib
-          - bzip2
-          - flate
-          - snappy
-          - lz4
-          - zstd
-
+    optional: false
+    description: |-
+      One of `gzip`, `pgzip`, `zlib`, `bzip2`, `flate`, `snappy`, `lz4`, `zstd`.
   - path: into
-    name: scanner
-    label: Scanner
+    name: into
+    label: Into
+    kind: scalar
     type: scanner
-    description: >-
-      The scanner to send decompressed data to.
+    default: '{"to_the_end":{}}'
+    optional: true
+    description: |-
+      The child scanner to feed the decompressed stream into.

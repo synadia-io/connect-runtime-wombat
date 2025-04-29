@@ -1,0 +1,226 @@
+model_version: '1'
+kind: source
+label: AMQP 1.0
+name: amqp_1
+status: preview
+description: |-
+  Reads messages from an AMQP (1.0) server.
+
+  The following metadata fields are added to each message:
+
+  ```text
+  - amqp_content_type
+  - amqp_content_encoding
+  - amqp_creation_time
+  - All string typed message annotations
+  ```
+
+  By setting `read_header` to `true`, additional message header properties will be added to each message:
+
+  ```text
+  - amqp_durable
+  - amqp_priority
+  - amqp_ttl
+  - amqp_first_acquirer
+  - amqp_delivery_count
+  ```
+
+  This input benefits from receiving multiple messages in flight in parallel for improved performance.
+  You can tune the max number of in flight messages with the field `credit`.
+fields:
+  - path: urls
+    name: urls
+    label: URLs
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - amqp://guest:guest@127.0.0.1:5672/
+      -   - amqp://127.0.0.1:5672/,amqp://127.0.0.2:5672/
+      -   - amqp://127.0.0.1:5672/
+          - amqp://127.0.0.2:5672/
+    description: |-
+      A list of URLs to connect to. The first URL to successfully establish a connection will be used until the connection is closed. If an item of the list contains commas it will be expanded into multiple URLs.
+  - path: source_address
+    name: source_address
+    label: source_address
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - /foo
+      - queue:/bar
+      - topic:/baz
+    description: |-
+      The source address to consume from.
+  - path: azure_renew_lock
+    name: azure_renew_lock
+    label: azure_renew_lock
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Experimental: Azure service bus specific option to renew lock if processing takes more then configured lock time
+  - path: read_header
+    name: read_header
+    label: read_header
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Read additional message header fields into `amqp_*` metadata properties.
+  - path: credit
+    name: credit
+    label: credit
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      Specifies the maximum number of unacknowledged messages the sender can transmit. Once this limit is reached, no more messages will arrive until messages are acknowledged and settled.
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: sasl
+    name: sasl
+    label: SASL
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Enables SASL authentication.
+    fields:
+      - path: sasl.mechanism
+        name: mechanism
+        label: mechanism
+        kind: scalar
+        type: string
+        default: '"none"'
+        optional: true
+        description: |-
+          The SASL authentication mechanism to use.
+      - path: sasl.user
+        name: user
+        label: User
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - ${USER}
+        description: |-
+          A SASL plain text username. It is recommended that you use environment variables to populate this field.
+      - path: sasl.password
+        name: password
+        label: Password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - ${PASSWORD}
+        description: |-
+          A SASL plain text password. It is recommended that you use environment variables to populate this field.
+        secret: true

@@ -1,0 +1,6 @@
+model_version: '1'
+label: JSON Documents
+name: json_documents
+status: stable
+description: |-
+  Consumes a stream of one or more JSON documents.

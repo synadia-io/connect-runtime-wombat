@@ -18,8 +18,16 @@ tasks:
 
   validate:
     cmds:
-      - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/schemas/component.json -O
-      - npx --yes ajv-cli validate -s component.json -d ".connect/*/*.yml" --verbose
+      - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/model/schemas/component-spec-v1.schema.json -O
+      - npx --yes ajv-cli validate -s component-spec-v1.schema.json -d ".connect/*/*.yml" --verbose
+
+  validate_dir:
+    requires: 
+      vars:
+        - DIR
+    cmds:
+      - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/model/schemas/component-spec-v1.schema.json -O
+      - npx --yes ajv-cli validate -s component-spec-v1.schema.json -d "{{.DIR}}/*/*.yml" --verbose
 
   docker:local:
     cmds:

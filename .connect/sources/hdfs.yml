@@ -1,0 +1,40 @@
+model_version: '1'
+kind: source
+label: HDFS
+name: hdfs
+status: preview
+description: |-
+  Reads files from a HDFS directory, where each discrete file will be consumed as a single message payload.
+
+  The following metadata fields are added to each message:
+
+  - hdfs_name
+  - hdfs_path
+fields:
+  - path: hosts
+    name: hosts
+    label: Hosts
+    kind: list
+    type: string
+    optional: false
+    examples:
+      - localhost:9000
+    description: |-
+      A list of target host addresses to connect to.
+  - path: user
+    name: user
+    label: User
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      A user ID to connect as.
+  - path: directory
+    name: directory
+    label: Directory
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The directory to consume from.

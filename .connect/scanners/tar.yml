@@ -1,0 +1,9 @@
+model_version: '1'
+label: Tar
+name: tar
+status: stable
+description: |-
+  Consume a tar archive file by file.
+
+    This scanner adds the following metadata to each message:
+    - `tar_name`

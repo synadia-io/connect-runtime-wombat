@@ -1,0 +1,167 @@
+model_version: '1'
+label: Couchbase
+name: couchbase
+status: experimental
+description: |-
+  Performs operations against Couchbase for each message, allowing you to store or delete data.
+    
+    When inserting, replacing or upserting documents, each must have the `content` property set.
+fields:
+  - path: url
+    name: url
+    label: URL
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - couchbase://localhost:11210
+    description: |-
+      Couchbase connection string.
+  - path: username
+    name: username
+    label: Username
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Username to connect to the cluster.
+  - path: password
+    name: password
+    label: Password
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Password to connect to the cluster.
+    secret: true
+  - path: bucket
+    name: bucket
+    label: Bucket
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Couchbase bucket.
+  - path: collection
+    name: collection
+    label: Collection
+    kind: scalar
+    type: string
+    default: '"_default"'
+    optional: true
+    description: |-
+      Bucket collection.
+  - path: transcoder
+    name: transcoder
+    label: Transcoder
+    kind: scalar
+    type: string
+    default: '"legacy"'
+    optional: true
+    description: |-
+      Couchbase transcoder to use.
+  - path: timeout
+    name: timeout
+    label: Timeout
+    kind: scalar
+    type: string
+    default: '"15s"'
+    optional: true
+    description: |-
+      Operation timeout.
+  - path: id
+    name: id
+    label: ID
+    kind: scalar
+    type: string
+    optional: false
+    examples:
+      - ${! json("id") }
+    description: |-
+      Document id.
+  - path: content
+    name: content
+    label: Content
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      Document content.
+  - path: operation
+    name: operation
+    label: Operation
+    kind: scalar
+    type: string
+    default: '"upsert"'
+    optional: true
+    description: |-
+      Couchbase operation to perform.
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
+  - path: batching
+    name: batching
+    label: Batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [batching policy](https://wombat.dev/pipelines/learn/batching/#batch-policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.

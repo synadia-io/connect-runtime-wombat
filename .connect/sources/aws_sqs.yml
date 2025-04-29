@@ -1,125 +1,106 @@
-model_version: "1"
-name: aws_sqs
-label: AWS SQS
+model_version: '1'
 kind: source
-status: stable
-description: >-
+label: AWS SQS
+name: aws_sqs
+icon: 
+  data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjMwOSIKICAgaGVpZ2h0PSIzMDkiCiAgIHZpZXdCb3g9IjAgMCAzMDkgMzA5IgogICB2ZXJzaW9uPSIxLjEiCiAgIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIgogICBpZD0ic3ZnMjIiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImF3cy1zcXMuc3ZnIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKDE6MS4xKzIwMjEwNTI2MTUxNytjZTY2NjNiM2I3KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMjYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcyNCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICB3aWR0aD0iMzA5cHgiCiAgICAgaW5rc2NhcGU6em9vbT0iMi4wNTI2NjkyIgogICAgIGlua3NjYXBlOmN4PSIxMjcuMzk1MSIKICAgICBpbmtzY2FwZTpjeT0iMTY1LjYzNzk5IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDE2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyNyIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzIyIiAvPgogIDxnCiAgICAgaWQ9ImcyMCIKICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi41LC0wLjAwMTUpIj4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45OTEsMTAwLjIxMSAtNC4xMTIsLTAuMDY5IC0xMjMuNzkyLC0zNi42NSAtMC4wNzQsLTEuNjk2IFYgMCBMIDI1Niw2NC4wMDYgbCAtMC4wMDksMzYuMjA1IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDEyOCw2NS41IDEyOC4wMTMsMCAwLjAxNyw2My45ODEgMCwyNDQuOTk2IGwgMC4wNjQsMC4wMzIgdiAwLjAwMiBsIDEyNy45MjMsNjMuOTczIDAuNDI1LC0wLjU5MSAtMC4xNjUsLTYwLjg3MSAtMC4yNTEsLTAuMzM5IEwgMTIwLDI0MS41IDIxLDIxMiAyMS41LDk3LjUgMTI4LDY1LjUiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGg0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Ik0gMTQ3LjE0MSwxOTUuMjk4IDE2LjM1MSwyMTMuNjk3IDE2LjM2LDk1LjI4IGwgMTMwLjc5LDE4LjQyNCAtMC4wMDksODEuNTk0IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoNiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDgwLjg2NCwxODcuODEzIDQ3LjEzMiw2IDAuMDA4LC03OC42NTggLTQ3LjEzMSw1Ljk5NSAtMC4wMDksNjYuNjYzIgogICAgICAgZmlsbD0iIzg3NjkyOSIKICAgICAgIGlkPSJwYXRoOCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDMzLjM4NSwxODEuNzcxIDMwLjU4NywzLjg4OCAwLjAwOSwtNjIuMzYzIC0zMC41OTYsMy44OTcgdiA1NC41NzgiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGgxMCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDE2LjM2LDk1LjI4IDEyOC4wMTMsNjEuNzk2IDI1NS45OTEsMTAwLjIxMSAxNDcuMjMxLDExMy43MTMgMTYuMzYsOTUuMjgiCiAgICAgICBmaWxsPSIjNjI0YTFlIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45MjcsMTc3LjM3NiAtMTI3LjkzMSwxNi4xNDUgMC4wMDgsLTc4LjM2NiAxMjcuOTIzLDE2LjI5NiB2IDQ1LjkyNSIKICAgICAgIGZpbGw9IiNkOWE3NDEiCiAgICAgICBpZD0icGF0aDE0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Im0gMjU1LjkxOCwyMDguODM0IC0yLjc1MywwLjExOSAtMTI0Ljc3NiwzNy43NyAtMC4zOTMsMC40NzkgLTAuMDA5LDYxLjgwMSAxMjcuOTMxLC02My45NTEgdiAtMzYuMjE4IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMTYiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSAxNi4zNTEsMjEzLjY5NyAxMjcuOTk2LDI0Ny4yMDIgMjU1LjkxOCwyMDguODM0IDE0Ny4xNDEsMTk1LjI5OCAxNi4zNTEsMjEzLjY5NyIKICAgICAgIGZpbGw9IiNmYWQ3OTEiCiAgICAgICBpZD0icGF0aDE4IiAvPgogIDwvZz4KPC9zdmc+Cg==
+status: preview
+description: |-
   Consume messages from an AWS SQS URL.
-icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjMwOSIKICAgaGVpZ2h0PSIzMDkiCiAgIHZpZXdCb3g9IjAgMCAzMDkgMzA5IgogICB2ZXJzaW9uPSIxLjEiCiAgIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIgogICBpZD0ic3ZnMjIiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImF3cy1zcXMuc3ZnIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKDE6MS4xKzIwMjEwNTI2MTUxNytjZTY2NjNiM2I3KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMjYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcyNCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICB3aWR0aD0iMzA5cHgiCiAgICAgaW5rc2NhcGU6em9vbT0iMi4wNTI2NjkyIgogICAgIGlua3NjYXBlOmN4PSIxMjcuMzk1MSIKICAgICBpbmtzY2FwZTpjeT0iMTY1LjYzNzk5IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDE2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyNyIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzIyIiAvPgogIDxnCiAgICAgaWQ9ImcyMCIKICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi41LC0wLjAwMTUpIj4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45OTEsMTAwLjIxMSAtNC4xMTIsLTAuMDY5IC0xMjMuNzkyLC0zNi42NSAtMC4wNzQsLTEuNjk2IFYgMCBMIDI1Niw2NC4wMDYgbCAtMC4wMDksMzYuMjA1IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDEyOCw2NS41IDEyOC4wMTMsMCAwLjAxNyw2My45ODEgMCwyNDQuOTk2IGwgMC4wNjQsMC4wMzIgdiAwLjAwMiBsIDEyNy45MjMsNjMuOTczIDAuNDI1LC0wLjU5MSAtMC4xNjUsLTYwLjg3MSAtMC4yNTEsLTAuMzM5IEwgMTIwLDI0MS41IDIxLDIxMiAyMS41LDk3LjUgMTI4LDY1LjUiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGg0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Ik0gMTQ3LjE0MSwxOTUuMjk4IDE2LjM1MSwyMTMuNjk3IDE2LjM2LDk1LjI4IGwgMTMwLjc5LDE4LjQyNCAtMC4wMDksODEuNTk0IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoNiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDgwLjg2NCwxODcuODEzIDQ3LjEzMiw2IDAuMDA4LC03OC42NTggLTQ3LjEzMSw1Ljk5NSAtMC4wMDksNjYuNjYzIgogICAgICAgZmlsbD0iIzg3NjkyOSIKICAgICAgIGlkPSJwYXRoOCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDMzLjM4NSwxODEuNzcxIDMwLjU4NywzLjg4OCAwLjAwOSwtNjIuMzYzIC0zMC41OTYsMy44OTcgdiA1NC41NzgiCiAgICAgICBmaWxsPSIjODc2OTI5IgogICAgICAgaWQ9InBhdGgxMCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJNIDE2LjM2LDk1LjI4IDEyOC4wMTMsNjEuNzk2IDI1NS45OTEsMTAwLjIxMSAxNDcuMjMxLDExMy43MTMgMTYuMzYsOTUuMjgiCiAgICAgICBmaWxsPSIjNjI0YTFlIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDI1NS45MjcsMTc3LjM3NiAtMTI3LjkzMSwxNi4xNDUgMC4wMDgsLTc4LjM2NiAxMjcuOTIzLDE2LjI5NiB2IDQ1LjkyNSIKICAgICAgIGZpbGw9IiNkOWE3NDEiCiAgICAgICBpZD0icGF0aDE0IiAvPgogICAgPHBhdGgKICAgICAgIGQ9Im0gMjU1LjkxOCwyMDguODM0IC0yLjc1MywwLjExOSAtMTI0Ljc3NiwzNy43NyAtMC4zOTMsMC40NzkgLTAuMDA5LDYxLjgwMSAxMjcuOTMxLC02My45NTEgdiAtMzYuMjE4IgogICAgICAgZmlsbD0iI2Q5YTc0MSIKICAgICAgIGlkPSJwYXRoMTYiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSAxNi4zNTEsMjEzLjY5NyAxMjcuOTk2LDI0Ny4yMDIgMjU1LjkxOCwyMDguODM0IDE0Ny4xNDEsMTk1LjI5OCAxNi4zNTEsMjEzLjY5NyIKICAgICAgIGZpbGw9IiNmYWQ3OTEiCiAgICAgICBpZD0icGF0aDE4IiAvPgogIDwvZz4KPC9zdmc+Cg=="
 fields:
   - path: url
     name: url
     label: URL
     type: string
-    description: >-
+    description: |-
       The SQS URL to consume from.
-
   - path: delete_message
     name: delete_message
     label: Delete Message
-    optional: true
-    default: true
     type: bool
-    description: >-
-      Whether to delete the consumed message once it is acked. Disabling
-      allows you to handle the deletion using a different mechanism.
-
+    default: true
+    optional: true
+    description: |-
+      Whether to delete the consumed message once it is acked. Disabling allows you to handle the deletion using a different mechanism.
   - path: reset_visibility
     name: reset_visibility
     label: Reset Visibility
-    optional: true
-    default: true
     type: bool
-    description: >-
-      Whether to set the visibility timeout of the consumed message to zero
-      once it is nacked. Disabling honors the preset visibility timeout specified for
-      the queue.
-
+    default: true
+    optional: true
+    description: |-
+      Whether to set the visibility timeout of the consumed message to zero once it is nacked. Disabling honors the preset visibility timeout specified for the queue.
   - path: max_number_of_messages
     name: max_number_of_messages
     label: Max Number of Messages
     type: int
-    optional: true
     default: 10
-    description: >-
+    optional: true
+    description: |-
       The maximum number of messages to return on one poll. Valid values: 1 to 10.
-
   - path: max_outstanding_messages
     name: max_outstanding_messages
     label: Max number of outstanding messages
     type: int
-    optional: true
     default: 1000
-    description: >-
+    optional: true
+    description: |-
       The maximum number of outstanding pending messages to be consumed at a given time
-
   - path: wait_time_seconds
     name: wait_time_seconds
     label: Wait Time Seconds
     type: int
-    optional: true
     default: 0
-    description: >-
-      Whether to set the wait time. Enabling this activates long-polling.
-      Valid values: 0 to 20.
-
+    optional: true
+    description: |-
+      Whether to set the wait time. Enabling this activates long-polling. Valid values: 0 to 20.
   - path: message_timeout
     name: message_timeout
     label: Message Timeout
     type: string
-    render_hint: duration
-    optional: true
     default: 30s
-    description: >-
-      The time to process messages before needing to refresh the receipt handle. Messages will be eligible 
-      for refresh when half of the timeout has elapsed. This sets MessageVisibility for each received message.
-
+    optional: true
+    description: |-
+      The time to process messages before needing to refresh the receipt handle. Messages will be eligible  for refresh when half of the timeout has elapsed. This sets MessageVisibility for each received message.
+    render_hint: duration
   - path: region
     name: region
     label: Region
     type: string
-    description: >-
+    description: |-
       The AWS region to target.
-
   - path: endpoint
     name: endpoint
     label: Endpoint
     type: string
     optional: true
-    default: ""
-    description: >-
+    description: |-
       Allows you to specify a custom endpoint for the AWS API.
-
   - path: credentials
     name: credentials
     label: Credentials
     type: object
-    description: >-
-      Optional manual configuration of AWS credentials to use. More information
-      can be found in xref:guides:cloud/aws.adoc[].
+    description: |-
+      Optional manual configuration of AWS credentials to use. More information can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
     fields:
       - path: credentials.id
         name: id
         label: ID
         type: string
         optional: true
-        default: ""
-        description: >-
+        description: |-
           The ID of credentials to use.
       - path: credentials.secret
         name: secret
         label: Secret
         type: string
         optional: true
-        default: ""
-        description: >-
+        description: |-
           The secret for the credentials being used.
       - path: credentials.token
         name: token
         label: Token
         type: string
         optional: true
-        default: ""
-        description: >-
-          The token for the credentials being used, required when using short
-          term credentials.
+        description: |-
+          The token for the credentials being used, required when using short term credentials.

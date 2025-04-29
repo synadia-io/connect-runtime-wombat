@@ -1,35 +1,33 @@
-model_version: "1"
-name: lines
+model_version: '1'
 label: Lines
-kind: scanner
+name: lines
 status: stable
-description: >-
-  Split incoming data into messages based on a delimiter.
+description: |-
+  Split the sourced data into a message per line.
 fields:
   - path: custom_delimiter
-    name: delimiter
-    label: Delimiter
+    name: custom_delimiter
+    label: Custom Delimiter
+    kind: scalar
     type: string
-    default: "\n"
-    optional: true
-    description: >-
-      The delimiter used to split incoming data into messages.
-
+    optional: false
+    description: |-
+      Use a provided custom delimiter for detecting the end of a line rather than a single line break.
   - path: max_buffer_size
-    name: buffer_size
-    label: Buffer Size
+    name: max_buffer_size
+    label: Max Buffer Size
+    kind: scalar
     type: int
-    default: 65536
+    default: '65536'
     optional: true
-    render_hint: bytes
-    description: >-
-      The maximum size a single message can be before an error is thrown
-
+    description: |-
+      Set the maximum buffer size for storing line data, this limits the maximum size that a line can be without causing an error.
   - path: omit_empty
-    name: ignore_empty_lines
-    label: Ignore Empty Lines
+    name: omit_empty
+    label: Omit Empty
+    kind: scalar
     type: bool
-    default: true
+    default: 'false'
     optional: true
-    description: >-
-      Ignore empty lines when splitting messages.
+    description: |-
+      Omit empty lines.

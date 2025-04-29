@@ -1,11 +1,12 @@
-model_version: "1"
-name: azure_cosmosdb
-label: Azure CosmosDB
+model_version: '1'
 kind: sink
+label: Azure CosmosDB
+name: azure_cosmosdb
+icon: 
+  data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDk2IDk2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgIDxkZWZzPg0KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImUzOTljMTlmLWI2OGYtNDI5ZC1iMTc2LTE4YzIxMTdmZjczYyIgeDE9Ii0xMDMyLjE3MiIgeDI9Ii0xMDU5LjIxMyIgeTE9IjE0NS4zMTIiIHkyPSI2NS40MjYiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMTA3NSAxNTgpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxMTRhOGIiPjwvc3RvcD4NCiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA2NjliYyI+PC9zdG9wPg0KICAgICAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImFjMmE2ZmMyLWNhNDgtNDMyNy05YTNjLWQ0ZGNjMzI1NmUxNSIgeDE9Ii0xMDIzLjcyNSIgeDI9Ii0xMDI5Ljk4IiB5MT0iMTA4LjA4MyIgeTI9IjEwNS45NjgiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMTA3NSAxNTgpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3Atb3BhY2l0eT0iLjMiPjwvc3RvcD4NCiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iLjA3MSIgc3RvcC1vcGFjaXR5PSIuMiI+PC9zdG9wPg0KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIuMzIxIiBzdG9wLW9wYWNpdHk9Ii4xIj48L3N0b3A+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9Ii42MjMiIHN0b3Atb3BhY2l0eT0iLjA1Ij48L3N0b3A+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iMCI+PC9zdG9wPg0KICAgICAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImE3ZmVlOTcwLWE3ODQtNGJiMS1hZjhkLTYzZDE4ZTVmN2RiOSIgeDE9Ii0xMDI3LjE2NSIgeDI9Ii05OTcuNDgyIiB5MT0iMTQ3LjY0MiIgeTI9IjY4LjU2MSIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAxMDc1IDE1OCkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4NCiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzNjY2JmNCI+PC9zdG9wPg0KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMjg5MmRmIj48L3N0b3A+DQogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPC9kZWZzPg0KICAgIDxwYXRoIGZpbGw9InVybCgjZTM5OWMxOWYtYjY4Zi00MjlkLWIxNzYtMThjMjExN2ZmNzNjKSIgZD0iTTMzLjMzOCA2LjU0NGgyNi4wMzhsLTI3LjAzIDgwLjA4N2E0LjE1MiA0LjE1MiAwIDAgMS0zLjkzMyAyLjgyNEg4LjE0OWE0LjE0NSA0LjE0NSAwIDAgMS0zLjkyOC01LjQ3TDI5LjQwNCA5LjM2OGE0LjE1MiA0LjE1MiAwIDAgMSAzLjkzNC0yLjgyNXoiPjwvcGF0aD4NCiAgICA8cGF0aCBmaWxsPSIjMDA3OGQ0IiBkPSJNNzEuMTc1IDYwLjI2MWgtNDEuMjlhMS45MTEgMS45MTEgMCAwIDAtMS4zMDUgMy4zMDlsMjYuNTMyIDI0Ljc2NGE0LjE3MSA0LjE3MSAwIDAgMCAyLjg0NiAxLjEyMWgyMy4zOHoiPjwvcGF0aD4NCiAgICA8cGF0aCBmaWxsPSJ1cmwoI2FjMmE2ZmMyLWNhNDgtNDMyNy05YTNjLWQ0ZGNjMzI1NmUxNSkiIGQ9Ik0zMy4zMzggNi41NDRhNC4xMTggNC4xMTggMCAwIDAtMy45NDMgMi44NzlMNC4yNTIgODMuOTE3YTQuMTQgNC4xNCAwIDAgMCAzLjkwOCA1LjUzOGgyMC43ODdhNC40NDMgNC40NDMgMCAwIDAgMy40MS0yLjlsNS4wMTQtMTQuNzc3IDE3LjkxIDE2LjcwNWE0LjIzNyA0LjIzNyAwIDAgMCAyLjY2Ni45NzJIODEuMjRMNzEuMDI0IDYwLjI2MWwtMjkuNzgxLjAwN0w1OS40NyA2LjU0NHoiPjwvcGF0aD4NCiAgICA8cGF0aCBmaWxsPSJ1cmwoI2E3ZmVlOTcwLWE3ODQtNGJiMS1hZjhkLTYzZDE4ZTVmN2RiOSkiIGQ9Ik02Ni41OTUgOS4zNjRhNC4xNDUgNC4xNDUgMCAwIDAtMy45MjgtMi44MkgzMy42NDhhNC4xNDYgNC4xNDYgMCAwIDEgMy45MjggMi44MmwyNS4xODQgNzQuNjJhNC4xNDYgNC4xNDYgMCAwIDEtMy45MjggNS40NzJoMjkuMDJhNC4xNDYgNC4xNDYgMCAwIDAgMy45MjctNS40NzJ6Ij48L3BhdGg+DQo8L3N2Zz4=
 status: preview
 description: >-
   Creates or updates messages as JSON documents in [Azure CosmosDB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction).
-icon: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDk2IDk2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgIDxkZWZzPg0KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImUzOTljMTlmLWI2OGYtNDI5ZC1iMTc2LTE4YzIxMTdmZjczYyIgeDE9Ii0xMDMyLjE3MiIgeDI9Ii0xMDU5LjIxMyIgeTE9IjE0NS4zMTIiIHkyPSI2NS40MjYiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMTA3NSAxNTgpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxMTRhOGIiPjwvc3RvcD4NCiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA2NjliYyI+PC9zdG9wPg0KICAgICAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImFjMmE2ZmMyLWNhNDgtNDMyNy05YTNjLWQ0ZGNjMzI1NmUxNSIgeDE9Ii0xMDIzLjcyNSIgeDI9Ii0xMDI5Ljk4IiB5MT0iMTA4LjA4MyIgeTI9IjEwNS45NjgiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMTA3NSAxNTgpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3Atb3BhY2l0eT0iLjMiPjwvc3RvcD4NCiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iLjA3MSIgc3RvcC1vcGFjaXR5PSIuMiI+PC9zdG9wPg0KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIuMzIxIiBzdG9wLW9wYWNpdHk9Ii4xIj48L3N0b3A+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9Ii42MjMiIHN0b3Atb3BhY2l0eT0iLjA1Ij48L3N0b3A+DQogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iMCI+PC9zdG9wPg0KICAgICAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImE3ZmVlOTcwLWE3ODQtNGJiMS1hZjhkLTYzZDE4ZTVmN2RiOSIgeDE9Ii0xMDI3LjE2NSIgeDI9Ii05OTcuNDgyIiB5MT0iMTQ3LjY0MiIgeTI9IjY4LjU2MSIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAxMDc1IDE1OCkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4NCiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzNjY2JmNCI+PC9zdG9wPg0KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMjg5MmRmIj48L3N0b3A+DQogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPC9kZWZzPg0KICAgIDxwYXRoIGZpbGw9InVybCgjZTM5OWMxOWYtYjY4Zi00MjlkLWIxNzYtMThjMjExN2ZmNzNjKSIgZD0iTTMzLjMzOCA2LjU0NGgyNi4wMzhsLTI3LjAzIDgwLjA4N2E0LjE1MiA0LjE1MiAwIDAgMS0zLjkzMyAyLjgyNEg4LjE0OWE0LjE0NSA0LjE0NSAwIDAgMS0zLjkyOC01LjQ3TDI5LjQwNCA5LjM2OGE0LjE1MiA0LjE1MiAwIDAgMSAzLjkzNC0yLjgyNXoiPjwvcGF0aD4NCiAgICA8cGF0aCBmaWxsPSIjMDA3OGQ0IiBkPSJNNzEuMTc1IDYwLjI2MWgtNDEuMjlhMS45MTEgMS45MTEgMCAwIDAtMS4zMDUgMy4zMDlsMjYuNTMyIDI0Ljc2NGE0LjE3MSA0LjE3MSAwIDAgMCAyLjg0NiAxLjEyMWgyMy4zOHoiPjwvcGF0aD4NCiAgICA8cGF0aCBmaWxsPSJ1cmwoI2FjMmE2ZmMyLWNhNDgtNDMyNy05YTNjLWQ0ZGNjMzI1NmUxNSkiIGQ9Ik0zMy4zMzggNi41NDRhNC4xMTggNC4xMTggMCAwIDAtMy45NDMgMi44NzlMNC4yNTIgODMuOTE3YTQuMTQgNC4xNCAwIDAgMCAzLjkwOCA1LjUzOGgyMC43ODdhNC40NDMgNC40NDMgMCAwIDAgMy40MS0yLjlsNS4wMTQtMTQuNzc3IDE3LjkxIDE2LjcwNWE0LjIzNyA0LjIzNyAwIDAgMCAyLjY2Ni45NzJIODEuMjRMNzEuMDI0IDYwLjI2MWwtMjkuNzgxLjAwN0w1OS40NyA2LjU0NHoiPjwvcGF0aD4NCiAgICA8cGF0aCBmaWxsPSJ1cmwoI2E3ZmVlOTcwLWE3ODQtNGJiMS1hZjhkLTYzZDE4ZTVmN2RiOSkiIGQ9Ik02Ni41OTUgOS4zNjRhNC4xNDUgNC4xNDUgMCAwIDAtMy45MjgtMi44MkgzMy42NDhhNC4xNDYgNC4xNDYgMCAwIDEgMy45MjggMi44MmwyNS4xODQgNzQuNjJhNC4xNDYgNC4xNDYgMCAwIDEtMy45MjggNS40NzJoMjkuMDJhNC4xNDYgNC4xNDYgMCAwIDAgMy45MjctNS40NzJ6Ij48L3BhdGg+DQo8L3N2Zz4="
 fields:
   - path: connection_string
     name: connection_string
@@ -13,31 +14,27 @@ fields:
     type: string
     description: >-
       A CosmosDB connection string.
-
   - path: database
     name: database
     label: Database
     type: string
     description: >-
       The name of the database to query.
-
   - path: container
     name: container
     label: Container
     type: string
     description: >-
       The name of the container to query.
-
   - path: partition_keys_map
     name: partition_keys_map
     label: Partition Keys Mapping
-    render_hint: sourcecode
     type: string
     description: >-
-      A Bloblang mapping which should evaluate to a single partition key value or an array of partition key values 
-      of type string, integer or boolean. Currently, hierarchical partition keys are not supported so only one 
-      value may be provided.
-
+      A Bloblang mapping which should evaluate to a single partition key value or
+      an array of partition key values  of type string, integer or boolean. Currently,
+      hierarchical partition keys are not supported so only one  value may be provided.
+    render_hint: sourcecode
   - path: operation
     name: operation
     label: Operation
@@ -48,20 +45,21 @@ fields:
       The operation to perform on the document.
     constraints:
       - enum:
-        - Create
-        - Delete
-        - Patch
-        - Replace
-        - Upsert
+          - Create
+          - Delete
+          - Patch
+          - Replace
+          - Upsert
 
   - path: patch_operations
     name: patch_operations
     label: Patch Operations
+    kind: list
     type: object
     optional: true
-    kind: list
     description: >-
-      A list of patch operations to apply to the document. This field is only used when the operation is set to `Patch`.
+      A list of patch operations to apply to the document. This field is only used
+      when the operation is set to `Patch`.
     fields:
       - path: patch_operations[].operation
         name: operation
@@ -73,11 +71,11 @@ fields:
           The operation to perform on the document.
         constraints:
           - enum:
-            - Add
-            - Increment
-            - Remove
-            - Replace
-            - Set
+              - Add
+              - Increment
+              - Remove
+              - Replace
+              - Set
       - path: patch_operations[].path
         name: path
         label: Path
@@ -90,51 +88,51 @@ fields:
         label: Value Mapping
         type: string
         optional: true
-        render_hint: sourcecode
+        examples:
+          - root = "blobfish"
+          - root = json("blobfish").depth
+          - root = [1, 2, 3]
+
         description: >-
           A Bloblang mapping which should evaluate to the value to apply to the field.
-        examples:
-          - 'root = "blobfish"'
-          - 'root = json("blobfish").depth'
-          - 'root = [1, 2, 3]'
-
+        render_hint: sourcecode
   - path: patch_condition
     name: patch_condition
     label: Patch Condition
     type: string
     optional: true
-    description: >-
-      Patch operation condition. This field supports interpolation functions. This field is only used when the 
-      operation is set to `Patch`.
     examples:
-      - "from c where not is_defined(c.blobfish)"
+      - from c where not is_defined(c.blobfish)
 
+    description: >-
+      Patch operation condition. This field supports interpolation functions. This
+      field is only used when the  operation is set to `Patch`.
   - path: auto_id
     name: auto_id
     label: Auto ID
     type: bool
-    optional: true
     default: true
+    optional: true
     description: >-
-      Whether to automatically generate an ID for the document if one is not provided. If the `id` field is already 
-      set, then it will not be overwritten. Setting this to `false` can improve performance, since the messages will 
-      not have to be parsed.
-
+      Whether to automatically generate an ID for the document if one is not provided.
+      If the `id` field is already  set, then it will not be overwritten. Setting
+      this to `false` can improve performance, since the messages will  not have to
+      be parsed.
   - path: item_id
     name: item_id
     label: Item ID
     type: expression
-    description: >-
-      ID of item to replace or delete. Only used by the Replace and Delete operations. This field supports 
-      interpolation functions.
     examples:
-      - '${!json("id")}'
+      - ${!json("id")}
 
+    description: >-
+      ID of item to replace or delete. Only used by the Replace and Delete operations.
+      This field supports  interpolation functions.
   - path: max_in_flight
     name: max_in_flight
     label: Max In Flight
     type: int
-    optional: true
     default: 64
+    optional: true
     description: >-
       The maximum number of messages to have in flight at any given time.

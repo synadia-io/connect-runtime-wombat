@@ -1,0 +1,481 @@
+model_version: '1'
+label: Elasticsearch
+name: elasticsearch
+status: stable
+description: |-
+  Publishes messages into an Elasticsearch index. If the index does not exist then it is created with a dynamic mapping.
+    
+    It's possible to enable AWS connectivity with this output using the `aws` fields. However, you may need to 
+    set `sniff` and `healthcheck` to false for connections to succeed.
+fields:
+  - path: urls
+    name: urls
+    label: URLs
+    kind: list
+    type: string
+    optional: false
+    examples:
+      -   - http://localhost:9200
+    description: |-
+      A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
+  - path: index
+    name: index
+    label: Index
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The index to place messages.
+  - path: action
+    name: action
+    label: Action
+    kind: scalar
+    type: string
+    default: '"index"'
+    optional: true
+    description: |-
+      The action to take on the document. This field must resolve to one of the following action types: `create`, `index`, `update`, `upsert` or `delete`.
+  - path: pipeline
+    name: pipeline
+    label: Pipeline
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      An optional pipeline id to preprocess incoming documents.
+  - path: id
+    name: id
+    label: ID
+    kind: scalar
+    type: string
+    default: '"${!counter()}-${!timestamp_unix()}"'
+    optional: true
+    description: |-
+      The ID for indexed messages. Interpolation should be used in order to create a unique ID for each message.
+  - path: type
+    name: type
+    label: Type
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      The document mapping type. This field is required for versions of elasticsearch earlier than 6.0.0, but are invalid for versions 7.0.0 or later.
+  - path: routing
+    name: routing
+    label: Routing
+    kind: scalar
+    type: string
+    default: '""'
+    optional: true
+    description: |-
+      The routing key to use for the document.
+  - path: sniff
+    name: sniff
+    label: Sniff
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Prompts the connector to sniff for brokers to connect to when establishing a connection.
+  - path: healthcheck
+    name: healthcheck
+    label: Healthcheck
+    kind: scalar
+    type: bool
+    default: 'true'
+    optional: true
+    description: |-
+      Whether to enable healthchecks.
+  - path: timeout
+    name: timeout
+    label: Timeout
+    kind: scalar
+    type: string
+    default: '"5s"'
+    optional: true
+    description: |-
+      The maximum time to wait before abandoning a request (and trying again).
+  - path: api_key
+    name: api_key
+    label: API Key
+    kind: scalar
+    type: string
+    optional: false
+    description: |-
+      The key to set in the Authorization header if using API keys for authentication.
+    secret: true
+  - path: tls
+    name: tls
+    label: TLS Configuration
+    type: object
+    optional: false
+    description: |-
+      Custom TLS settings can be used to override system defaults.
+    fields:
+      - path: tls.enabled
+        name: enabled
+        label: Enabled
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether custom TLS settings are enabled.
+
+      - path: tls.skip_cert_verify
+        name: skip_cert_verify
+        label: Skip Certificate Verification
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to skip server side certificate verification.
+
+      - path: tls.enable_renegotiation
+        name: enable_renegotiation
+        label: Enable Renegotiation
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to allow the remote server to repeatedly request renegotiation. 
+          Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
+
+      - path: tls.root_cas
+        name: root_cas
+        label: Root Certificate Authority
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - '-----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----'
+        secret: true
+        description: |-
+          An optional root certificate authority to use. 
+          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          to possible intermediate signing certificates, to the host certificate.
+
+      - path: tls.client_certs
+        name: client_certs
+        label: Client Certificates
+        kind: list
+        type: object
+        default: '[]'
+        optional: true
+        examples:
+          - - cert: foo
+              key: bar
+        description: |-
+          A list of client certificates to use. 
+        fields:
+          - path: tls.client_certs[].cert
+            name: cert
+            label: Certificate
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A plain text certificate to use.
+
+          - label: Key
+            name: key
+            path: tls.client_certs[].key
+            type: string
+            default: '""'
+            optional: true
+            secret: true
+            description: |-
+              A plain text certificate key to use.
+
+          - path: tls.client_certs[].password
+            name: password
+            label: Password
+            type: string
+            default: '""'
+            optional: true
+            examples:
+              - foo
+              - ${KEY_PASSWORD}
+            secret: true
+            description: |-
+              A plain text password for when the private key is password encrypted in PKCS#1 or 
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              for the PKCS#8 format.
+
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              recover the plaintext.
+  
+  - path: max_in_flight
+    name: max_in_flight
+    label: Max In Flight
+    kind: scalar
+    type: int
+    default: '64'
+    optional: true
+    description: |-
+      The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
+  - path: max_retries
+    name: max_retries
+    label: Max Retries
+    kind: scalar
+    type: int
+    default: '0'
+    optional: true
+    description: |-
+      The maximum number of retries before giving up on the request. If set to zero there is no discrete limit.
+  - path: backoff
+    name: backoff
+    label: Backoff
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Control time intervals between retry attempts.
+    fields:
+      - path: backoff.initial_interval
+        name: initial_interval
+        label: Initial Interval
+        kind: scalar
+        type: string
+        default: '"1s"'
+        optional: true
+        description: |-
+          The initial period to wait between retry attempts.
+      - path: backoff.max_interval
+        name: max_interval
+        label: Max Interval
+        kind: scalar
+        type: string
+        default: '"5s"'
+        optional: true
+        description: |-
+          The maximum period to wait between retry attempts.
+      - path: backoff.max_elapsed_time
+        name: max_elapsed_time
+        label: max_elapsed_time
+        kind: scalar
+        type: string
+        default: '"30s"'
+        optional: true
+        description: |-
+          The maximum period to wait before retry attempts are abandoned. If zero then no limit is used.
+  - path: basic_auth
+    name: basic_auth
+    label: Basic Auth
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Allows you to specify basic authentication.
+    fields:
+      - path: basic_auth.enabled
+        name: enabled
+        label: Enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to use basic authentication in requests.
+      - path: basic_auth.username
+        name: username
+        label: Username
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A username to authenticate as.
+      - path: basic_auth.password
+        name: password
+        label: Password
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          A password to authenticate with.
+        secret: true
+  - path: batching
+    name: batching
+    label: Batching
+    kind: scalar
+    type: object
+    optional: false
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+      - check: this.contains("END BATCH")
+        count: 0
+        period: 1m
+    description: |-
+      Allows you to configure a [batching policy](https://wombat.dev/pipelines/learn/batching/#batch-policy).
+    fields:
+      - path: batching.count
+        name: count
+        label: count
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          A number of messages at which the batch should be flushed. If `0` disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: byte_size
+        kind: scalar
+        type: int
+        default: '0'
+        optional: true
+        description: |-
+          An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+      - path: batching.period
+        name: period
+        label: period
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - 1s
+          - 1m
+          - 500ms
+        description: |-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - path: batching.check
+        name: check
+        label: check
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        examples:
+          - this.type == "end_of_transaction"
+        description: |-
+          A [Bloblang query](https://wombat.dev/pipelines/learn/interpolation/#bloblang-queries) that should return a boolean value indicating whether a message should end a batch.
+  - path: aws
+    name: aws
+    label: AWS
+    kind: scalar
+    type: object
+    optional: false
+    description: |-
+      Enables and customises connectivity to Amazon Elastic Service.
+    fields:
+      - path: aws.enabled
+        name: enabled
+        label: Enabled
+        kind: scalar
+        type: bool
+        default: 'false'
+        optional: true
+        description: |-
+          Whether to connect to Amazon Elastic Service.
+      - path: aws.region
+        name: region
+        label: Region
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          The AWS region to target.
+      - path: aws.endpoint
+        name: endpoint
+        label: endpoint
+        kind: scalar
+        type: string
+        default: '""'
+        optional: true
+        description: |-
+          Allows you to specify a custom endpoint for the AWS API.
+      - path: aws.credentials
+        name: credentials
+        label: Credentials
+        kind: scalar
+        type: object
+        optional: false
+        description: |-
+          Optional manual configuration of AWS credentials to use. More information can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
+        fields:
+          - path: aws.credentials.profile
+            name: profile
+            label: profile
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A profile from `~/.aws/credentials` to use.
+          - path: aws.credentials.id
+            name: id
+            label: ID
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The ID of credentials to use.
+          - path: aws.credentials.secret
+            name: secret
+            label: Secret
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The secret for the credentials being used.
+            secret: true
+          - path: aws.credentials.token
+            name: token
+            label: Token
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              The token for the credentials being used, required when using short term credentials.
+          - path: aws.credentials.from_ec2_role
+            name: from_ec2_role
+            label: from_ec2_role
+            kind: scalar
+            type: bool
+            default: 'false'
+            optional: true
+            description: |-
+              Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
+          - path: aws.credentials.role
+            name: role
+            label: Role
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              A role ARN to assume.
+          - path: aws.credentials.role_external_id
+            name: role_external_id
+            label: Role_external_id
+            kind: scalar
+            type: string
+            default: '""'
+            optional: true
+            description: |-
+              An external ID to provide when assuming a role.
+  - path: gzip_compression
+    name: gzip_compression
+    label: Gzip Compression
+    kind: scalar
+    type: bool
+    default: 'false'
+    optional: true
+    description: |-
+      Enable gzip compression on the request side.

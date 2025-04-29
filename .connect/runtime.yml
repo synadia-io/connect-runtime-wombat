@@ -4,9 +4,6 @@ label: Wombat
 image: registry.helix-dev.synadia.io/connect-runtime-wombat
 author:
   name: Synadia
-  email: code@synadia.com
-#metrics:
-#  port: 4195
-#  path: /metrics
+  email: connect@synadia.com
 description: |-
   The Wombat runtime, supporting Redpanda Connect / Benthos configs.

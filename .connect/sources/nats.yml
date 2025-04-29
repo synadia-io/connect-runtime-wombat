@@ -1,95 +1,83 @@
-model_version: "1"
-name: nats
-label: NATS
+model_version: '1'
 kind: source
+label: NATS
+name: nats
+icon: 
+  data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgcm9sZT0iaW1nIgogICB2aWV3Qm94PSIyLjQyIC0wLjMzIDI4OS45IDI4OS45IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcyMiIKICAgc29kaXBvZGk6ZG9jbmFtZT0ibmF0cy5zdmciCiAgIHdpZHRoPSIyODkuODk5OTkiCiAgIGhlaWdodD0iMjg5Ljg5OTk5IgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKDE6MS4xKzIwMjEwNTI2MTUxNytjZTY2NjNiM2I3KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMjYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcyNCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBoZWlnaHQ9IjI4OS44OTk5OXB4IgogICAgIGlua3NjYXBlOnpvb209IjEuMDkzOTU0NSIKICAgICBpbmtzY2FwZTpjeD0iLTE3LjgyNTIzOSIKICAgICBpbmtzY2FwZTpjeT0iMjI2LjcwMDQ4IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDE2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyNyIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzIyIiAvPgogIDxzdHlsZQogICAgIGlkPSJzdHlsZTIiPnN2ZyB7ZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyODggMjg4fTwvc3R5bGU+CiAgPHN0eWxlCiAgICAgaWQ9InN0eWxlNCI+LnN0M3tmaWxsOiMzNzVjOTN9LnN0NHtmaWxsOiM4ZGM2M2Z9PC9zdHlsZT4KICA8ZwogICAgIGlkPSJnODUxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQuNTY5OTk2OSwtMC4xMzAwMDMwNSkiPgogICAgPHBhdGgKICAgICAgIGZpbGw9IiMzNGE1NzQiCiAgICAgICBkPSJNIDE0Mi44LDUuMyBIIDI3Ny41IFYgMTE0LjUgSCAxNDIuOCBaIgogICAgICAgaWQ9InBhdGg2IiAvPgogICAgPHBhdGgKICAgICAgIGZpbGw9IiMyN2FhZTEiCiAgICAgICBkPSJNIDguMSw1LjMgSCAxNDIuOCBWIDExNC41IEggOC4xIFoiCiAgICAgICBpZD0icGF0aDgiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSAxNDIuOCwxMTQuNiBIIDI3Ny41IFYgMjIzLjggSCAxNDIuOCBaIgogICAgICAgY2xhc3M9InN0NCIKICAgICAgIGlkPSJwYXRoMTAiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSA4LjEsMTE0LjYgSCAxNDIuOCBWIDIyMy44IEggOC4xIFoiCiAgICAgICBjbGFzcz0ic3QzIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDEyMywyMjMuMiA2NS45LDYxIHYgLTYxIHoiCiAgICAgICBjbGFzcz0ic3Q0IgogICAgICAgaWQ9InBhdGgxNCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDE0Mi44LDIyMy4yIDAuNywxOS4yIC0yMS4xLC0xOS43IHoiCiAgICAgICBjbGFzcz0ic3QzIgogICAgICAgaWQ9InBhdGgxNiIgLz4KICAgIDxnCiAgICAgICBpZD0iZzIwIj4KICAgICAgPHBhdGgKICAgICAgICAgZmlsbD0iI2ZmZmZmZiIKICAgICAgICAgZD0iTSAxOTguNiwxNDYuNSBWIDU2LjEgaCAzMi4yIFYgMTczIEggMTgyIEwgODMuNSw4MSB2IDkyLjEgSCA1MS4yIHYgLTExNyBoIDUwLjUgeiIKICAgICAgICAgaWQ9InBhdGgxOCIgLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=
 status: stable
-description: >-
+description: |-
   Subscribe to a NATS subject.
-icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgcm9sZT0iaW1nIgogICB2aWV3Qm94PSIyLjQyIC0wLjMzIDI4OS45IDI4OS45IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcyMiIKICAgc29kaXBvZGk6ZG9jbmFtZT0ibmF0cy5zdmciCiAgIHdpZHRoPSIyODkuODk5OTkiCiAgIGhlaWdodD0iMjg5Ljg5OTk5IgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKDE6MS4xKzIwMjEwNTI2MTUxNytjZTY2NjNiM2I3KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMjYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcyNCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBoZWlnaHQ9IjI4OS44OTk5OXB4IgogICAgIGlua3NjYXBlOnpvb209IjEuMDkzOTU0NSIKICAgICBpbmtzY2FwZTpjeD0iLTE3LjgyNTIzOSIKICAgICBpbmtzY2FwZTpjeT0iMjI2LjcwMDQ4IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDE2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyNyIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzIyIiAvPgogIDxzdHlsZQogICAgIGlkPSJzdHlsZTIiPnN2ZyB7ZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyODggMjg4fTwvc3R5bGU+CiAgPHN0eWxlCiAgICAgaWQ9InN0eWxlNCI+LnN0M3tmaWxsOiMzNzVjOTN9LnN0NHtmaWxsOiM4ZGM2M2Z9PC9zdHlsZT4KICA8ZwogICAgIGlkPSJnODUxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQuNTY5OTk2OSwtMC4xMzAwMDMwNSkiPgogICAgPHBhdGgKICAgICAgIGZpbGw9IiMzNGE1NzQiCiAgICAgICBkPSJNIDE0Mi44LDUuMyBIIDI3Ny41IFYgMTE0LjUgSCAxNDIuOCBaIgogICAgICAgaWQ9InBhdGg2IiAvPgogICAgPHBhdGgKICAgICAgIGZpbGw9IiMyN2FhZTEiCiAgICAgICBkPSJNIDguMSw1LjMgSCAxNDIuOCBWIDExNC41IEggOC4xIFoiCiAgICAgICBpZD0icGF0aDgiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSAxNDIuOCwxMTQuNiBIIDI3Ny41IFYgMjIzLjggSCAxNDIuOCBaIgogICAgICAgY2xhc3M9InN0NCIKICAgICAgIGlkPSJwYXRoMTAiIC8+CiAgICA8cGF0aAogICAgICAgZD0iTSA4LjEsMTE0LjYgSCAxNDIuOCBWIDIyMy44IEggOC4xIFoiCiAgICAgICBjbGFzcz0ic3QzIgogICAgICAgaWQ9InBhdGgxMiIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDEyMywyMjMuMiA2NS45LDYxIHYgLTYxIHoiCiAgICAgICBjbGFzcz0ic3Q0IgogICAgICAgaWQ9InBhdGgxNCIgLz4KICAgIDxwYXRoCiAgICAgICBkPSJtIDE0Mi44LDIyMy4yIDAuNywxOS4yIC0yMS4xLC0xOS43IHoiCiAgICAgICBjbGFzcz0ic3QzIgogICAgICAgaWQ9InBhdGgxNiIgLz4KICAgIDxnCiAgICAgICBpZD0iZzIwIj4KICAgICAgPHBhdGgKICAgICAgICAgZmlsbD0iI2ZmZmZmZiIKICAgICAgICAgZD0iTSAxOTguNiwxNDYuNSBWIDU2LjEgaCAzMi4yIFYgMTczIEggMTgyIEwgODMuNSw4MSB2IDkyLjEgSCA1MS4yIHYgLTExNyBoIDUwLjUgeiIKICAgICAgICAgaWQ9InBhdGgxOCIgLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo="
 fields:
   - path: urls
     name: urls
     label: URLs
-    type: string
     kind: list
-    description: >-
-      A list of URLs to connect to. If an item of the list contains commas
-      it will be expanded into multiple URLs.
+    type: string
     examples:
-      - - "nats://127.0.0.1:4222"
-      - - "nats://username:password@127.0.0.1:4222"
+      -   - nats://127.0.0.1:4222
+      -   - nats://username:password@127.0.0.1:4222
 
+    description: |-
+      A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: subject
     name: subject
     label: Subject
     type: string
-    description: >-
-      A subject to consume from. Supports wildcards for consuming multiple
-      subjects. Either a subject or stream must be specified.
     examples:
-      - "foo.bar.baz"
-      - "foo.*.baz"
-      - "foo.bar.*"
-      - "foo.>"
+      - foo.bar.baz
+      - foo.*.baz
+      - foo.bar.*
+      - foo.>
 
+    description: |-
+      A subject to consume from. Supports wildcards for consuming multiple subjects. Either a subject or stream must be specified.
   - path: queue
     name: queue
     label: Queue
     type: string
     optional: true
-    description: >-
+    description: |-
       An optional queue group to consume as.
-
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
     type: bool
-    optional: true
     default: true
-    description: >-
-      Whether messages that are rejected (nacked) at the output level should
-      be automatically replayed indefinitely, eventually resulting in back pressure
-      if the cause of the rejections is persistent. If set to `false` these messages
-      will instead be deleted. Disabling auto replays can greatly improve memory efficiency
-      of high throughput streams as the original shape of the data can be discarded
-      immediately upon consumption and mutation.
-
+    optional: true
+    description: |-
+      Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
   - path: send_ack
     name: send_ack
     label: Send Ack
     type: bool
-    optional: true
     default: true
-    description: >-
-      Control whether ACKS are sent as a reply to each message. When enabled,
-      these replies are sent only once the data has been delivered to all outputs.
-
+    optional: true
+    description: |-
+      Control whether ACKS are sent as a reply to each message. When enabled, these replies are sent only once the data has been delivered to all outputs.
   - path: nak_delay
     name: nak_delay
     label: Nak Delay
     type: string
     optional: true
-    description: >-
-      An optional delay duration on redelivering a message when negatively
-      acknowledged.
     examples:
-      - "1m"
+      - 1m
 
+    description: |-
+      An optional delay duration on redelivering a message when negatively acknowledged.
   - path: prefetch_count
     name: prefetch_count
     label: Prefetch Count
     type: int
-    optional: true
     default: 524288
-    description: >-
+    optional: true
+    description: |-
       The maximum number of messages to pull at a time.
-
   - path: auth
     name: auth
     label: Auth
     type: object
     optional: true
-    description: >-
+    description: |-
       Optional configuration of NATS authentication parameters.
     fields:
       - path: auth.user_jwt
@@ -97,14 +85,12 @@ fields:
         label: User JWT
         type: string
         optional: true
-        description: >-
-          An optional plain text user JWT (given along with the corresponding
-          user NKey Seed).
+        description: |-
+          An optional plain text user JWT (given along with the corresponding user NKey Seed).
       - path: auth.user_nkey_seed
         name: user_nkey_seed
         label: User NKey Seed
         type: string
         optional: true
-        description: >-
-          An optional plain text user NKey Seed (given along with the corresponding
-          user JWT).
+        description: |-
+          An optional plain text user NKey Seed (given along with the corresponding user JWT).
