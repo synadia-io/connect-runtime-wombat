@@ -17,6 +17,14 @@ func compileTransformer(transformer model.TransformerStep) Fragment {
         return compileMappingTransformer(transformer.Mapping)
     }
 
+    if transformer.Explode != nil {
+        return compileExplodeTransformer(transformer.Explode)
+    }
+
+    if transformer.Combine != nil {
+        return compileCombineTransformer(transformer.Combine)
+    }
+
     return nil
 }
 
@@ -40,4 +48,27 @@ func compileCompositeTransformer(t *model.CompositeTransformerStep) Fragment {
 
 func compileMappingTransformer(t *model.MappingTransformerStep) Fragment {
     return Frag().String("mapping", t.Sourcecode)
+}
+
+func compileExplodeTransformer(t *model.ExplodeTransformerStep) Fragment {
+    if t.Format == model.ExplodeTransformerStepFormatCsv && t.Delimiter != "," {
+        return Frag().Fragment("unarchive", Frag().
+            String("format", string(t.Format)).
+            String("delimiter", t.Delimiter))
+    }
+
+    return Frag().Fragment("unarchive", Frag().
+        String("format", string(t.Format)))
+}
+
+func compileCombineTransformer(t *model.CombineTransformerStep) Fragment {
+    if t.Format == model.CombineTransformerStepFormatTar || t.Format == model.CombineTransformerStepFormatZip {
+        return Frag().Fragment("archive", Frag().
+            String("format", string(t.Format)).
+            String("path", t.Path))
+
+    }
+
+    return Frag().Fragment("archive", Frag().
+        String("format", string(t.Format)))
 }
