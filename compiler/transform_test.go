@@ -87,4 +87,70 @@ var _ = Describe("Compiling an inlet", func() {
             Expect(am.Path("output.nats.metadata.include_patterns").Data()).To(ContainElement(".*"))
         })
     })
+
+    When("the connector contains an explode transformer", func() {
+        var v model.Steps
+
+        BeforeEach(func() {
+            v = Steps().
+                Source(SourceStep("stdin")).
+                Transformer(TransformerStep().Explode(ExplodeTransformerStep().Format(model.ExplodeTransformerStepFormatCsv).Delimiter("\t"))).
+                Producer(ProducerStep(NatsConfig(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
+                Build()
+        })
+
+        It("should generate a valid wombat artifact", func() {
+            artifact, err := compiler.Compile(test.Runtime(), v)
+            Expect(err).NotTo(HaveOccurred())
+            GinkgoLogr.Info(artifact)
+
+            // parse yaml
+            var m map[string]any
+            Expect(yaml.Unmarshal([]byte(artifact), &m)).To(Succeed())
+            am := gabs.Wrap(m)
+
+            Expect(am.Exists(strings.Split("input.stdin", ".")...)).To(BeTrue())
+            Expect(am.Exists(strings.Split("input.processors.0.unarchive", ".")...)).To(BeTrue())
+            Expect(am.Path("input.processors.0.unarchive.format").Data()).To(Equal(string(model.ExplodeTransformerStepFormatCsv)))
+
+            Expect(am.Exists(strings.Split("output.nats", ".")...)).To(BeTrue())
+            Expect(am.Path("output.nats.urls").Data()).To(ContainElement("nats://localhost:4222"))
+            Expect(am.Path("output.nats.subject").Data()).To(Equal("foo.bar"))
+            Expect(am.Path("output.nats.max_in_flight").Data()).To(Equal(1))
+            Expect(am.Path("output.nats.metadata.include_patterns").Data()).To(ContainElement(".*"))
+        })
+    })
+
+    When("the connector contains a combine transformer", func() {
+        var v model.Steps
+
+        BeforeEach(func() {
+            v = Steps().
+                Source(SourceStep("stdin")).
+                Transformer(TransformerStep().Combine(CombineTransformerStep().Format(model.CombineTransformerStepFormatLines))).
+                Producer(ProducerStep(NatsConfig(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
+                Build()
+        })
+
+        It("should generate a valid wombat artifact", func() {
+            artifact, err := compiler.Compile(test.Runtime(), v)
+            Expect(err).NotTo(HaveOccurred())
+            GinkgoLogr.Info(artifact)
+
+            // parse yaml
+            var m map[string]any
+            Expect(yaml.Unmarshal([]byte(artifact), &m)).To(Succeed())
+            am := gabs.Wrap(m)
+
+            Expect(am.Exists(strings.Split("input.stdin", ".")...)).To(BeTrue())
+            Expect(am.Exists(strings.Split("input.processors.0.archive", ".")...)).To(BeTrue())
+            Expect(am.Path("input.processors.0.archive.format").Data()).To(Equal(string(model.CombineTransformerStepFormatLines)))
+
+            Expect(am.Exists(strings.Split("output.nats", ".")...)).To(BeTrue())
+            Expect(am.Path("output.nats.urls").Data()).To(ContainElement("nats://localhost:4222"))
+            Expect(am.Path("output.nats.subject").Data()).To(Equal("foo.bar"))
+            Expect(am.Path("output.nats.max_in_flight").Data()).To(Equal(1))
+            Expect(am.Path("output.nats.metadata.include_patterns").Data()).To(ContainElement(".*"))
+        })
+    })
 })
