@@ -42,7 +42,7 @@ var _ = Describe("Running an inlet", func() {
             rt := test.Runtime(
                 runtime.WithNatsUrl(natsUrl),
             )
-            subject := fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)
+            subject := fmt.Sprintf("$NEX.FEED.%s.metrics.%s", rt.Namespace, rt.Instance)
 
             msgReceived := make(chan struct{})
 
@@ -191,5 +191,5 @@ func validateArtifact(artifact string, rt *runtime.Runtime) {
     am := gabs.Wrap(rm)
 
     Expect(am.Path("metrics.nats.url").Data()).To(Equal(rt.NatsUrl))
-    Expect(am.Path("metrics.nats.subject").Data()).To(Equal(fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)))
+    Expect(am.Path("metrics.nats.subject").Data()).To(Equal(fmt.Sprintf("$NEX.FEED.%s.metrics.%s", rt.Namespace, rt.Instance)))
 }
