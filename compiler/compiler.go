@@ -20,7 +20,7 @@ func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
     if rt.NatsUrl != "" && rt.Namespace != "" && rt.Instance != "" {
         natsCfg := Frag().
             String("url", rt.NatsUrl).
-            String("subject", fmt.Sprintf("$NEX.logs.%s.%s.metrics", rt.Namespace, rt.Instance)).
+            String("subject", fmt.Sprintf("$NEX.FEED.%s.metrics.%s", rt.Namespace, rt.Instance)).
             StringMap("headers", map[string]string{
                 AccountMetricHeader:   rt.Namespace,
                 ConnectorMetricHeader: rt.Connector,
