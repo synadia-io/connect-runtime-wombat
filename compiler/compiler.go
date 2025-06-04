@@ -5,6 +5,7 @@ import (
     _ "github.com/synadia-io/connect-runtime-wombat/components"
     "github.com/synadia-io/connect/model"
     "github.com/synadia-io/connect/runtime"
+    "github.com/synadia-labs/nex/models"
     "gopkg.in/yaml.v3"
 )
 
@@ -20,7 +21,7 @@ func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
     if rt.NatsUrl != "" && rt.Namespace != "" && rt.Instance != "" {
         natsCfg := Frag().
             String("url", rt.NatsUrl).
-            String("subject", fmt.Sprintf("$NEX.FEED.%s.metrics.%s", rt.Namespace, rt.Instance)).
+            String("subject", fmt.Sprintf("%s.%s", models.MetricsAPIPrefix(rt.Namespace), rt.Instance)).
             StringMap("headers", map[string]string{
                 AccountMetricHeader:   rt.Namespace,
                 ConnectorMetricHeader: rt.Connector,
