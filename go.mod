@@ -22,6 +22,7 @@ require (
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 	github.com/synadia-io/connect v1.0.2
+	github.com/synadia-labs/nex v0.0.0-20250603184808-7351a8d19e91
 	github.com/wombatwisdom/wombat v1.0.4-rc1
 	go.opentelemetry.io/otel v1.34.0
 	go.opentelemetry.io/otel/trace v1.34.0
@@ -197,6 +198,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
+	github.com/google/go-tpm v0.9.5 // indirect
 	github.com/google/martian/v3 v3.3.3 // indirect
 	github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
@@ -320,9 +322,6 @@ require (
 	github.com/snowflakedb/gosnowflake v1.12.1 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
-	github.com/synadia-io/orbit.go/natsext v0.1.1 // indirect
-	github.com/synadia-labs/nex v0.0.0-20250603184808-7351a8d19e91 // indirect
-	github.com/synadia-labs/nex/client v0.0.0-20250603184808-7351a8d19e91 // indirect
 	github.com/tetratelabs/wazero v1.7.3 // indirect
 	github.com/tilinna/z85 v1.0.0 // indirect
 	github.com/timeplus-io/proton-go-driver/v2 v2.0.17 // indirect

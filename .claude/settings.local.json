@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(go run:*)",
+      "Bash(rm:*)",
+      "Bash(wombat create:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(ginkgo -v test/component_validation)",
+      "Bash(task test)",
+      "Bash(go mod:*)",
+      "Bash(ginkgo:*)",
+      "Bash(task test:*)"
+    ],
+    "deny": []
+  }
+}

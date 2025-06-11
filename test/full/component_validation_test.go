@@ -1,0 +1,627 @@
+package full_test
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"time"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	"gopkg.in/yaml.v3"
+)
+
+var _ = Describe("Component Validation", func() {
+	var (
+		componentsDir string
+		testConfigDir string
+	)
+
+	BeforeEach(func() {
+		// Get the project root (two levels up from test/full)
+		projectRoot := filepath.Join("..", "..")
+		componentsDir = filepath.Join(projectRoot, ".connect")
+		testConfigDir = filepath.Join(projectRoot, "test", "component_validation", "test_configs")
+		
+		// Create test configs directory
+		Expect(os.MkdirAll(testConfigDir, 0755)).To(Succeed())
+	})
+
+	AfterEach(func() {
+		// Clean up test configs
+		os.RemoveAll(testConfigDir)
+	})
+
+	Describe("Scanner Components", func() {
+		It("should validate all scanner components", func() {
+			results := testComponents(filepath.Join(componentsDir, "scanners"), "scanner", testConfigDir)
+			
+			for _, result := range results {
+				if !result.Success {
+					Fail(fmt.Sprintf("Scanner %s failed validation: %s", result.Component, result.Error))
+				}
+			}
+			
+			Expect(len(results)).To(Equal(5), "Expected 5 scanner components")
+		})
+	})
+
+	Describe("Source Components", func() {
+		It("should validate all source components", func() {
+			results := testComponents(filepath.Join(componentsDir, "sources"), "input", testConfigDir)
+			
+			for _, result := range results {
+				if !result.Success {
+					Fail(fmt.Sprintf("Source %s failed validation: %s", result.Component, result.Error))
+				}
+			}
+			
+			Expect(len(results)).To(Equal(31), "Expected 31 source components")
+		})
+	})
+
+	Describe("Sink Components", func() {
+		It("should validate all sink components", func() {
+			results := testComponents(filepath.Join(componentsDir, "sinks"), "output", testConfigDir)
+			
+			for _, result := range results {
+				if !result.Success {
+					Fail(fmt.Sprintf("Sink %s failed validation: %s", result.Component, result.Error))
+				}
+			}
+			
+			Expect(len(results)).To(Equal(39), "Expected 39 sink components")
+		})
+	})
+
+	It("should generate a comprehensive test report", func() {
+		allResults := []TestResult{}
+		
+		// Test all component types
+		scannerResults := testComponents(filepath.Join(componentsDir, "scanners"), "scanner", testConfigDir)
+		allResults = append(allResults, scannerResults...)
+		
+		sourceResults := testComponents(filepath.Join(componentsDir, "sources"), "input", testConfigDir)
+		allResults = append(allResults, sourceResults...)
+		
+		sinkResults := testComponents(filepath.Join(componentsDir, "sinks"), "output", testConfigDir)
+		allResults = append(allResults, sinkResults...)
+		
+		// Generate summary
+		successCount := 0
+		for _, result := range allResults {
+			if result.Success {
+				successCount++
+			}
+		}
+		
+		// Save results to JSON
+		resultsFile := filepath.Join(testConfigDir, "..", "test_results.json")
+		file, err := os.Create(resultsFile)
+		Expect(err).NotTo(HaveOccurred())
+		defer file.Close()
+		
+		encoder := json.NewEncoder(file)
+		encoder.SetIndent("", "  ")
+		Expect(encoder.Encode(allResults)).To(Succeed())
+		
+		// All components should pass
+		Expect(successCount).To(Equal(len(allResults)), "All components should pass validation")
+		Expect(len(allResults)).To(Equal(75), "Expected 75 total components")
+	})
+})
+
+type ComponentSpec struct {
+	Name        string `yaml:"name"`
+	Type        string `yaml:"type"`
+	Kind        string `yaml:"kind"`
+	Description string `yaml:"description"`
+}
+
+type TestResult struct {
+	Component   string        `json:"component"`
+	Type        string        `json:"type"`
+	Success     bool          `json:"success"`
+	Error       string        `json:"error,omitempty"`
+	ConfigPath  string        `json:"config_path"`
+	Duration    time.Duration `json:"duration"`
+}
+
+func testComponents(dir string, wombatType string, testConfigDir string) []TestResult {
+	results := []TestResult{}
+	
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		return results
+	}
+	
+	for _, file := range files {
+		if !strings.HasSuffix(file.Name(), ".yml") {
+			continue
+		}
+		
+		componentPath := filepath.Join(dir, file.Name())
+		start := time.Now()
+		
+		// Read component spec
+		spec, err := readComponentSpec(componentPath)
+		if err != nil {
+			results = append(results, TestResult{
+				Component:  file.Name(),
+				Type:       wombatType,
+				Success:    false,
+				Error:      fmt.Sprintf("Failed to read spec: %v", err),
+				ConfigPath: componentPath,
+				Duration:   time.Since(start),
+			})
+			continue
+		}
+		
+		// Generate wombat config
+		configPath := filepath.Join(testConfigDir, fmt.Sprintf("%s_%s.yaml", wombatType, strings.TrimSuffix(file.Name(), ".yml")))
+		if err := generateWombatConfig(spec.Name, wombatType, configPath); err != nil {
+			results = append(results, TestResult{
+				Component:  spec.Name,
+				Type:       wombatType,
+				Success:    false,
+				Error:      fmt.Sprintf("Failed to generate config: %v", err),
+				ConfigPath: configPath,
+				Duration:   time.Since(start),
+			})
+			continue
+		}
+		
+		// Test with wombat
+		if err := testWombatConfig(configPath); err != nil {
+			results = append(results, TestResult{
+				Component:  spec.Name,
+				Type:       wombatType,
+				Success:    false,
+				Error:      fmt.Sprintf("Wombat test failed: %v", err),
+				ConfigPath: configPath,
+				Duration:   time.Since(start),
+			})
+		} else {
+			results = append(results, TestResult{
+				Component:  spec.Name,
+				Type:       wombatType,
+				Success:    true,
+				ConfigPath: configPath,
+				Duration:   time.Since(start),
+			})
+		}
+	}
+	
+	return results
+}
+
+func readComponentSpec(path string) (*ComponentSpec, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	
+	var spec ComponentSpec
+	decoder := yaml.NewDecoder(file)
+	if err := decoder.Decode(&spec); err != nil {
+		return nil, err
+	}
+	
+	return &spec, nil
+}
+
+func generateWombatConfig(componentName string, wombatType string, outputPath string) error {
+	// Ensure directory exists
+	if err := os.MkdirAll(filepath.Dir(outputPath), 0755); err != nil {
+		return err
+	}
+	
+	// Generate minimal valid config based on type
+	var config string
+	
+	switch wombatType {
+	case "input":
+		minimalConfig := getMinimalConfig(componentName, wombatType)
+		config = fmt.Sprintf(`input:
+  %s:%s
+
+output:
+  drop: {}
+`, componentName, minimalConfig)
+		
+	case "output":
+		minimalConfig := getMinimalConfig(componentName, wombatType)
+		config = fmt.Sprintf(`input:
+  generate:
+    count: 1
+    mapping: |
+      root = {"test": "data"}
+
+output:
+  %s:%s
+`, componentName, minimalConfig)
+		
+	case "scanner":
+		scannerConfig := getScannerConfig(componentName)
+		config = fmt.Sprintf(`input:
+  stdin:%s
+
+output:
+  drop: {}
+`, scannerConfig)
+	}
+	
+	return os.WriteFile(outputPath, []byte(config), 0644)
+}
+
+func getScannerConfig(scannerName string) string {
+	switch scannerName {
+	case "decompress":
+		return `
+    scanner:
+      decompress:
+        algorithm: gzip`
+	case "json_documents":
+		return `
+    scanner:
+      json_documents: {}`
+	case "lines":
+		return `
+    scanner:
+      lines: {}`
+	case "tar":
+		return `
+    scanner:
+      tar: {}`
+	case "to_the_end":
+		return `
+    scanner:
+      to_the_end: {}`
+	default:
+		return fmt.Sprintf(`
+    scanner:
+      %s: {}`, scannerName)
+	}
+}
+
+func getMinimalConfig(componentName string, wombatType string) string {
+	// Return minimal required configuration for known components
+	switch componentName {
+	// NATS family
+	case "nats", "nats_jetstream":
+		return `
+    urls: ["nats://localhost:4222"]
+    subject: "test.subject"`
+	case "nats_kv":
+		if wombatType == "input" {
+			return `
+    urls: ["nats://localhost:4222"]
+    bucket: "test-bucket"`
+		}
+		return `
+    urls: ["nats://localhost:4222"]
+    bucket: "test-bucket"
+    key: "test-key"`
+		
+	// Generate
+	case "generate":
+		return `
+    count: 1
+    mapping: |
+      root = {"test": "data"}`
+	
+	// HTTP
+	case "http_client":
+		return `
+    url: "http://localhost:8080"`
+	
+	// Kafka
+	case "kafka_franz":
+		if wombatType == "input" {
+			return `
+    seed_brokers: ["localhost:9092"]
+    topics: ["test-topic"]
+    consumer_group: "test-group"`
+		}
+		return `
+    seed_brokers: ["localhost:9092"]
+    topic: "test-topic"`
+	
+	// Redis family
+	case "redis_list":
+		return `
+    url: "redis://localhost:6379"
+    key: "test-list"`
+	case "redis_pubsub":
+		if wombatType == "input" {
+			return `
+    url: "redis://localhost:6379"
+    channels: ["test-channel"]`
+		}
+		return `
+    url: "redis://localhost:6379"
+    channel: "test-channel"`
+	case "redis_scan":
+		return `
+    url: "redis://localhost:6379"`
+	case "redis_streams":
+		if wombatType == "input" {
+			return `
+    url: "redis://localhost:6379"
+    streams: ["test-stream"]`
+		}
+		return `
+    url: "redis://localhost:6379"
+    stream: "test-stream"`
+	case "redis_hash":
+		return `
+    url: "redis://localhost:6379"
+    key: "test-hash"`
+	
+	// Elasticsearch/OpenSearch
+	case "elasticsearch":
+		return `
+    urls: ["http://localhost:9200"]
+    index: "test-index"`
+	case "opensearch":
+		return `
+    urls: ["http://localhost:9200"]
+    index: "test-index"
+    action: "index"
+    id: "${!json()}_id"`
+	
+	// MongoDB
+	case "mongodb":
+		if wombatType == "input" {
+			return `
+    url: "mongodb://localhost:27017"
+    database: "test"
+    collection: "test"
+    query: |
+      root = {}
+    `
+		}
+		return `
+    url: "mongodb://localhost:27017"
+    database: "test"
+    collection: "test"`
+	case "mongodb_change_stream":
+		return `
+    uri: "mongodb://localhost:27017"
+    database: "test"
+    collection: "test"`
+	
+	// AWS services
+	case "aws_s3":
+		return `
+    bucket: "test-bucket"
+    region: "us-east-1"`
+	case "aws_sqs":
+		return `
+    url: "https://sqs.us-east-1.amazonaws.com/123456789012/test-queue"
+    region: "us-east-1"`
+	case "aws_kinesis":
+		if wombatType == "input" {
+			return `
+    streams: ["test-stream"]
+    region: "us-east-1"`
+		}
+		return `
+    stream: "test-stream"
+    region: "us-east-1"
+    partition_key: "test-key"`
+	case "aws_kinesis_firehose":
+		return `
+    stream: "test-stream"
+    region: "us-east-1"`
+	case "aws_sns":
+		return `
+    topic_arn: "arn:aws:sns:us-east-1:123456789012:test-topic"
+    region: "us-east-1"`
+	case "aws_dynamodb":
+		return `
+    table: "test-table"
+    region: "us-east-1"`
+	
+	// AMQP
+	case "amqp_0_9":
+		if wombatType == "input" {
+			return `
+    urls: ["amqp://localhost:5672"]
+    queue: "test-queue"`
+		}
+		return `
+    urls: ["amqp://localhost:5672"]
+    exchange: "test-exchange"`
+	case "amqp_1":
+		if wombatType == "input" {
+			return `
+    url: "amqp://localhost:5672"
+    source_address: "test-queue"`
+		}
+		return `
+    url: "amqp://localhost:5672"
+    target_address: "test-queue"`
+	
+	// MQTT
+	case "mqtt":
+		return `
+    urls: ["tcp://localhost:1883"]
+    topics: ["test/topic"]`
+	
+	// Pulsar
+	case "pulsar":
+		if wombatType == "input" {
+			return `
+    url: "pulsar://localhost:6650"
+    topics: ["test-topic"]
+    subscription_name: "test-sub"`
+		}
+		return `
+    url: "pulsar://localhost:6650"
+    topic: "test-topic"`
+	
+	// NSQ
+	case "nsq":
+		if wombatType == "input" {
+			return `
+    nsqd_tcp_addresses: ["localhost:4150"]
+    topic: "test"
+    channel: "test-channel"`
+		}
+		return `
+    nsqd_tcp_address: "localhost:4150"
+    topic: "test"`
+	
+	// Azure services
+	case "azure_blob_storage":
+		return `
+    storage_account: "test"
+    storage_access_key: "test"
+    container: "test"`
+	case "azure_cosmosdb":
+		if wombatType == "input" {
+			return `
+    endpoint: "https://test.documents.azure.com:443/"
+    account_key: "test-key"
+    database: "test"
+    container: "test"
+    query: "SELECT * FROM c"
+    partition_keys_map: |
+      root = {"id": this.id}`
+		}
+		return `
+    endpoint: "https://test.documents.azure.com:443/"
+    account_key: "test-key"
+    database: "test"
+    container: "test"
+    partition_keys_map: |
+      root = {"id": this.id}`
+	case "azure_queue_storage":
+		return `
+    storage_account: "test"
+    storage_access_key: "test"
+    queue_name: "test"`
+	case "azure_table_storage":
+		return `
+    storage_account: "test"
+    storage_access_key: "test"
+    table_name: "test"`
+	case "azure_data_lake_gen2":
+		return `
+    storage_account: "test"
+    storage_access_key: "test"
+    filesystem: "test"`
+	
+	// GCP services
+	case "gcp_cloud_storage":
+		return `
+    bucket: "test-bucket"`
+	case "gcp_pubsub":
+		if wombatType == "input" {
+			return `
+    project: "test-project"
+    subscription: "test-subscription"`
+		}
+		return `
+    project: "test-project"
+    topic: "test-topic"`
+	case "gcp_bigquery":
+		return `
+    project: "test-project"
+    dataset: "test-dataset"
+    table: "test-table"`
+	case "gcp_bigquery_select":
+		return `
+    project: "test-project"
+    table: "test-dataset.test-table"`
+	case "gcp_bigtable":
+		return `
+    project: "test-project"
+    instance: "test-instance"
+    table: "test-table"`
+	
+	// Other databases
+	case "cassandra":
+		return `
+    addresses: ["localhost:9042"]
+    query: "INSERT INTO test.table (id, data) VALUES (?, ?)"`
+	case "couchbase":
+		return `
+    url: "couchbase://localhost"
+    bucket: "test-bucket"
+    id: "${!json()}_id"
+    content: |
+      root = this`
+	case "cypher":
+		return `
+    uri: "neo4j://localhost:7687"
+    cypher: "CREATE (n:Test {data: $data})"`
+	
+	// Other services
+	case "hdfs":
+		return `
+    hosts: ["localhost:9000"]
+    directory: "/test"`
+	case "socket":
+		return `
+    network: "tcp"
+    address: "localhost:9999"`
+	case "discord":
+		return `
+    channel_id: "123456789"
+    bot_token: "test-token"`
+	case "pusher":
+		return `
+    appId: "test-app"
+    key: "test-key"
+    secret: "test-secret"
+    cluster: "us-east-1"
+    channel: "test-channel"
+    event: "test-event"`
+	case "sftp":
+		return `
+    address: "localhost:22"
+    path: "/test/file.txt"
+    credentials:
+      username: "test"
+      password: "test"`
+	case "timeplus":
+		if wombatType == "input" {
+			return `
+    url: "http://localhost:8000"
+    apikey: "test-key"
+    query: "SELECT * FROM test"`
+		}
+		return `
+    url: "http://localhost:8000"
+    apikey: "test-key"
+    stream: "test"`
+	
+	default:
+		// Return empty config for components we don't have defaults for
+		return " {}"
+	}
+}
+
+func testWombatConfig(configPath string) error {
+	// Use wombat lint to validate the config
+	cmd := exec.Command("wombat", "lint", configPath)
+	cmd.Stdout = io.Discard
+	cmd.Stderr = io.Discard
+	
+	if err := cmd.Run(); err != nil {
+		// Try to get more details about the error
+		detailCmd := exec.Command("wombat", "lint", configPath)
+		output, _ := detailCmd.CombinedOutput()
+		return fmt.Errorf("%v: %s", err, string(output))
+	}
+	
+	return nil
+}
+
