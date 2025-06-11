@@ -26,26 +26,28 @@ var _ = Describe("Component Validation", func() {
 		projectRoot := filepath.Join("..", "..")
 		componentsDir = filepath.Join(projectRoot, ".connect")
 		testConfigDir = filepath.Join(projectRoot, "test", "component_validation", "test_configs")
-		
+
 		// Create test configs directory
 		Expect(os.MkdirAll(testConfigDir, 0755)).To(Succeed())
 	})
 
 	AfterEach(func() {
 		// Clean up test configs
-		os.RemoveAll(testConfigDir)
+		if err := os.RemoveAll(testConfigDir); err != nil {
+			GinkgoLogr.Error(err, "failed to remove test config directory", "dir", testConfigDir)
+		}
 	})
 
 	Describe("Scanner Components", func() {
 		It("should validate all scanner components", func() {
 			results := testComponents(filepath.Join(componentsDir, "scanners"), "scanner", testConfigDir)
-			
+
 			for _, result := range results {
 				if !result.Success {
 					Fail(fmt.Sprintf("Scanner %s failed validation: %s", result.Component, result.Error))
 				}
 			}
-			
+
 			Expect(len(results)).To(Equal(5), "Expected 5 scanner components")
 		})
 	})
@@ -53,13 +55,13 @@ var _ = Describe("Component Validation", func() {
 	Describe("Source Components", func() {
 		It("should validate all source components", func() {
 			results := testComponents(filepath.Join(componentsDir, "sources"), "input", testConfigDir)
-			
+
 			for _, result := range results {
 				if !result.Success {
 					Fail(fmt.Sprintf("Source %s failed validation: %s", result.Component, result.Error))
 				}
 			}
-			
+
 			Expect(len(results)).To(Equal(31), "Expected 31 source components")
 		})
 	})
@@ -67,30 +69,30 @@ var _ = Describe("Component Validation", func() {
 	Describe("Sink Components", func() {
 		It("should validate all sink components", func() {
 			results := testComponents(filepath.Join(componentsDir, "sinks"), "output", testConfigDir)
-			
+
 			for _, result := range results {
 				if !result.Success {
 					Fail(fmt.Sprintf("Sink %s failed validation: %s", result.Component, result.Error))
 				}
 			}
-			
+
 			Expect(len(results)).To(Equal(39), "Expected 39 sink components")
 		})
 	})
 
 	It("should generate a comprehensive test report", func() {
 		allResults := []TestResult{}
-		
+
 		// Test all component types
 		scannerResults := testComponents(filepath.Join(componentsDir, "scanners"), "scanner", testConfigDir)
 		allResults = append(allResults, scannerResults...)
-		
+
 		sourceResults := testComponents(filepath.Join(componentsDir, "sources"), "input", testConfigDir)
 		allResults = append(allResults, sourceResults...)
-		
+
 		sinkResults := testComponents(filepath.Join(componentsDir, "sinks"), "output", testConfigDir)
 		allResults = append(allResults, sinkResults...)
-		
+
 		// Generate summary
 		successCount := 0
 		for _, result := range allResults {
@@ -98,17 +100,21 @@ var _ = Describe("Component Validation", func() {
 				successCount++
 			}
 		}
-		
+
 		// Save results to JSON
 		resultsFile := filepath.Join(testConfigDir, "..", "test_results.json")
 		file, err := os.Create(resultsFile)
 		Expect(err).NotTo(HaveOccurred())
-		defer file.Close()
-		
+		defer func() {
+			if err := file.Close(); err != nil {
+				GinkgoLogr.Error(err, "failed to close results file")
+			}
+		}()
+
 		encoder := json.NewEncoder(file)
 		encoder.SetIndent("", "  ")
 		Expect(encoder.Encode(allResults)).To(Succeed())
-		
+
 		// All components should pass
 		Expect(successCount).To(Equal(len(allResults)), "All components should pass validation")
 		Expect(len(allResults)).To(Equal(75), "Expected 75 total components")
@@ -123,30 +129,30 @@ type ComponentSpec struct {
 }
 
 type TestResult struct {
-	Component   string        `json:"component"`
-	Type        string        `json:"type"`
-	Success     bool          `json:"success"`
-	Error       string        `json:"error,omitempty"`
-	ConfigPath  string        `json:"config_path"`
-	Duration    time.Duration `json:"duration"`
+	Component  string        `json:"component"`
+	Type       string        `json:"type"`
+	Success    bool          `json:"success"`
+	Error      string        `json:"error,omitempty"`
+	ConfigPath string        `json:"config_path"`
+	Duration   time.Duration `json:"duration"`
 }
 
 func testComponents(dir string, wombatType string, testConfigDir string) []TestResult {
 	results := []TestResult{}
-	
+
 	files, err := os.ReadDir(dir)
 	if err != nil {
 		return results
 	}
-	
+
 	for _, file := range files {
 		if !strings.HasSuffix(file.Name(), ".yml") {
 			continue
 		}
-		
+
 		componentPath := filepath.Join(dir, file.Name())
 		start := time.Now()
-		
+
 		// Read component spec
 		spec, err := readComponentSpec(componentPath)
 		if err != nil {
@@ -160,7 +166,7 @@ func testComponents(dir string, wombatType string, testConfigDir string) []TestR
 			})
 			continue
 		}
-		
+
 		// Generate wombat config
 		configPath := filepath.Join(testConfigDir, fmt.Sprintf("%s_%s.yaml", wombatType, strings.TrimSuffix(file.Name(), ".yml")))
 		if err := generateWombatConfig(spec.Name, wombatType, configPath); err != nil {
@@ -174,7 +180,7 @@ func testComponents(dir string, wombatType string, testConfigDir string) []TestR
 			})
 			continue
 		}
-		
+
 		// Test with wombat
 		if err := testWombatConfig(configPath); err != nil {
 			results = append(results, TestResult{
@@ -195,7 +201,7 @@ func testComponents(dir string, wombatType string, testConfigDir string) []TestR
 			})
 		}
 	}
-	
+
 	return results
 }
 
@@ -204,14 +210,16 @@ func readComponentSpec(path string) (*ComponentSpec, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
-	
+	defer func() {
+		_ = file.Close() // Ignore close error in defer
+	}()
+
 	var spec ComponentSpec
 	decoder := yaml.NewDecoder(file)
 	if err := decoder.Decode(&spec); err != nil {
 		return nil, err
 	}
-	
+
 	return &spec, nil
 }
 
@@ -220,10 +228,10 @@ func generateWombatConfig(componentName string, wombatType string, outputPath st
 	if err := os.MkdirAll(filepath.Dir(outputPath), 0755); err != nil {
 		return err
 	}
-	
+
 	// Generate minimal valid config based on type
 	var config string
-	
+
 	switch wombatType {
 	case "input":
 		minimalConfig := getMinimalConfig(componentName, wombatType)
@@ -233,7 +241,7 @@ func generateWombatConfig(componentName string, wombatType string, outputPath st
 output:
   drop: {}
 `, componentName, minimalConfig)
-		
+
 	case "output":
 		minimalConfig := getMinimalConfig(componentName, wombatType)
 		config = fmt.Sprintf(`input:
@@ -245,7 +253,7 @@ output:
 output:
   %s:%s
 `, componentName, minimalConfig)
-		
+
 	case "scanner":
 		scannerConfig := getScannerConfig(componentName)
 		config = fmt.Sprintf(`input:
@@ -255,7 +263,7 @@ output:
   drop: {}
 `, scannerConfig)
 	}
-	
+
 	return os.WriteFile(outputPath, []byte(config), 0644)
 }
 
@@ -307,19 +315,19 @@ func getMinimalConfig(componentName string, wombatType string) string {
     urls: ["nats://localhost:4222"]
     bucket: "test-bucket"
     key: "test-key"`
-		
+
 	// Generate
 	case "generate":
 		return `
     count: 1
     mapping: |
       root = {"test": "data"}`
-	
+
 	// HTTP
 	case "http_client":
 		return `
     url: "http://localhost:8080"`
-	
+
 	// Kafka
 	case "kafka_franz":
 		if wombatType == "input" {
@@ -331,7 +339,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     seed_brokers: ["localhost:9092"]
     topic: "test-topic"`
-	
+
 	// Redis family
 	case "redis_list":
 		return `
@@ -362,7 +370,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     url: "redis://localhost:6379"
     key: "test-hash"`
-	
+
 	// Elasticsearch/OpenSearch
 	case "elasticsearch":
 		return `
@@ -374,7 +382,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     index: "test-index"
     action: "index"
     id: "${!json()}_id"`
-	
+
 	// MongoDB
 	case "mongodb":
 		if wombatType == "input" {
@@ -395,7 +403,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     uri: "mongodb://localhost:27017"
     database: "test"
     collection: "test"`
-	
+
 	// AWS services
 	case "aws_s3":
 		return `
@@ -427,7 +435,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     table: "test-table"
     region: "us-east-1"`
-	
+
 	// AMQP
 	case "amqp_0_9":
 		if wombatType == "input" {
@@ -447,13 +455,13 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     url: "amqp://localhost:5672"
     target_address: "test-queue"`
-	
+
 	// MQTT
 	case "mqtt":
 		return `
     urls: ["tcp://localhost:1883"]
     topics: ["test/topic"]`
-	
+
 	// Pulsar
 	case "pulsar":
 		if wombatType == "input" {
@@ -465,7 +473,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     url: "pulsar://localhost:6650"
     topic: "test-topic"`
-	
+
 	// NSQ
 	case "nsq":
 		if wombatType == "input" {
@@ -477,7 +485,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     nsqd_tcp_address: "localhost:4150"
     topic: "test"`
-	
+
 	// Azure services
 	case "azure_blob_storage":
 		return `
@@ -517,7 +525,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     storage_account: "test"
     storage_access_key: "test"
     filesystem: "test"`
-	
+
 	// GCP services
 	case "gcp_cloud_storage":
 		return `
@@ -545,7 +553,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     project: "test-project"
     instance: "test-instance"
     table: "test-table"`
-	
+
 	// Other databases
 	case "cassandra":
 		return `
@@ -562,7 +570,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 		return `
     uri: "neo4j://localhost:7687"
     cypher: "CREATE (n:Test {data: $data})"`
-	
+
 	// Other services
 	case "hdfs":
 		return `
@@ -602,7 +610,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     url: "http://localhost:8000"
     apikey: "test-key"
     stream: "test"`
-	
+
 	default:
 		// Return empty config for components we don't have defaults for
 		return " {}"
@@ -614,14 +622,13 @@ func testWombatConfig(configPath string) error {
 	cmd := exec.Command("wombat", "lint", configPath)
 	cmd.Stdout = io.Discard
 	cmd.Stderr = io.Discard
-	
+
 	if err := cmd.Run(); err != nil {
 		// Try to get more details about the error
 		detailCmd := exec.Command("wombat", "lint", configPath)
 		output, _ := detailCmd.CombinedOutput()
 		return fmt.Errorf("%v: %s", err, string(output))
 	}
-	
+
 	return nil
 }
-

@@ -7,8 +7,53 @@ tasks:
       - go build -tags "{{.TAGS}}" -o ./target/connect-runtime-wombat *.go
 
   test:
+    desc: Run all tests
     cmds:
       - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4
+
+  test:coverage:
+    desc: Run tests with coverage report
+    cmds:
+      - go test -coverprofile=coverage.out -covermode=atomic ./...
+      - go tool cover -html=coverage.out -o coverage.html
+      - echo "Coverage report generated at coverage.html"
+      - 'go tool cover -func=coverage.out | grep total | awk ''{print "Total coverage: " $3}'''
+
+  lint:
+    desc: Run golangci-lint
+    cmds:
+      - golangci-lint run ./... --timeout=5m
+
+
+  lint:install:
+    desc: Install golangci-lint
+    cmds:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+  fmt:
+    desc: Format all Go code
+    cmds:
+      - go fmt ./...
+
+  fmt:check:
+    desc: Check if code is formatted
+    cmds:
+      - test -z "$(gofmt -l .)" || (echo "Code is not formatted. Run 'task fmt' to fix." && exit 1)
+
+  quality:
+    desc: Run all quality checks (format, lint, test)
+    cmds:
+      - task: fmt:check
+      - task: lint
+      - task: test
+
+  quality:warn:
+    desc: Run all quality checks with non-failing lint
+    cmds:
+      - task: fmt:check
+      - cmd: golangci-lint run ./... --timeout=5m || true
+        silent: false
+      - task: test
 
   test:crawl:
     cmds:

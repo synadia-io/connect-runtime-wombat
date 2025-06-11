@@ -12,7 +12,18 @@
       "Bash(task test)",
       "Bash(go mod:*)",
       "Bash(ginkgo:*)",
-      "Bash(task test:*)"
+      "Bash(task test:*)",
+      "Bash(go fmt:*)",
+      "Bash(go vet:*)",
+      "Bash(go test:*)",
+      "Bash(go install:*)",
+      "Bash(golangci-lint run:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(task fmt:check)",
+      "Bash(golangci-lint:*)",
+      "Bash(task quality)",
+      "Bash(task fmt)"
     ],
     "deny": []
   }

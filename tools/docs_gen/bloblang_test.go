@@ -28,7 +28,6 @@ import (
 
 	"github.com/redpanda-data/benthos/v4/public/bloblang"
 	"github.com/redpanda-data/benthos/v4/public/service"
-
 	//_ "github.com/wombatwisdom/wombat/public/components/all"
 )
 
@@ -36,7 +35,9 @@ func TestFunctionExamples(t *testing.T) {
 	tmpJSONFile, err := os.CreateTemp("", "benthos_bloblang_functions_test")
 	require.NoError(t, err)
 	t.Cleanup(func() {
-		os.Remove(tmpJSONFile.Name())
+		if err := os.Remove(tmpJSONFile.Name()); err != nil {
+			t.Logf("failed to remove temp file: %v", err)
+		}
 	})
 
 	_, err = tmpJSONFile.WriteString(`{"foo":"bar"}`)
@@ -94,7 +95,9 @@ func TestMethodExamples(t *testing.T) {
 	tmpJSONFile, err := os.CreateTemp("", "benthos_bloblang_methods_test")
 	require.NoError(t, err)
 	t.Cleanup(func() {
-		os.Remove(tmpJSONFile.Name())
+		if err := os.Remove(tmpJSONFile.Name()); err != nil {
+			t.Logf("failed to remove temp file: %v", err)
+		}
 	})
 
 	_, err = tmpJSONFile.WriteString(`
