@@ -5,7 +5,6 @@ import (
 	_ "github.com/synadia-io/connect-runtime-wombat/components"
 	"github.com/synadia-io/connect/model"
 	"github.com/synadia-io/connect/runtime"
-	"github.com/synadia-labs/nex/models"
 	"gopkg.in/yaml.v3"
 )
 
@@ -15,13 +14,18 @@ const (
 	InstanceMetricHeader  = "instance_id"
 )
 
+// metricsAPIPrefix generates the NEX-compatible metrics subject prefix
+func metricsAPIPrefix(namespace string) string {
+	return fmt.Sprintf("$NEX.FEED.%s.metrics", namespace)
+}
+
 func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
 	mainCfg := Frag()
 
 	if rt.NatsUrl != "" && rt.Namespace != "" && rt.Instance != "" {
 		natsCfg := Frag().
 			String("url", rt.NatsUrl).
-			String("subject", fmt.Sprintf("%s.%s", models.MetricsAPIPrefix(rt.Namespace), rt.Instance)).
+			String("subject", fmt.Sprintf("%s.%s", metricsAPIPrefix(rt.Namespace), rt.Instance)).
 			StringMap("headers", map[string]string{
 				AccountMetricHeader:   rt.Namespace,
 				ConnectorMetricHeader: rt.Connector,
