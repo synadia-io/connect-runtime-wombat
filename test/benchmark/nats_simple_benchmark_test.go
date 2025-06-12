@@ -257,7 +257,9 @@ func TestNATSThroughput(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer sub.Unsubscribe()
+	defer func() {
+		_ = sub.Unsubscribe()
+	}()
 
 	// Producer configuration
 	producerConfig := fmt.Sprintf(`

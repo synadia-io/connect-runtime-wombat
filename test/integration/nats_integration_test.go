@@ -101,7 +101,11 @@ output:
 				received = append(received, string(msg.Data))
 			})
 			Expect(err).NotTo(HaveOccurred())
-			defer sub.Unsubscribe()
+			defer func() {
+				if err := sub.Unsubscribe(); err != nil {
+					GinkgoWriter.Printf("Failed to unsubscribe: %v\n", err)
+				}
+			}()
 
 			// Create producer
 			producerConfig := fmt.Sprintf(`
@@ -374,7 +378,11 @@ output:
 			// Watch for updates
 			watcher, err := kv.Watch(context.Background(), key)
 			Expect(err).NotTo(HaveOccurred())
-			defer watcher.Stop()
+			defer func() {
+				if err := watcher.Stop(); err != nil {
+					GinkgoWriter.Printf("Failed to stop watcher: %v\n", err)
+				}
+			}()
 
 			go func() {
 				for entry := range watcher.Updates() {

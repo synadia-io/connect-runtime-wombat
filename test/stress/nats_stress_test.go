@@ -69,7 +69,11 @@ var _ = Describe("NATS Stress Tests", func() {
 				received.Add(1)
 			})
 			Expect(err).NotTo(HaveOccurred())
-			defer sub.Unsubscribe()
+			defer func() {
+				if err := sub.Unsubscribe(); err != nil {
+					GinkgoWriter.Printf("Failed to unsubscribe: %v\n", err)
+				}
+			}()
 
 			// Producer configuration with high throughput
 			producerConfig := fmt.Sprintf(`
@@ -133,7 +137,11 @@ output:
 				received.Add(1)
 			})
 			Expect(err).NotTo(HaveOccurred())
-			defer sub.Unsubscribe()
+			defer func() {
+				if err := sub.Unsubscribe(); err != nil {
+					GinkgoWriter.Printf("Failed to unsubscribe: %v\n", err)
+				}
+			}()
 
 			// Start multiple publishers
 			var wg sync.WaitGroup
@@ -216,7 +224,11 @@ output:
 				totalBytes.Add(int64(len(msg.Data)))
 			})
 			Expect(err).NotTo(HaveOccurred())
-			defer sub.Unsubscribe()
+			defer func() {
+				if err := sub.Unsubscribe(); err != nil {
+					GinkgoWriter.Printf("Failed to unsubscribe: %v\n", err)
+				}
+			}()
 
 			// Producer configuration - generate 1MB messages
 			producerConfig := fmt.Sprintf(`
@@ -523,7 +535,11 @@ output:
 				received.Add(1)
 			})
 			Expect(err).NotTo(HaveOccurred())
-			defer sub.Unsubscribe()
+			defer func() {
+				if err := sub.Unsubscribe(); err != nil {
+					GinkgoWriter.Printf("Failed to unsubscribe: %v\n", err)
+				}
+			}()
 
 			// Start producer in background
 			ctx, cancel := context.WithCancel(context.Background())
@@ -556,7 +572,12 @@ output:
 						continue
 					}
 
-					stream.Run(ctx)
+					if err := stream.Run(ctx); err != nil {
+						// Context cancellation is expected
+						if ctx.Err() == nil {
+							continue
+						}
+					}
 					sent.Add(100)
 				}
 			}()
@@ -570,10 +591,15 @@ output:
 			nc2, err = nats.Connect(srv.ClientURL())
 			Expect(err).NotTo(HaveOccurred())
 
-			sub, err = nc2.Subscribe(subject, func(msg *nats.Msg) {
+			sub2, err := nc2.Subscribe(subject, func(msg *nats.Msg) {
 				received.Add(1)
 			})
 			Expect(err).NotTo(HaveOccurred())
+			defer func() {
+				if err := sub2.Unsubscribe(); err != nil {
+					GinkgoWriter.Printf("Failed to unsubscribe: %v\n", err)
+				}
+			}()
 
 			// Wait for completion
 			time.Sleep(5 * time.Second)

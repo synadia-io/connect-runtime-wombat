@@ -108,7 +108,9 @@ func benchmarkNATSCore(natsURL string, messageCount, messageSize, concurrent int
 	if err != nil {
 		panic(err)
 	}
-	defer sub.Unsubscribe()
+	defer func() {
+		_ = sub.Unsubscribe()
+	}()
 
 	// Producer configuration
 	producerConfig := fmt.Sprintf(`
@@ -315,7 +317,8 @@ output:
 		latency := time.Since(meta.Timestamp)
 		received <- latency
 		
-		msg.Ack()
+		// Best effort ack - ignore errors in benchmark
+		_ = msg.Ack()
 	})
 	if err != nil {
 		panic(err)
