@@ -34,7 +34,7 @@ tasks:
   test:stress:
     desc: Run stress tests
     cmds:
-      - go run github.com/onsi/ginkgo/v2/ginkgo -v ./test/stress
+      - go run github.com/onsi/ginkgo/v2/ginkgo -v ./stress_tests
 
   test:coverage:
     desc: Run tests with coverage report

@@ -1,0 +1,39 @@
+name: Stress Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run stress tests once a week on Sunday at 2 AM UTC
+    - cron: '0 2 * * 0'
+
+jobs:
+  stress-tests:
+    name: Run Stress Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+
+      - name: Install Ginkgo
+        run: go install github.com/onsi/ginkgo/v2/ginkgo
+
+      - name: Run stress tests
+        run: |
+          echo "Running stress tests..."
+          task test:stress
+
+      - name: Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stress-test-results
+          path: |
+            stress_tests/**/*.log
+            stress_tests/**/*.out
