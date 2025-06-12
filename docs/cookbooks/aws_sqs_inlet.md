@@ -14,10 +14,10 @@ Setting up SQS is not part of this getting started guide. Take a look at the
 the queue URL and the AWS credentials. You will need them later.
 
 ## Build
-An Inlet is a connector which reads data from an external system and writes it to NATS. Let's start by creating a 
+An Inlet is a connector which reads data from an external system and writes it to NATS. Let's start by creating a
 simple inlet connecting [AWS SQS](https://aws.amazon.com/sqs/) with NATS.
 
-For this we will be using the `aws_sqs` source. You can find more information about the source by running the following 
+For this we will be using the `aws_sqs` source. You can find more information about the source by running the following
 command:
 ```shell
 connect component describe source aws_sqs
@@ -30,13 +30,13 @@ generate a new inlet and edit it:
 ```shell
 connect connector create -i sqs-input
 ```
-The `-i` tells the create command we want to interactively create the inlet. 
+The `-i` tells the create command we want to interactively create the inlet.
 
 The CLI will ask if you want to create an inlet or an outlet. Select `inlet` and press enter. The CLI will generate a
 template inlet definition and open it in your default editor.
 
-Since we are creating an inlet, the steps in our config contains a `source` and `producer` section. The `source` 
-section is where we define how to read data from the external system. The `producer` section is where we define how to 
+Since we are creating an inlet, the steps in our config contains a `source` and `producer` section. The `source`
+section is where we define how to read data from the external system. The `producer` section is where we define how to
 write data to NATS.
 
 Let's fill in the `source` and `producer` sections of our connector. Here is an example:

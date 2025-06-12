@@ -3,14 +3,15 @@ package runner
 import (
 	"context"
 	"fmt"
-	"github.com/rs/zerolog/log"
-	"github.com/synadia-io/connect-runtime-wombat/compiler"
-	"github.com/synadia-io/connect/model"
-	"github.com/synadia-io/connect/runtime"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/rs/zerolog/log"
+	"github.com/synadia-io/connect-runtime-wombat/compiler"
+	"github.com/synadia-io/connect/model"
+	"github.com/synadia-io/connect/runtime"
 )
 
 func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error {

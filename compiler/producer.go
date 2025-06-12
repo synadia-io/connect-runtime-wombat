@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"fmt"
+
 	"github.com/synadia-io/connect/model"
 )
 

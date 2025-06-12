@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+
 	"github.com/synadia-io/connect/builders"
 )
 

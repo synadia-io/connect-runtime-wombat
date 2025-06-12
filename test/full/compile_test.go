@@ -2,6 +2,7 @@ package full_test
 
 import (
 	"fmt"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
@@ -20,7 +21,7 @@ description: A summary of what this connector does
 runtime_id: wombat
 steps:
     producer:
-        core: 
+        core:
             subject: connect.demo
         nats:
             url: nats://demo.nats.io:4222

@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/Jeffail/gabs/v2"
-	"github.com/synadia-io/connect-runtime-wombat/tools/docs_gen/corrections"
-	"gopkg.in/yaml.v3"
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/Jeffail/gabs/v2"
+	"github.com/synadia-io/connect-runtime-wombat/tools/docs_gen/corrections"
+	"gopkg.in/yaml.v3"
 
 	"github.com/redpanda-data/benthos/v4/public/service"
 

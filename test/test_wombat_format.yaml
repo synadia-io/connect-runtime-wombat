@@ -71,4 +71,3 @@ tracer:
 shutdown_delay: 0s
 shutdown_timeout: 20s
 tests: []
-

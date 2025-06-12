@@ -3,14 +3,14 @@ label: AMQP 0.9
 name: amqp_0_9
 status: stable
 description: |-
-  Sends messages to an AMQP (0.91) exchange. 
+  Sends messages to an AMQP (0.91) exchange.
 
-  AMQP is a messaging protocol used by various message brokers, including RabbitMQ. The metadata from each message 
+  AMQP is a messaging protocol used by various message brokers, including RabbitMQ. The metadata from each message
   are delivered as headers.
-    
-  It's possible for this output type to create the target exchange by setting `exchange_declare.enabled` to `true`, if 
+
+  It's possible for this output type to create the target exchange by setting `exchange_declare.enabled` to `true`, if
   the exchange already exists then the declaration passively verifies that the settings match.
-    
+
   TLS is automatic when connecting to an `amqps` URL, but custom settings can be enabled in the `tls` section.
 fields:
   - path: urls
@@ -194,7 +194,7 @@ fields:
       The maximum number of messages to have in flight at a given time.  Increasing
       the max in flight might improve throughput. However, if message ordering needs
       to be guaranteed, then
-      this should be set to `1`.    
+      this should be set to `1`.
   - path: persistent
     name: persistent
     label: Persistent
@@ -261,7 +261,7 @@ fields:
         default: 'false'
         optional: true
         description: |-
-          Whether to allow the remote server to repeatedly request renegotiation. 
+          Whether to allow the remote server to repeatedly request renegotiation.
           Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
       - path: tls.root_cas
         name: root_cas
@@ -272,8 +272,8 @@ fields:
         examples:
           - '-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE-----'
         description: |-
-          An optional root certificate authority to use. 
-          This is a string, representing a certificate chain from the parent trusted root certificate, 
+          An optional root certificate authority to use.
+          This is a string, representing a certificate chain from the parent trusted root certificate,
           to possible intermediate signing certificates, to the host certificate.
         secret: true
       - path: tls.client_certs
@@ -287,7 +287,7 @@ fields:
           -   - cert: foo
                 key: bar
         description: |-
-          A list of client certificates to use. 
+          A list of client certificates to use.
         fields:
           - path: tls.client_certs[].cert
             name: cert
@@ -316,11 +316,11 @@ fields:
               - foo
               - ${KEY_PASSWORD}
             description: |-
-              A plain text password for when the private key is password encrypted in PKCS#1 or 
-              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported 
+              A plain text password for when the private key is password encrypted in PKCS#1 or
+              PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported
               for the PKCS#8 format.
 
-              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the 
-              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker 
+              Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the
+              ciphertext, it is vulnerable to padding oracle attacks that can let an attacker
               recover the plaintext.
             secret: true

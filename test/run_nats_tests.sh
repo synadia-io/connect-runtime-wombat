@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 run_test() {
     local test_name=$1
     local test_path=$2
-    
+
     echo -e "${YELLOW}Running $test_name...${NC}"
     if ginkgo -v $test_path; then
         echo -e "${GREEN}✓ $test_name passed${NC}"

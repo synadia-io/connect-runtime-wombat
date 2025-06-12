@@ -1,8 +1,9 @@
 package compiler
 
 import (
-	. "github.com/synadia-io/connect/builders"
 	"testing"
+
+	. "github.com/synadia-io/connect/builders"
 )
 
 type producerStepTest struct {

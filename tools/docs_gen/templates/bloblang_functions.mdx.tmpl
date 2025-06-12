@@ -3,7 +3,7 @@
 #### Parameters
 
 {{range $i, $param := .Definitions -}}
-- *`{{$param.Name}}`* &lt;{{if $param.IsOptional}}(optional) {{end}}{{$param.ValueType}}{{if $param.DefaultMarshalled}}, default `{{$param.DefaultMarshalled}}`{{end}}&gt; {{$param.Description}}  
+- *`{{$param.Name}}`* &lt;{{if $param.IsOptional}}(optional) {{end}}{{$param.ValueType}}{{if $param.DefaultMarshalled}}, default `{{$param.DefaultMarshalled}}`{{end}}&gt; {{$param.Description}}
 {{end -}}
 {{end -}}
 {{end -}}

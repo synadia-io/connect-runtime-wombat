@@ -1,9 +1,10 @@
 package main
 
 import (
+	"testing"
+
 	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestFieldTreeConstruction(t *testing.T) {

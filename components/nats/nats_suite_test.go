@@ -1,8 +1,9 @@
 package nats_test
 
 import (
-	"github.com/nats-io/nats.go"
 	"testing"
+
+	"github.com/nats-io/nats.go"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

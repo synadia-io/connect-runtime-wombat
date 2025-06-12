@@ -1,8 +1,9 @@
 package compiler
 
 import (
-	"github.com/synadia-io/connect-runtime-wombat/utils"
 	"testing"
+
+	"github.com/synadia-io/connect-runtime-wombat/utils"
 )
 
 func TestFragment(t *testing.T) {

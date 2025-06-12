@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"fmt"
+
 	_ "github.com/synadia-io/connect-runtime-wombat/components"
 	"github.com/synadia-io/connect/model"
 	"github.com/synadia-io/connect/runtime"

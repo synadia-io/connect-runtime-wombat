@@ -19,7 +19,7 @@ description: |-
   - pulsar_redelivery_count
   - All properties of the message
   ```
-  
+
 fields:
   - path: url
     name: url

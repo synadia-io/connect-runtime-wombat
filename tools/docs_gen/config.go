@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"os"
 	"slices"
+
+	"gopkg.in/yaml.v3"
 )
 
 func LoadConfig(base *Config, path string) error {

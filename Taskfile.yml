@@ -92,7 +92,7 @@ tasks:
       - npx --yes ajv-cli validate -s component-spec-v1.schema.json -d ".connect/*/*.yml" --verbose
 
   validate_dir:
-    requires: 
+    requires:
       vars:
         - DIR
     cmds:

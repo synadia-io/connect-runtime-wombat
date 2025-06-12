@@ -2,6 +2,8 @@ package compiler_test
 
 import (
 	"context"
+	"strings"
+
 	"github.com/Jeffail/gabs/v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -11,7 +13,6 @@ import (
 	. "github.com/synadia-io/connect/builders"
 	"github.com/synadia-io/connect/model"
 	"gopkg.in/yaml.v3"
-	"strings"
 
 	_ "github.com/synadia-io/connect-runtime-wombat/components"
 )

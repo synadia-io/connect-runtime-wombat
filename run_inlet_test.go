@@ -3,6 +3,11 @@ package main_test
 import (
 	"context"
 	"fmt"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
+
 	"github.com/Jeffail/gabs/v2"
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
 	"github.com/synadia-io/connect-runtime-wombat/runner"
@@ -10,10 +15,6 @@ import (
 	. "github.com/synadia-io/connect/builders"
 	"github.com/synadia-io/connect/runtime"
 	"gopkg.in/yaml.v3"
-	"strings"
-	"sync"
-	"sync/atomic"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"

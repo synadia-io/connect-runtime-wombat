@@ -1,10 +1,11 @@
 package corrections
 
 import (
-	"cuelang.org/go/pkg/regexp"
 	"fmt"
-	"github.com/Jeffail/gabs/v2"
 	"strings"
+
+	"cuelang.org/go/pkg/regexp"
+	"github.com/Jeffail/gabs/v2"
 )
 
 type AsciidocToMd struct {

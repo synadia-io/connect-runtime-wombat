@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"sync"
+	"time"
+
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
@@ -11,8 +14,6 @@ import (
 	"github.com/prometheus/common/model"
 	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/synadia-io/connect-runtime-wombat/components/nats/stats"
-	"sync"
-	"time"
 )
 
 const (
