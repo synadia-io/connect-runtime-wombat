@@ -173,7 +173,22 @@ var _ = Describe("Running an inlet", func() {
 				err = runner.Run(ctx, test.Runtime(), inlet)
 				Expect(err).NotTo(HaveOccurred())
 
-				Expect(serviceCallCount).To(BeNumerically("==", 5))
+				// Wait for messages to be processed
+				Eventually(func() int {
+					outputLock.Lock()
+					defer outputLock.Unlock()
+					return len(outputMessages)
+				}, 5*time.Second, 100*time.Millisecond).Should(Equal(5))
+
+				// Check service call count with lock
+				serviceCallLock.Lock()
+				actualCallCount := serviceCallCount
+				serviceCallLock.Unlock()
+				Expect(actualCallCount).To(BeNumerically("==", 5))
+				
+				// Check messages with lock
+				outputLock.Lock()
+				defer outputLock.Unlock()
 				for _, msg := range outputMessages {
 					Expect(string(msg.Data)).To(Equal(strings.ToUpper(string(msg.Data))))
 				}
