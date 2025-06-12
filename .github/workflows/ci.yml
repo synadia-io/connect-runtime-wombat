@@ -65,7 +65,8 @@ jobs:
       - name: Generate coverage report
         run: |
           # Generate coverage using go test instead of ginkgo
-          go test -coverprofile=coverage.out -covermode=atomic ./...
+          # Exclude stress_tests directory from coverage
+          go test -coverprofile=coverage.out -covermode=atomic $(go list ./... | grep -v /stress_tests)
           go tool cover -func=coverage.out
 
       - name: Upload coverage to Codecov
