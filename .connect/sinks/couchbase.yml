@@ -4,7 +4,7 @@ name: couchbase
 status: experimental
 description: |-
   Performs operations against Couchbase for each message, allowing you to store or delete data.
-    
+
     When inserting, replacing or upserting documents, each must have the `content` property set.
 fields:
   - path: url

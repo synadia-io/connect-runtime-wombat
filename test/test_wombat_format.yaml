@@ -1,0 +1,73 @@
+http:
+  enabled: true
+  address: 0.0.0.0:4195
+  root_path: /benthos
+  debug_endpoints: false
+  cert_file: ""
+  key_file: ""
+  cors:
+    enabled: false
+    allowed_origins: []
+  basic_auth:
+    enabled: false
+    realm: restricted
+    username: ""
+    password_hash: ""
+    algorithm: sha256
+    salt: ""
+input:
+  nats:
+    urls: [] # No default (required)
+    subject: foo.bar.baz # No default (required)
+    queue: "" # No default (optional)
+    auto_replay_nacks: true
+    send_ack: true
+    nak_delay: 1m # No default (optional)
+    prefetch_count: 524288
+    tls:
+      enabled: false
+      skip_cert_verify: false
+      enable_renegotiation: false
+      root_cas: ""
+      root_cas_file: ""
+      client_certs: []
+    auth:
+      nkey_file: ./seed.nk # No default (optional)
+      nkey: '!!!SECRET_SCRUBBED!!!' # No default (optional)
+      user_credentials_file: ./user.creds # No default (optional)
+      user_jwt: "" # No default (optional)
+      user_nkey_seed: "" # No default (optional)
+    extract_tracing_map: root = @ # No default (optional)
+buffer:
+  none: {}
+pipeline:
+  threads: -1
+  processors: []
+output:
+  stdout: {}
+input_resources: []
+processor_resources: []
+output_resources: []
+cache_resources: []
+rate_limit_resources: []
+logger:
+  level: INFO
+  format: logfmt
+  add_timestamp: false
+  level_name: level
+  timestamp_name: time
+  message_name: msg
+  static_fields:
+    '@service': benthos
+  file:
+    path: ""
+    rotate: false
+    rotate_max_age_days: 0
+metrics:
+  prometheus: {}
+  mapping: ""
+tracer:
+  none: {}
+shutdown_delay: 0s
+shutdown_timeout: 20s
+tests: []

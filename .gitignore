@@ -4,3 +4,15 @@ component.json
 .goose
 .venv
 .vscode
+/component-spec-v1.schema.json
+
+# Test artifacts
+test/component_validation/test_configs/
+test/component_validation/test_results.json
+
+# Coverage files
+coverage.out
+coverage.html
+*.cover
+
+.claude

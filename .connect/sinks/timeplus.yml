@@ -4,10 +4,10 @@ name: timeplus
 status: experimental
 description: |-
   Sends message to a Timeplus Enterprise stream via ingest endpoint
-    
+
     This output can send message to Timeplus Enterprise Cloud, Timeplus Enterprise (self-hosted) or directly to timeplusd.
-    
-    This output accepts structured message only. It also expects all message contains the same keys and matches the 
+
+    This output accepts structured message only. It also expects all message contains the same keys and matches the
     schema of the destination stream.
 fields:
   - path: target

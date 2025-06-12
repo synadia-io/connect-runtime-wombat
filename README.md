@@ -9,7 +9,7 @@ You can leverage this runtime abstraction to build your own runtime, or like thi
 to benefit from the components it already provides.
 
 ## Synadia Connect
-Synadia Connect is a platform for building and deploying connectors that move data between Nats and external systems. 
+Synadia Connect is a platform for building and deploying connectors that move data between Nats and external systems.
 Connectors are built using a simple YAML configuration file and can be deployed to the Synadia Connect platform.
 
 ## Wombat

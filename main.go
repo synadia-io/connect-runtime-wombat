@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/synadia-io/connect-runtime-wombat/runner"
 	"github.com/synadia-io/connect/runtime"
-	"os"
 )
 
 func main() {

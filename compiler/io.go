@@ -1,20 +1,20 @@
 package compiler
 
 import (
-    "github.com/synadia-io/connect/model"
+	"github.com/synadia-io/connect/model"
 )
 
 func compileSource(m model.SourceStep, t *model.TransformerStep) Fragment {
-    result := Frag().
-        Map(m.Type, m.Config)
+	result := Frag().
+		Map(m.Type, m.Config)
 
-    if t != nil {
-        result.Fragments("processors", compileTransformer(*t))
-    }
+	if t != nil {
+		result.Fragments("processors", compileTransformer(*t))
+	}
 
-    return result
+	return result
 }
 
 func compileSink(m model.SinkStep) Fragment {
-    return Frag().Map(m.Type, m.Config)
+	return Frag().Map(m.Type, m.Config)
 }

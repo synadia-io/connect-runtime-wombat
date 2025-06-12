@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"net/http"
+
 	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/rs/zerolog/log"
 	_ "github.com/synadia-io/connect-runtime-wombat/components"
 	"github.com/synadia-io/connect/runtime"
-	"net/http"
 )
 
 func Validate(ctx context.Context, runtime *runtime.Runtime, code string, mux *http.ServeMux) (*service.Stream, error) {
