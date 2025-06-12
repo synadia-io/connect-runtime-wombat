@@ -14,3 +14,5 @@ test/component_validation/test_results.json
 coverage.out
 coverage.html
 *.cover
+
+.claude

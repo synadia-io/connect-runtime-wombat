@@ -11,6 +11,31 @@ tasks:
     cmds:
       - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4
 
+  test:nats:
+    desc: Run NATS component tests (integration, benchmark, stress)
+    cmds:
+      - ./test/run_nats_tests.sh
+
+  test:integration:
+    desc: Run integration tests
+    cmds:
+      - go run github.com/onsi/ginkgo/v2/ginkgo -v ./test/integration
+
+  test:benchmark:
+    desc: Run performance benchmarks
+    cmds:
+      - go test -run=^$ -bench=BenchmarkSimple -benchmem ./test/benchmark -benchtime=10x
+
+  test:benchmark:full:
+    desc: Run all performance benchmarks (takes longer)
+    cmds:
+      - go test -run=^$ -bench=. -benchmem ./test/benchmark -benchtime=3x
+
+  test:stress:
+    desc: Run stress tests
+    cmds:
+      - go run github.com/onsi/ginkgo/v2/ginkgo -v ./test/stress
+
   test:coverage:
     desc: Run tests with coverage report
     cmds:
