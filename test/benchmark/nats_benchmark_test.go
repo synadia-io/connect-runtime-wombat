@@ -311,12 +311,12 @@ output:
 	cons, err := jsConsumer.Consume(func(msg jetstream.Msg) {
 		receivedCount.Add(1)
 		bytesReceived.Add(int64(len(msg.Data())))
-		
+
 		// Calculate latency from message metadata
 		meta, _ := msg.Metadata()
 		latency := time.Since(meta.Timestamp)
 		received <- latency
-		
+
 		// Best effort ack - ignore errors in benchmark
 		_ = msg.Ack()
 	})
@@ -399,10 +399,10 @@ output:
 
 func BenchmarkJetStreamKV(b *testing.B) {
 	benchmarks := []struct {
-		name        string
-		keyCount    int
-		valueSize   int
-		concurrent  int
+		name       string
+		keyCount   int
+		valueSize  int
+		concurrent int
 	}{
 		{"Small_100_Sequential", 100, 100, 1},
 		{"Small_1K_Sequential", 1000, 100, 1},
@@ -492,7 +492,7 @@ output:
 		defer nc.Close()
 		js, _ := jetstream.New(nc)
 		kv, _ := js.KeyValue(context.Background(), "BENCH_KV")
-		
+
 		for i := 1; i <= keyCount; i++ {
 			key := fmt.Sprintf("bench_key_%d", i)
 			if entry, err := kv.Get(context.Background(), key); err == nil {

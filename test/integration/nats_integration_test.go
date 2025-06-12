@@ -360,7 +360,7 @@ output:
 			// Test that config is valid
 			consumer, err := consumerBuilder.Build()
 			Expect(err).NotTo(HaveOccurred())
-			
+
 			// We don't run the consumer as it would block waiting for updates
 			// Just verify it can be built successfully
 			_ = consumer

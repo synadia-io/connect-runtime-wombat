@@ -185,7 +185,7 @@ var _ = Describe("Running an inlet", func() {
 				actualCallCount := serviceCallCount
 				serviceCallLock.Unlock()
 				Expect(actualCallCount).To(BeNumerically("==", 5))
-				
+
 				// Check messages with lock
 				outputLock.Lock()
 				defer outputLock.Unlock()

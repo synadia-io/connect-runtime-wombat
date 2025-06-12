@@ -128,7 +128,7 @@ output:
 			messagesPerPublisher := 1000
 			totalMessages := publisherCount * messagesPerPublisher
 			subject := "stress.concurrent.pub"
-			
+
 			var received atomic.Int64
 			var publishErrors atomic.Int64
 
@@ -371,7 +371,7 @@ output:
 			// Track publishing
 			publishCtx, publishCancel := context.WithCancel(context.Background())
 			defer publishCancel()
-			
+
 			go func() {
 				streamInfo, err := js.Stream(publishCtx, "STRESS_STREAM")
 				if err != nil {
@@ -586,7 +586,7 @@ output:
 			time.Sleep(500 * time.Millisecond)
 			nc2.Close()
 			time.Sleep(500 * time.Millisecond)
-			
+
 			// Reconnect
 			nc2, err = nats.Connect(srv.ClientURL())
 			Expect(err).NotTo(HaveOccurred())
