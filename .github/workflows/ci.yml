@@ -58,10 +58,13 @@ jobs:
         run: go install github.com/onsi/ginkgo/v2/ginkgo
 
       - name: Run tests
-        run: ginkgo -r --compilers=4 --race --trace --cover
+        run: |
+          # Run tests with ginkgo but without the --cover flag to avoid coverage file issues
+          ginkgo -r --compilers=4 --race --trace
 
       - name: Generate coverage report
         run: |
+          # Generate coverage using go test instead of ginkgo
           go test -coverprofile=coverage.out -covermode=atomic ./...
           go tool cover -func=coverage.out
 
