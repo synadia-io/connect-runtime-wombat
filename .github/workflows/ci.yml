@@ -60,7 +60,8 @@ jobs:
       - name: Run tests
         run: |
           # Run tests with ginkgo but without the --cover flag to avoid coverage file issues
-          ginkgo -r --compilers=4 --race --trace
+          # Exclude stress_tests directory from regular test runs
+          ginkgo -r --compilers=4 --race --trace --skip-package=stress_tests
 
       - name: Generate coverage report
         run: |

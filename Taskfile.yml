@@ -7,9 +7,9 @@ tasks:
       - go build -tags "{{.TAGS}}" -o ./target/connect-runtime-wombat *.go
 
   test:
-    desc: Run all tests
+    desc: Run all tests (excluding stress tests)
     cmds:
-      - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4
+      - go run github.com/onsi/ginkgo/v2/ginkgo -r --compilers=4 --skip-package=stress_tests
 
   test:nats:
     desc: Run NATS component tests (integration, benchmark, stress)
