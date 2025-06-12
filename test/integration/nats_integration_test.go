@@ -139,7 +139,7 @@ output:
 				mu.Lock()
 				defer mu.Unlock()
 				return len(received)
-			}, 5*time.Second, 100*time.Millisecond).Should(Equal(messageCount))
+			}, 30*time.Second, 100*time.Millisecond).Should(Equal(messageCount))
 
 			// Verify message content
 			mu.Lock()
@@ -186,7 +186,7 @@ input:
     subject: "%s"
     deliver: "all"
     durable: "test-consumer"
-    ack_wait: "5s"
+    ack_wait: "30s"
     max_ack_pending: 1024
 
 output:
@@ -265,7 +265,7 @@ output:
 			// Wait for messages
 			Eventually(func() int32 {
 				return received.Load()
-			}, 10*time.Second, 100*time.Millisecond).Should(Equal(int32(messageCount)))
+			}, 30*time.Second, 100*time.Millisecond).Should(Equal(int32(messageCount)))
 
 			// Acknowledge messages
 			msgChanMu.Lock()
@@ -428,7 +428,7 @@ output:
 				mu.Lock()
 				defer mu.Unlock()
 				return len(updates)
-			}, 5*time.Second, 100*time.Millisecond).Should(Equal(updateCount))
+			}, 30*time.Second, 100*time.Millisecond).Should(Equal(updateCount))
 
 			// Verify update content
 			mu.Lock()

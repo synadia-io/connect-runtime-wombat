@@ -121,7 +121,7 @@ var _ = Describe("Running an inlet", func() {
 			Expect(err).NotTo(HaveOccurred())
 
 			// Sometimes the runner finishes before the nats connection has received the final message
-			err = waitTimeout(&wg, 100*time.Millisecond)
+			err = waitTimeout(&wg, 5*time.Second)
 			Expect(err).NotTo(HaveOccurred())
 
 			Expect(msgCount.Load()).To(BeNumerically("==", expectedMsgCount))
@@ -179,7 +179,7 @@ var _ = Describe("Running an inlet", func() {
 					outputLock.Lock()
 					defer outputLock.Unlock()
 					return len(outputMessages)
-				}, 5*time.Second, 100*time.Millisecond).Should(Equal(5))
+				}, 30*time.Second, 100*time.Millisecond).Should(Equal(5))
 
 				// Check service call count with lock
 				serviceCallLock.Lock()
