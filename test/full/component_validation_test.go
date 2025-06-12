@@ -3,16 +3,18 @@ package full_test
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/redpanda-data/benthos/v4/public/service"
 	"gopkg.in/yaml.v3"
+
+	// Import components to register them
+	_ "github.com/synadia-io/connect-runtime-wombat/components"
 )
 
 var _ = Describe("Component Validation", func() {
@@ -618,17 +620,20 @@ func getMinimalConfig(componentName string, wombatType string) string {
 }
 
 func testWombatConfig(configPath string) error {
-	// Use wombat lint to validate the config
-	cmd := exec.Command("wombat", "lint", configPath)
-	cmd.Stdout = io.Discard
-	cmd.Stderr = io.Discard
-
-	if err := cmd.Run(); err != nil {
-		// Try to get more details about the error
-		detailCmd := exec.Command("wombat", "lint", configPath)
-		output, _ := detailCmd.CombinedOutput()
-		return fmt.Errorf("%v: %s", err, string(output))
+	// Read the config file
+	configData, err := os.ReadFile(configPath)
+	if err != nil {
+		return fmt.Errorf("failed to read config file: %w", err)
 	}
 
+	// Use the service.Builder to validate the config
+	builder := service.NewStreamBuilder()
+
+	// Try to build from the config - this will validate the configuration
+	if err := builder.SetYAML(string(configData)); err != nil {
+		return fmt.Errorf("invalid configuration: %w", err)
+	}
+
+	// The config is valid if we reach here
 	return nil
 }
