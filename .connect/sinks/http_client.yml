@@ -545,7 +545,7 @@ fields:
     label: Proxy URL
     kind: scalar
     type: string
-    optional: false
+    optional: true
     description: |-
       An optional HTTP proxy URL.
   - path: disable_http2
