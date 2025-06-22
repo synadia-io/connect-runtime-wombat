@@ -84,8 +84,8 @@ func runConsumerStepTests(t *testing.T, tests ...consumerStepTest) {
 				t.Errorf("expected error, got nil")
 			}
 
-			if !tt.exp.EqualsMap(res) {
-				t.Errorf("expected %v, got %v", tt.exp, tt.step)
+			if !res.EqualsMap(map[string]any(tt.exp)) {
+				t.Errorf("expected %v, got %v", tt.exp, res)
 			}
 		})
 	}
