@@ -1,8 +1,22 @@
+// Package compiler provides functionality to transform Synadia Connect models
+// into Wombat/Benthos YAML configurations.
+//
+// The compiler handles the translation of Connect's high-level abstractions
+// (sources, sinks, producers, consumers, transformers) into Wombat's
+// configuration format, including:
+//   - Input/output configuration mapping
+//   - Processor chain construction
+//   - Metrics integration with NATS
+//   - Field type and validation mapping
+//
+// The package uses a Fragment builder pattern to construct YAML configurations
+// in a type-safe manner.
 package compiler
 
 import (
 	"fmt"
 
+	// Import custom NATS components for registration
 	_ "github.com/synadia-io/connect-runtime-wombat/components"
 	"github.com/synadia-io/connect/model"
 	"github.com/synadia-io/connect/runtime"
@@ -10,16 +24,34 @@ import (
 )
 
 const (
-	AccountMetricHeader   = "account"
+	// AccountMetricHeader is the header name for the account/namespace in metrics
+	AccountMetricHeader = "account"
+	// ConnectorMetricHeader is the header name for the connector ID in metrics
 	ConnectorMetricHeader = "connector_id"
-	InstanceMetricHeader  = "instance_id"
+	// InstanceMetricHeader is the header name for the instance ID in metrics
+	InstanceMetricHeader = "instance_id"
 )
 
 // metricsAPIPrefix generates the NEX-compatible metrics subject prefix
+// for publishing metrics to NATS. The format follows the NEX feed pattern.
 func metricsAPIPrefix(namespace string) string {
 	return fmt.Sprintf("$NEX.FEED.%s.metrics", namespace)
 }
 
+// Compile transforms a Connect model specification into a Wombat YAML configuration.
+// It handles the translation of sources/sinks or producers/consumers along with
+// any transformers into the appropriate Wombat input/output/processor configuration.
+//
+// The function also configures metrics publishing to NATS if the runtime provides
+// the necessary connection details.
+//
+// Parameters:
+//   - rt: Runtime configuration containing component definitions and NATS connection details
+//   - steps: The Connect model steps to compile (source/sink or producer/consumer with optional transformers)
+//
+// Returns:
+//   - A YAML string containing the complete Wombat configuration
+//   - An error if the specification is invalid or compilation fails
 func Compile(rt *runtime.Runtime, steps model.Steps) (string, error) {
 	mainCfg := Frag()
 
