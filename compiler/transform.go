@@ -4,6 +4,20 @@ import (
 	"github.com/synadia-io/connect/model"
 )
 
+// compileTransformer transforms a Connect transformer specification into a Wombat processor configuration.
+// Transformers modify messages as they flow through the pipeline.
+//
+// Supported transformer types:
+//   - Composite: A sequence of transformers applied in order
+//   - Service: Call an external NATS service for transformation
+//   - Mapping: Transform messages using Bloblang expressions
+//   - Explode: Split arrays/objects into individual messages
+//   - Combine: Batch multiple messages together
+//
+// Parameters:
+//   - transformer: The transformer step containing the transformation logic
+//
+// Returns a Fragment containing the Wombat processor configuration, or nil if no transformer type is specified.
 func compileTransformer(transformer model.TransformerStep) Fragment {
 	if transformer.Composite != nil {
 		return compileCompositeTransformer(transformer.Composite)
@@ -28,6 +42,8 @@ func compileTransformer(transformer model.TransformerStep) Fragment {
 	return nil
 }
 
+// compileServiceTransformer creates a Wombat processor that calls an external NATS service.
+// The service transformer sends the message to a NATS endpoint and replaces it with the response.
 func compileServiceTransformer(t *model.ServiceTransformerStep) Fragment {
 	return Frag().
 		Fragment("nats_request_reply", natsBaseFragment(t.Nats).
@@ -37,6 +53,8 @@ func compileServiceTransformer(t *model.ServiceTransformerStep) Fragment {
 				Strings("include_patterns", ".*")))
 }
 
+// compileCompositeTransformer creates a sequence of processors from multiple transformers.
+// Each transformer in the sequence is applied to the message in order.
 func compileCompositeTransformer(t *model.CompositeTransformerStep) Fragment {
 	var seq []Fragment
 	for _, ct := range t.Sequential {

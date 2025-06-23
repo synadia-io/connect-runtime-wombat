@@ -1,3 +1,16 @@
+// Package main provides the entry point for the connect-runtime-wombat executable.
+// This runtime wraps Wombat (a Benthos fork) to provide its extensive component
+// ecosystem within the Synadia Connect platform.
+//
+// Usage:
+//
+//	connect-runtime-wombat <config>
+//
+// Where <config> is the path to a JSON configuration file containing the
+// connector specification.
+//
+// The runtime expects certain environment variables to be set by the Connect
+// platform for proper operation. See runtime.FromEnv() for details.
 package main
 
 import (
@@ -10,6 +23,10 @@ import (
 	"github.com/synadia-io/connect/runtime"
 )
 
+// main is the entry point for the connect-runtime-wombat executable.
+// It expects exactly one argument: the path to a configuration file.
+// The runtime configuration is loaded from environment variables set by
+// the Connect platform.
 func main() {
 	// Generate correlation ID for this application instance
 	correlationID := utils.GenerateCorrelationID()
@@ -27,6 +44,8 @@ func main() {
 
 	logger.Debug().Str("config", args[0]).Msg("Parsing configuration")
 
+	// Initialize runtime from environment variables
+	// This includes NATS connection details and other platform configuration
 	rt, err := runtime.FromEnv()
 	if err != nil {
 		logger.Error().Err(err).Msg("Failed to initialize runtime from environment")
@@ -35,7 +54,9 @@ func main() {
 
 	logger.Info().Msg("Runtime initialized successfully")
 
-	// launching a workload will start the workload and block
+	// Launch the workload with the provided configuration
+	// This will compile the Connect specification to Wombat format,
+	// start the data pipeline, and block until completion or error
 	logger.Info().Str("config", args[0]).Msg("Launching workload")
 	if err := rt.Launch(ctx, runner.Run, args[0]); err != nil {
 		logger.Error().Err(err).Msg("Failed to launch workload")

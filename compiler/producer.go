@@ -6,6 +6,18 @@ import (
 	"github.com/synadia-io/connect/model"
 )
 
+// compileProducer transforms a Connect producer specification into a Wombat output configuration.
+// A producer writes messages to NATS (core, stream, or key-value).
+//
+// The function validates that exactly one producer type is specified (core, stream, or kv)
+// and returns the appropriate Wombat configuration.
+//
+// Parameters:
+//   - m: The producer step containing the NATS configuration
+//
+// Returns:
+//   - A Fragment containing the Wombat output configuration
+//   - An error if validation fails or multiple producer types are specified
 func compileProducer(m model.ProducerStep) (Fragment, error) {
 	types := 0
 	if m.Core != nil {
@@ -36,6 +48,8 @@ func compileProducer(m model.ProducerStep) (Fragment, error) {
 	return nil, fmt.Errorf("at least one producer type (core, stream, kv) must be defined")
 }
 
+// compileCoreProducer creates a Wombat configuration for publishing to core NATS subjects.
+// Core NATS provides at-most-once delivery without persistence.
 func compileCoreProducer(m model.ProducerStep) Fragment {
 	return Frag().
 		Fragment("nats", natsBaseFragment(m.Nats).

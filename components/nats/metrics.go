@@ -1,3 +1,6 @@
+// Package nats provides custom NATS components for enhanced integration with Wombat.
+// The primary component is a metrics exporter that publishes Prometheus-formatted
+// metrics to NATS subjects.
 package nats
 
 import (
@@ -25,6 +28,8 @@ const (
 	headersField             = "headers"
 )
 
+// MetricsConfigSpec defines the configuration schema for the NATS metrics exporter.
+// It specifies fields for NATS connection, authentication, and publishing settings.
 var MetricsConfigSpec = service.NewConfigSpec().
 	Beta().
 	Summary("publish metrics in prometheus format onto a NATS subject").
@@ -43,6 +48,16 @@ var MetricsConfigSpec = service.NewConfigSpec().
 		service.NewStringMapField(headersField).Description("A list of headers to add to the NATS server").Optional(),
 	)
 
+// NewMetrics creates a new NATS metrics exporter from the provided configuration.
+// It establishes a connection to NATS and sets up periodic publishing of metrics.
+//
+// Parameters:
+//   - conf: Parsed configuration containing NATS connection details
+//   - log: Logger for error reporting
+//
+// Returns:
+//   - A configured Metrics instance
+//   - An error if configuration is invalid or connection fails
 func NewMetrics(conf *service.ParsedConfig, log *service.Logger) (m *Metrics, err error) {
 	url, err := conf.FieldString(metricUrlField)
 	if err != nil {
