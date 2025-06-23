@@ -21,7 +21,7 @@ require (
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 	github.com/synadia-io/connect v1.0.2
-	github.com/wombatwisdom/wombat v1.0.3
+	github.com/wombatwisdom/wombat v1.0.4-rc1 // TODO: upgrade to v1.0.4 when stable release is available
 	go.opentelemetry.io/otel v1.36.0
 	go.opentelemetry.io/otel/trace v1.36.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -190,6 +190,7 @@ require (
 	github.com/google/flatbuffers v24.12.23+incompatible // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
+	github.com/google/martian/v3 v3.3.3 // indirect
 	github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
