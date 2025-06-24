@@ -107,12 +107,14 @@ func (f Fragment) BoolP(key string, value *bool) Fragment {
 	return f
 }
 
-// EqualsMap compares the Fragment with a map for equality.
-// This uses JSON marshaling for comparison, which may not be the most
-// efficient approach but ensures deep equality checking.
-// Note: This method ignores JSON marshaling errors.
+// EqualsMap compares the Fragment with a map[string]any for deep equality.
+// This method uses JSON marshaling for comparison to ensure consistent results
+// across different type representations.
 func (f Fragment) EqualsMap(exp map[string]any) bool {
-	b1, _ := json.Marshal(f)
-	b2, _ := json.Marshal(exp)
+	b1, err1 := json.Marshal(f)
+	b2, err2 := json.Marshal(exp)
+	if err1 != nil || err2 != nil {
+		return false
+	}
 	return bytes.Equal(b1, b2)
 }

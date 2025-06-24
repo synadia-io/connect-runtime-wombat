@@ -1,48 +1,31 @@
-// Package utils provides utility functions for the runtime
 package utils
 
 import (
 	"os"
+	"time"
 
 	"github.com/rs/zerolog"
 )
 
-// InitLogger initializes a logger with the appropriate log level based on environment
+// InitLogger initializes and returns a configured zerolog logger.
+// The log level can be controlled via the CONNECT_LOG_LEVEL environment variable.
+// Valid values: debug, info, warn, error. Defaults to info.
 func InitLogger() zerolog.Logger {
-	// Set log level from environment
-	level := zerolog.InfoLevel
+	// Set output to stdout with pretty printing for development
+	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
+	logger := zerolog.New(output).With().Timestamp().Logger()
+
+	// Configure log level based on environment variable
 	switch os.Getenv("CONNECT_LOG_LEVEL") {
 	case "debug", "DEBUG":
-		level = zerolog.DebugLevel
-	case "trace", "TRACE":
-		level = zerolog.TraceLevel
+		logger = logger.Level(zerolog.DebugLevel)
 	case "warn", "WARN":
-		level = zerolog.WarnLevel
+		logger = logger.Level(zerolog.WarnLevel)
 	case "error", "ERROR":
-		level = zerolog.ErrorLevel
-	}
-
-	// Configure logger
-	logger := zerolog.New(os.Stderr).
-		With().
-		Timestamp().
-		Str("service", "connect-runtime-wombat").
-		Logger().
-		Level(level)
-
-	// Pretty print in development
-	if os.Getenv("CONNECT_ENV") == "development" {
-		logger = logger.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+		logger = logger.Level(zerolog.ErrorLevel)
+	default:
+		logger = logger.Level(zerolog.InfoLevel)
 	}
 
 	return logger
-}
-
-// GetLogLevel returns the current log level from environment
-func GetLogLevel() string {
-	level := os.Getenv("CONNECT_LOG_LEVEL")
-	if level == "" {
-		return "info"
-	}
-	return level
 }

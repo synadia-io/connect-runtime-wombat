@@ -1,50 +1,74 @@
 package compiler
 
 import (
-	"errors"
 	"fmt"
+	"time"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
-// Common error variables for compiler package
 var (
-	// ErrInvalidConsumerType indicates that an invalid number of consumer types were specified
-	ErrInvalidConsumerType = errors.New("exactly one consumer type (core, stream, kv) must be defined")
+	// Compilation error metrics
+	compilationErrors = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "connect_runtime_wombat_compilation_errors_total",
+			Help: "Total number of compilation errors by type",
+		},
+		[]string{"error_type", "phase", "step"},
+	)
 
-	// ErrInvalidProducerType indicates that an invalid number of producer types were specified
-	ErrInvalidProducerType = errors.New("exactly one producer type (core, stream, kv) must be defined")
+	// Compilation duration metric
+	compilationDuration = promauto.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "connect_runtime_wombat_compilation_duration_seconds",
+			Help:    "Time spent compiling configurations",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"success", "connector_type"},
+	)
 
-	// ErrNoProducerType indicates that no producer type was specified
-	ErrNoProducerType = errors.New("at least one producer type (core, stream, kv) must be defined")
+	// Validation error metrics
+	validationErrors = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "connect_runtime_wombat_validation_errors_total",
+			Help: "Total number of validation errors by type",
+		},
+		[]string{"error_type", "component"},
+	)
+
+	// Runtime error metrics
+	runtimeErrors = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "connect_runtime_wombat_runtime_errors_total",
+			Help: "Total number of runtime errors by type",
+		},
+		[]string{"error_type", "component"},
+	)
 )
 
 // CompilationError represents an error that occurred during compilation
 type CompilationError struct {
-	Phase   string // Phase of compilation (e.g., "consumer", "producer", "transformer")
-	Step    string // Specific step that failed
-	Message string // Human-readable error message
-	Err     error  // Underlying error
+	Phase   string
+	Step    string
+	Message string
+	Err     error
 }
 
-// Error implements the error interface
 func (e *CompilationError) Error() string {
 	if e.Err != nil {
-		return fmt.Sprintf("compilation failed in %s phase at %s: %s: %v", e.Phase, e.Step, e.Message, e.Err)
+		return fmt.Sprintf("compilation error in %s/%s: %s: %v", e.Phase, e.Step, e.Message, e.Err)
 	}
-	return fmt.Sprintf("compilation failed in %s phase at %s: %s", e.Phase, e.Step, e.Message)
+	return fmt.Sprintf("compilation error in %s/%s: %s", e.Phase, e.Step, e.Message)
 }
 
-// Unwrap returns the underlying error
 func (e *CompilationError) Unwrap() error {
 	return e.Err
 }
 
-// Is checks if the error matches the target error
-func (e *CompilationError) Is(target error) bool {
-	return errors.Is(e.Err, target)
-}
-
-// NewCompilationError creates a new compilation error
+// NewCompilationError creates a new CompilationError and records metrics
 func NewCompilationError(phase, step, message string, err error) *CompilationError {
+	compilationErrors.WithLabelValues("compilation", phase, step).Inc()
 	return &CompilationError{
 		Phase:   phase,
 		Step:    step,
@@ -55,27 +79,66 @@ func NewCompilationError(phase, step, message string, err error) *CompilationErr
 
 // ValidationError represents an error that occurred during validation
 type ValidationError struct {
-	Component string // Component being validated
-	Field     string // Field that failed validation
-	Value     any    // The invalid value
-	Message   string // Human-readable error message
+	Component string
+	Message   string
+	Err       error
 }
 
-// Error implements the error interface
 func (e *ValidationError) Error() string {
-	if e.Field != "" && e.Value != nil {
-		return fmt.Sprintf("validation failed for %s: field '%s' with value '%v' is invalid: %s",
-			e.Component, e.Field, e.Value, e.Message)
+	if e.Err != nil {
+		return fmt.Sprintf("validation error in %s: %s: %v", e.Component, e.Message, e.Err)
 	}
-	return fmt.Sprintf("validation failed for %s: %s", e.Component, e.Message)
+	return fmt.Sprintf("validation error in %s: %s", e.Component, e.Message)
 }
 
-// NewValidationError creates a new validation error
-func NewValidationError(component, field string, value any, message string) *ValidationError {
+func (e *ValidationError) Unwrap() error {
+	return e.Err
+}
+
+// NewValidationError creates a new ValidationError and records metrics
+func NewValidationError(component, message string, err error) *ValidationError {
+	validationErrors.WithLabelValues("validation", component).Inc()
 	return &ValidationError{
 		Component: component,
-		Field:     field,
-		Value:     value,
 		Message:   message,
+		Err:       err,
 	}
+}
+
+// RuntimeError represents an error that occurred during runtime
+type RuntimeError struct {
+	Component string
+	Message   string
+	Err       error
+}
+
+func (e *RuntimeError) Error() string {
+	if e.Err != nil {
+		return fmt.Sprintf("runtime error in %s: %s: %v", e.Component, e.Message, e.Err)
+	}
+	return fmt.Sprintf("runtime error in %s: %s", e.Component, e.Message)
+}
+
+func (e *RuntimeError) Unwrap() error {
+	return e.Err
+}
+
+// NewRuntimeError creates a new RuntimeError and records metrics
+func NewRuntimeError(component, message string, err error) *RuntimeError {
+	runtimeErrors.WithLabelValues("runtime", component).Inc()
+	return &RuntimeError{
+		Component: component,
+		Message:   message,
+		Err:       err,
+	}
+}
+
+// RecordCompilationMetrics records compilation duration and success metrics
+func RecordCompilationMetrics(start time.Time, success bool, connectorType string) {
+	duration := time.Since(start).Seconds()
+	successLabel := "false"
+	if success {
+		successLabel = "true"
+	}
+	compilationDuration.WithLabelValues(successLabel, connectorType).Observe(duration)
 }

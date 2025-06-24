@@ -17,8 +17,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/rs/zerolog/log"
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
+	"github.com/synadia-io/connect-runtime-wombat/utils"
 	"github.com/synadia-io/connect/model"
 	"github.com/synadia-io/connect/runtime"
 )
@@ -44,14 +44,26 @@ import (
 //
 // Returns an error if compilation, validation, or execution fails.
 func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error {
+	logger := utils.LoggerWithCorrelation(ctx)
+	logger.Info().
+		Str("namespace", runtime.Namespace).
+		Str("instance", runtime.Instance).
+		Str("connector", runtime.Connector).
+		Msg("Starting wombat runner")
+
 	// Compile the Connect specification to Wombat YAML
-	art, err := compiler.Compile(runtime, steps)
+	logger.Debug().Msg("Compiling configuration")
+	art, err := compiler.CompileWithContext(ctx, runtime, steps)
 	if err != nil {
+		logger.Error().Err(err).Msg("Compilation failed")
 		return fmt.Errorf("compilation failed: %w", err)
 	}
 
+	logger.Debug().Int("config_bytes", len(art)).Msg("Configuration compiled successfully")
+
 	// Create HTTP server for health and metrics endpoints
 	// Using port 0 allows the OS to assign an available port
+	logger.Debug().Msg("Setting up HTTP server")
 	mux := http.NewServeMux()
 	server := http.Server{
 		Addr:    ":0",
@@ -60,20 +72,26 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
 
 	// Validate the compiled configuration and create the stream
 	// The mux is passed to allow registration of HTTP endpoints
+	logger.Debug().Msg("Validating configuration and creating stream")
 	stream, err := compiler.Validate(ctx, runtime, art, mux)
 	if err != nil {
-		return fmt.Errorf("validation failed: %w", err)
+		logger.Error().Err(err).Msg("Validation failed")
+		return compiler.NewValidationError("configuration", "failed to validate and create stream", err)
 	}
+
+	logger.Info().Msg("Configuration validated, starting stream and HTTP server")
 
 	// Run the stream in a goroutine and capture its completion
 	streamChan := make(chan error, 1)
 	go func() {
+		logger.Debug().Msg("Starting wombat stream")
 		streamChan <- stream.Run(ctx)
 	}()
 
 	// Run the HTTP server in a goroutine and capture its completion
 	httpChan := make(chan error, 1)
 	go func() {
+		logger.Debug().Msg("Starting HTTP server")
 		httpChan <- server.ListenAndServe()
 	}()
 
@@ -81,41 +99,50 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
 
+	logger.Info().Msg("Runner started, waiting for shutdown signal")
+
 	// Wait for shutdown trigger and coordinate cleanup
 	select {
 	case <-ctx.Done():
 		// Context cancelled - initiate graceful shutdown
-		log.Info().Msg("shutting down")
+		logger.Info().Msg("Context cancelled, shutting down")
 		if err := server.Shutdown(context.TODO()); err != nil {
-			log.Error().Err(err).Msg("failed to shutdown server")
+			logger.Error().Err(err).Msg("Failed to shutdown server")
 		}
 		if err := stream.Stop(context.TODO()); err != nil {
-			log.Error().Err(err).Msg("failed to stop stream")
+			logger.Error().Err(err).Msg("Failed to stop stream")
 		}
-	case <-sigs:
+	case sig := <-sigs:
 		// OS signal received - initiate graceful shutdown
-		log.Info().Msg("received signal, shutting down")
+		logger.Info().Str("signal", sig.String()).Msg("Received signal, shutting down")
 		if err := server.Shutdown(context.TODO()); err != nil {
-			log.Error().Err(err).Msg("failed to shutdown server")
+			logger.Error().Err(err).Msg("Failed to shutdown server")
 		}
 		if err := stream.Stop(context.TODO()); err != nil {
-			log.Error().Err(err).Msg("failed to stop stream")
+			logger.Error().Err(err).Msg("Failed to stop stream")
 		}
 	case err := <-streamChan:
 		// Stream completed or errored - shutdown HTTP server
-		log.Info().Msg("stream stopped, shutting down")
+		logger.Info().Err(err).Msg("Stream stopped, shutting down")
 		if shutdownErr := server.Shutdown(context.TODO()); shutdownErr != nil {
-			log.Error().Err(shutdownErr).Msg("failed to shutdown server")
+			logger.Error().Err(shutdownErr).Msg("Failed to shutdown server")
 		}
-		return err
+		if err != nil {
+			return compiler.NewRuntimeError("stream", "stream execution failed", err)
+		}
+		return nil
 	case err := <-httpChan:
 		// HTTP server stopped - shutdown stream
-		log.Info().Msg("http server stopped, shutting down")
+		logger.Info().Err(err).Msg("HTTP server stopped, shutting down")
 		if stopErr := stream.Stop(context.TODO()); stopErr != nil {
-			log.Error().Err(stopErr).Msg("failed to stop stream")
+			logger.Error().Err(stopErr).Msg("Failed to stop stream")
 		}
-		return err
+		if err != nil {
+			return compiler.NewRuntimeError("http_server", "HTTP server failed", err)
+		}
+		return nil
 	}
 
+	logger.Info().Msg("Shutdown completed")
 	return nil
 }
