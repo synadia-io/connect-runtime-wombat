@@ -1,8 +1,9 @@
-model_version: '1'
+model_version: "1"
 kind: source
 label: HTTP
 name: http_client
 status: preview
+icon: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cgo8IS0tIExpY2Vuc2U6IEFwYWNoZS4gTWFkZSBieSB2YWFkaW46IGh0dHBzOi8vZ2l0aHViLmNvbS92YWFkaW4vdmFhZGluLWljb25zIC0tPgo8c3ZnIHdpZHRoPSI4MDBweCIgaGVpZ2h0PSI4MDBweCIgdmlld0JveD0iMCAwIDE2IDE2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8cGF0aCBmaWxsPSIjNDQ0IiBkPSJNOCAwYy00LjQgMC04IDMuNi04IDhzMy42IDggOCA4IDgtMy42IDgtOC0zLjYtOC04LTh6TTEzLjIgNS4zYzAuNCAwIDAuNyAwLjMgMS4xIDAuMy0wLjMgMC40LTEuNiAwLjQtMi0wLjEgMC4zLTAuMSAwLjUtMC4yIDAuOS0wLjJ6TTEgOGMwLTAuNCAwLTAuOCAwLjEtMS4zIDAuMSAwIDAuMiAwLjEgMC4zIDAuMSAwIDAgMC4xIDAuMSAwLjEgMC4yIDAgMC4zIDAuMyAwLjUgMC41IDAuNSAwLjggMC4xIDEuMSAwLjggMS44IDEgMC4yIDAuMSAwLjEgMC4zIDAgMC41LTAuNiAwLjgtMC4xIDEuNCAwLjQgMS45IDAuNSAwLjQgMC41IDAuOCAwLjYgMS40IDAgMC43IDAuMSAxLjUgMC40IDIuMi0yLjUtMS4yLTQuMi0zLjYtNC4yLTYuNXpNOCAxNWMtMC43IDAtMS41LTAuMS0yLjEtMC4zLTAuMS0wLjItMC4xLTAuNCAwLTAuNiAwLjQtMC44IDAuOC0xLjUgMS4zLTIuMiAwLjItMC4yIDAuNC0wLjQgMC40LTAuNyAwLTAuMiAwLjEtMC41IDAuMi0wLjcgMC4zLTAuNSAwLjItMC44LTAuMi0wLjktMC44LTAuMi0xLjItMC45LTEuOC0xLjJzLTEuMi0wLjUtMS43LTAuMmMtMC4yIDAuMS0wLjUgMC4yLTAuNS0wLjEgMC0wLjQtMC41LTAuNy0wLjQtMS4xLTAuMSAwLTAuMiAwLTAuMyAwLjFzLTAuMiAwLjItMC40IDAuMWMtMC4yLTAuMi0wLjEtMC40LTAuMS0wLjYgMC4xLTAuMiAwLjItMC4zIDAuNC0wLjQgMC40LTAuMSAwLjgtMC4xIDEgMC40IDAuMy0wLjkgMC45LTEuNCAxLjUtMS44IDAgMCAwLjgtMC43IDAuOS0wLjdzMC4yIDAuMiAwLjQgMC4zYzAuMiAwIDAuMyAwIDAuMy0wLjIgMC4xLTAuNS0wLjItMS4xLTAuNi0xLjIgMC0wLjEgMC4xLTAuMSAwLjEtMC4xIDAuMy0wLjEgMC43LTAuMyAwLjYtMC42IDAtMC40LTAuNC0wLjYtMC44LTAuNi0wLjIgMC0wLjQgMC0wLjYgMC4xLTAuNCAwLjItMC45IDAuNC0xLjUgMC40IDEuMS0wLjggMi41LTEuMiAzLjktMS4yIDAuMyAwIDAuNSAwIDAuOCAwLTAuNiAwLjEtMS4yIDAuMy0xLjYgMC41IDAuNiAwLjEgMC43IDAuNCAwLjUgMC45LTAuMSAwLjIgMCAwLjQgMC4yIDAuNXMwLjQgMC4xIDAuNS0wLjFjMC4yLTAuMyAwLjYtMC40IDAuOS0wLjUgMC40LTAuMSAwLjctMC4zIDEtMC43IDAtMC4xIDAuMS0wLjEgMC4yLTAuMiAwLjYgMC4yIDEuMiAwLjYgMS44IDEtMC4xIDAtMC4xIDAuMS0wLjIgMC4xLTAuMiAwLjItMC41IDAuMy0wLjIgMC43IDAuMSAwLjIgMCAwLjMtMC4xIDAuNC0wLjIgMC4xLTAuMyAwLTAuNC0wLjFzLTAuMS0wLjMtMC40LTAuM2MtMC4xIDAuMi0wLjQgMC4zLTAuNCAwLjYgMC41IDAgMC40IDAuNCAwLjUgMC43LTAuNiAwLjEtMC44IDAuNC0wLjUgMC45IDAuMSAwLjItMC4xIDAuMy0wLjIgMC40LTAuNCAwLjYtMC44IDEtMC44IDEuN3MwLjUgMS40IDEuMyAxLjNjMC45LTAuMSAwLjktMC4xIDEuMiAwLjcgMCAwLjEgMC4xIDAuMiAwLjEgMC4zIDAuMSAwLjIgMC4yIDAuNCAwLjEgMC42LTAuMyAwLjggMC4xIDEuNCAwLjQgMiAwLjEgMC4yIDAuMiAwLjMgMC4zIDAuNC0xLjMgMS40LTMgMi4yLTUgMi4yeiI+PC9wYXRoPgo8L3N2Zz4=
 description: |-
   Connects to a server and continuously performs requests for a single message.
 
@@ -37,7 +38,7 @@ fields:
     label: Headers
     kind: scalar
     type: object
-    default: '{}'
+    default: "{}"
     optional: true
     examples:
       - Content-Type: application/octet-stream
@@ -58,13 +59,13 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
-          -   - foo_
-              - bar_
-          -   - kafka_
-          -   - content-
+          - - foo_
+            - bar_
+          - - kafka_
+          - - content-
         description: |-
           Provide a list of explicit metadata key prefixes to match against.
       - path: metadata.include_patterns
@@ -72,11 +73,11 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
-          -   - .*
-          -   - _timestamp_unix$
+          - - .*
+          - - _timestamp_unix$
         description: |-
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
   - path: dump_request_log_level
@@ -96,7 +97,7 @@ fields:
           - WARN
           - ERROR
           - FATAL
-          - ''
+          - ""
   - path: oauth
     name: oauth
     label: OAuth
@@ -111,7 +112,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to use OAuth version 1 in requests.
@@ -158,7 +159,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to use OAuth version 2 in requests.
@@ -195,7 +196,7 @@ fields:
         label: scopes
         kind: list
         type: string
-        default: '[]'
+        default: "[]"
         optional: true
         description: |-
           A list of optional requested permissions.
@@ -204,7 +205,7 @@ fields:
         label: endpoint_params
         kind: scalar
         type: object
-        default: '{}'
+        default: "{}"
         optional: true
         examples:
           - bar:
@@ -228,7 +229,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to use OAuth version 2 in requests.
@@ -265,7 +266,7 @@ fields:
         label: scopes
         kind: list
         type: string
-        default: '[]'
+        default: "[]"
         optional: true
         description: |-
           A list of optional requested permissions.
@@ -274,7 +275,7 @@ fields:
         label: endpoint_params
         kind: scalar
         type: object
-        default: '{}'
+        default: "{}"
         optional: true
         examples:
           - bar:
@@ -298,7 +299,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to use basic authentication in requests.
@@ -333,7 +334,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -342,7 +343,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -351,7 +352,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -364,9 +365,9 @@ fields:
         default: '""'
         optional: true
         examples:
-          - '-----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----'
+          - "-----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----"
         secret: true
         description: |-
           An optional root certificate authority to use.
@@ -378,7 +379,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
           - - cert: foo
@@ -438,13 +439,13 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
-          -   - foo_
-              - bar_
-          -   - kafka_
-          -   - content-
+          - - foo_
+            - bar_
+          - - kafka_
+          - - content-
         description: |-
           Provide a list of explicit metadata key prefixes to match against.
       - path: extract_headers.include_patterns
@@ -452,11 +453,11 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
-          -   - .*
-          -   - _timestamp_unix$
+          - - .*
+          - - _timestamp_unix$
         description: |-
           Provide a list of explicit metadata key regular expression (re2) patterns to match against.
   - path: timeout
@@ -491,7 +492,7 @@ fields:
     label: Retries
     kind: scalar
     type: int
-    default: '3'
+    default: "3"
     optional: true
     description: |-
       The maximum number of retry attempts to make.
@@ -500,7 +501,7 @@ fields:
     label: Follow Redirects
     kind: scalar
     type: bool
-    default: 'true'
+    default: "true"
     optional: true
     description: |-
       Whether or not to transparently follow redirects, i.e. responses with 300-399 status codes. If disabled, the response message will contain the body, status, and headers from the redirect response and the processor will not make a request to the URL set in the Location header of the response.
@@ -509,7 +510,7 @@ fields:
     label: Backoff_on
     kind: list
     type: int
-    default: '[429]'
+    default: "[429]"
     optional: true
     description: |-
       A list of status codes whereby the request should be considered to have failed and retries should be attempted, but the period between them should be increased gradually.
@@ -518,7 +519,7 @@ fields:
     label: Drop On
     kind: list
     type: int
-    default: '[]'
+    default: "[]"
     optional: true
     description: |-
       A list of status codes whereby the request should be considered to have failed but retries should not be attempted. This is useful for preventing wasted retries for requests that will never succeed. Note that with these status codes the _request_ is dropped, but _message_ that caused the request will not be dropped.
@@ -527,7 +528,7 @@ fields:
     label: Successful On
     kind: list
     type: int
-    default: '[]'
+    default: "[]"
     optional: true
     description: |-
       A list of status codes whereby the attempt should be considered successful, this is useful for dropping requests that return non-2XX codes indicating that the message has been dealt with, such as a 303 See Other or a 409 Conflict. All 2XX codes are considered successful unless they are present within `backoff_on` or `drop_on`, regardless of this field.
@@ -544,7 +545,7 @@ fields:
     label: Disable HTTP2
     kind: scalar
     type: bool
-    default: 'false'
+    default: "false"
     optional: true
     description: |-
       Whether or not to disable disable HTTP/2
@@ -561,7 +562,7 @@ fields:
     label: drop_empty_bodies
     kind: scalar
     type: bool
-    default: 'true'
+    default: "true"
     optional: true
     description: |-
       Whether empty payloads received from the target server should be dropped.
@@ -579,7 +580,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Enables streaming mode.
@@ -588,7 +589,7 @@ fields:
         label: reconnect
         kind: scalar
         type: bool
-        default: 'true'
+        default: "true"
         optional: true
         description: |-
           Sets whether to re-establish the connection once it is lost.
@@ -606,7 +607,7 @@ fields:
     label: Auto Replay Nacks
     kind: scalar
     type: bool
-    default: 'true'
+    default: "true"
     optional: true
     description: |-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

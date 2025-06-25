@@ -1,8 +1,9 @@
-model_version: '1'
+model_version: "1"
 kind: source
 label: Kafka
 name: kafka_franz
 status: preview
+icon: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij48cGF0aCBkPSJNODYuNzU4IDcwLjg5Yy00Ljk5MiAwLTkuNDY1IDIuMjA4LTEyLjUyOCA1LjY4bC03Ljg1MS01LjU0N2EyMS4yNzUgMjEuMjc1IDAgMDAxLjMxMi03LjMyYzAtMi41MzEtLjQ2LTQuOTUtMS4yNy03LjIwM2w3LjgzNy01LjQ4OGMzLjA2MiAzLjQ1NyA3LjUyMyA1LjY1MiAxMi41IDUuNjUyIDkuMjA3IDAgMTYuNzAzLTcuNDggMTYuNzAzLTE2LjY3MiAwLTkuMTk1LTcuNDk2LTE2LjY3Mi0xNi43MDMtMTYuNjcyLTkuMjExIDAtMTYuNzA3IDcuNDc3LTE2LjcwNyAxNi42NzIgMCAxLjY0NS4yNSAzLjIzLjY5OSA0LjczNWwtNy44NCA1LjQ4OGEyMS41NzggMjEuNTc4IDAgMDAtMTMuMzYtNy43NDZ2LTkuNDNjNy41NjctMS41ODYgMTMuMjctOC4yOTMgMTMuMjctMTYuMzEyQzYyLjgyIDcuNTMgNTUuMzI0LjA1NSA0Ni4xMTcuMDU1Yy05LjIxIDAtMTYuNzA3IDcuNDc2LTE2LjcwNyAxNi42NzIgMCA3LjkxIDUuNTU1IDE0LjUzOSAxMi45NjkgMTYuMjM4djkuNTQ3Yy0xMC4xMTcgMS43NzMtMTcuODQgMTAuNTktMTcuODQgMjEuMTkxIDAgMTAuNjUyIDcuNzk3IDE5LjUgMTcuOTkyIDIxLjIxMVY5NWMtNy40OTIgMS42NC0xMy4xMiA4LjMwOS0xMy4xMiAxNi4yNzMgMCA5LjE5NiA3LjQ5NSAxNi42NzIgMTYuNzA2IDE2LjY3MiA5LjIwNyAwIDE2LjcwMy03LjQ3NiAxNi43MDMtMTYuNjcyIDAtNy45NjQtNS42MjktMTQuNjMyLTEzLjExNy0xNi4yNzNWODQuOTE0YTIxLjU5MiAyMS41OTIgMCAwMDEzLjEzMy03LjYyNWw3LjkwMiA1LjU4NmExNi40NSAxNi40NSAwIDAwLS42ODcgNC42ODhjMCA5LjE5NSA3LjQ5NiAxNi42NzEgMTYuNzA3IDE2LjY3MSA5LjIwNyAwIDE2LjcwMy03LjQ3NiAxNi43MDMtMTYuNjcxIDAtOS4xOTYtNy40OTYtMTYuNjcyLTE2LjcwMy0xNi42NzJ6bTAtMzguOTg0YzQuNDY1IDAgOC4wOTcgMy42MyA4LjA5NyA4LjA4NiAwIDQuNDUzLTMuNjMyIDguMDgyLTguMDk3IDguMDgyLTQuNDY5IDAtOC4xMDItMy42MjktOC4xMDItOC4wODIgMC00LjQ1NyAzLjYzMy04LjA4NiA4LjEwMi04LjA4NnptLTQ4Ljc0Mi0xNS4xOGMwLTQuNDU2IDMuNjMyLTguMDgxIDguMTAxLTguMDgxIDQuNDY1IDAgOC4wOTggMy42MjUgOC4wOTggOC4wODIgMCA0LjQ1Ny0zLjYzMyA4LjA4Mi04LjA5OCA4LjA4Mi00LjQ2OSAwLTguMTAxLTMuNjI1LTguMTAxLTguMDgyem0xNi4xOTkgOTQuNTQ3YzAgNC40NTctMy42MzMgOC4wODItOC4wOTggOC4wODItNC40NjkgMC04LjEwMS0zLjYyNS04LjEwMS04LjA4MiAwLTQuNDU3IDMuNjMyLTguMDgyIDguMTAxLTguMDgyIDQuNDY1IDAgOC4wOTggMy42MjUgOC4wOTggOC4wODJ6bS04LjEwMi0zNi4yOTZjLTYuMjI2IDAtMTEuMjkzLTUuMDU5LTExLjI5My0xMS4yNzQgMC02LjIxOSA1LjA2Ny0xMS4yNzcgMTEuMjkzLTExLjI3NyA2LjIzIDAgMTEuMjk3IDUuMDU4IDExLjI5NyAxMS4yNzcgMCA2LjIxNS01LjA2NiAxMS4yNzQtMTEuMjk3IDExLjI3NHptNDAuNjQ1IDIwLjY2OGMtNC40NjkgMC04LjEwMi0zLjYyNS04LjEwMi04LjA4MiAwLTQuNDU4IDMuNjMzLTguMDgzIDguMTAyLTguMDgzIDQuNDY1IDAgOC4wOTcgMy42MjUgOC4wOTcgOC4wODIgMCA0LjQ1OC0zLjYzMiA4LjA4My04LjA5NyA4LjA4M3ptMCAwIiBmaWxsPSIjMjMxZjIwIi8+PC9zdmc+Cg==
 description: |-
   A Kafka input using the https://github.com/twmb/franz-go[Franz Kafka client library^].
 
@@ -30,10 +31,10 @@ fields:
     type: string
     optional: false
     examples:
-      -   - localhost:9092
-      -   - foo:9092
-          - bar:9092
-      -   - foo:9092,bar:9092
+      - - localhost:9092
+      - - foo:9092
+        - bar:9092
+      - - foo:9092,bar:9092
     description: |-
       A list of broker addresses to connect to in order to establish connections. If an item of the list contains commas it will be expanded into multiple addresses.
   - path: client_id
@@ -57,7 +58,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -66,7 +67,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -75,7 +76,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -88,9 +89,9 @@ fields:
         default: '""'
         optional: true
         examples:
-          - '-----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----'
+          - "-----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----"
         secret: true
         description: |-
           An optional root certificate authority to use.
@@ -102,7 +103,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
           - - cert: foo
@@ -155,9 +156,9 @@ fields:
     type: string
     optional: false
     examples:
-      -   - mechanism: SCRAM-SHA-512
-            password: bar
-            username: foo
+      - - mechanism: SCRAM-SHA-512
+          password: bar
+          username: foo
     description: |-
       Specify one or more methods of SASL authentication. SASL is tried in order; if the broker supports the first mechanism, all connections will use that mechanism. If the first mechanism fails, the client will pick the first supported mechanism. If the broker does not support any client mechanisms, connections will fail.
     fields:
@@ -237,7 +238,7 @@ fields:
             label: Credentials
             kind: scalar
             type: object
-            default: ''
+            default: ""
             optional: false
             description: |-
               Optional manual configuration of AWS credentials to use. More information can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
@@ -284,7 +285,7 @@ fields:
                 label: from_ec2_role
                 kind: scalar
                 type: bool
-                default: 'false'
+                default: "false"
                 optional: true
                 description: |-
                   Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
@@ -322,15 +323,15 @@ fields:
     type: string
     optional: false
     examples:
-      -   - foo
-          - bar
-      -   - things.*
-      -   - foo,bar
-      -   - foo:0
-          - bar:1
-          - bar:3
-      -   - foo:0,bar:1,bar:3
-      -   - foo:0-5
+      - - foo
+        - bar
+      - - things.*
+      - - foo,bar
+      - - foo:0
+        - bar:1
+        - bar:3
+      - - foo:0,bar:1,bar:3
+      - - foo:0-5
     description: |-
       A list of topics to consume from. Multiple comma separated topics can be listed in a single element. When a `consumer_group` is specified partitions are automatically distributed across consumers of a topic, otherwise all partitions are consumed.
 
@@ -342,7 +343,7 @@ fields:
     label: regexp_topics
     kind: scalar
     type: bool
-    default: 'false'
+    default: "false"
     optional: true
     description: |-
       Whether listed topics should be interpreted as regular expression patterns for matching multiple topics. When topics are specified with explicit partitions this field must remain set to `false`.
@@ -360,7 +361,7 @@ fields:
     label: start_from_oldest
     kind: scalar
     type: bool
-    default: 'true'
+    default: "true"
     optional: true
     description: |-
       Determines whether to consume from the oldest available offset, otherwise messages are consumed from the latest offset. The setting is applied when creating a new consumer group or the saved offset no longer exists.
@@ -413,7 +414,7 @@ fields:
     label: checkpoint_limit
     kind: scalar
     type: int
-    default: '1024'
+    default: "1024"
     optional: true
     description: |-
       Determines how many messages of the same partition can be processed in parallel before applying back pressure. When a message of a given offset is delivered to the output the offset is only allowed to be committed when all messages of prior offsets have also been delivered, this ensures at-least-once delivery guarantees. However, this mechanism also increases the likelihood of duplicates in the event of crashes or server faults, reducing the checkpoint limit will mitigate this.
@@ -431,7 +432,7 @@ fields:
     label: multi_header
     kind: scalar
     type: bool
-    default: 'false'
+    default: "false"
     optional: true
     description: |-
       Decode headers into lists to allow handling of multiple values with the same key
@@ -458,7 +459,7 @@ fields:
         label: count
         kind: scalar
         type: int
-        default: '0'
+        default: "0"
         optional: true
         description: |-
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
@@ -467,7 +468,7 @@ fields:
         label: byte_size
         kind: scalar
         type: int
-        default: '0'
+        default: "0"
         optional: true
         description: |-
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
@@ -500,7 +501,7 @@ fields:
     label: Auto Replay Nacks
     kind: scalar
     type: bool
-    default: 'true'
+    default: "true"
     optional: true
     description: |-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

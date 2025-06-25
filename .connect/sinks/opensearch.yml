@@ -1,7 +1,8 @@
-model_version: '1'
+model_version: "1"
 label: Opensearch
 name: opensearch
 status: stable
+icon: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBmaWxsPSJjdXJyZW50Q29sb3IiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDY0IDY0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGl0bGU+T3BlblNlYXJjaCBTIGxvZ288L3RpdGxlPgo8ZGVzYz5TZWFyY2ggZW5naW5lIHNvZnR3YXJlIGZvcmsgb2YgRWxhc3RpY3NlYXJjaDwvZGVzYz4KIDxnIGZpbGw9IiM3Yjk2YTkiPgogIDxwYXRoIGQ9Im02MS43Mzc0IDIzLjVjLTEuMjQ5NiAwLTIuMjYyNiAxLjAxMy0yLjI2MjYgMi4yNjI2IDAgMTguNjE4Ny0xNS4wOTM1IDMzLjcxMjItMzMuNzEyMiAzMy43MTIyLTEuMjQ5NiAwLTIuMjYyNiAxLjAxMy0yLjI2MjYgMi4yNjI2czEuMDEzIDIuMjYyNiAyLjI2MjYgMi4yNjI2YzIxLjExNzkgMCAzOC4yMzc0LTE3LjExOTUgMzguMjM3NC0zOC4yMzc0IDAtMS4yNDk2LTEuMDEzLTIuMjYyNi0yLjI2MjYtMi4yNjI2eiIvPgogIDxwYXRoIGQ9Im00OC4wODE0IDM4YzIuMTc1OC0zLjU0OTUgNC4yODAxLTguMjgyMiAzLjg2NjEtMTQuOTA3OS0wLjg1NzYtMTMuNzI0ODUtMTMuMjg4Ni0yNC4xMzY3My0yNS4wMjY5LTIzLjAwODM3LTQuNTk1MyAwLjQ0MTczMjMtOS4zMTM4IDQuMTg3NDY3LTguODk0NiAxMC44OTY3NyAwLjE4MjIgMi45MTU2IDEuNjA5MiA0LjYzNjQgMy45Mjg0IDUuOTU5NCAyLjIwNzQgMS4yNTkzIDUuMDQzNCAyLjA1NyA4LjI1ODQgMi45NjEyIDMuODgzNCAxLjA5MjMgOC4zODgxIDIuMzE5MiAxMS44NTAyIDQuODcwNiA0LjE0OTUgMy4wNTc4IDYuOTg2MSA2LjYwMjYgNi4wMTg0IDEzLjIyODN6Ii8+CiAgPHBhdGggZD0ibTMuOTE4NjEgMTRjLTIuMTc1ODUgMy41NDk1LTQuMjgwMTE2IDguMjgyMi0zLjg2NjExNyAxNC45MDc5IDAuODU3NTc4OSAxMy43MjQ4IDEzLjI4ODYxIDI0LjEzNjcgMjUuMDI2OTEgMjMuMDA4NCA0LjU5NTMtMC40NDE4IDkuMzEzOC00LjE4NzUgOC44OTQ2LTEwLjg5NjgtMC4xODIyLTIuOTE1Ni0xLjYwOTMtNC42MzY0LTMuOTI4NC01Ljk1OTQtMi4yMDc0LTEuMjU5My01LjA0MzQtMi4wNTctOC4yNTg0LTIuOTYxMi0zLjg4MzQtMS4wOTIzLTguMzg4MS0yLjMxOTItMTEuODUwMjYtNC44NzA2LTQuMTQ5NDgtMy4wNTc5LTYuOTg2MDItNi42MDI2LTYuMDE4MzMtMTMuMjI4M3oiLz4KIDwvZz4KPC9zdmc+Cg==
 description: |-
   Publishes messages into an Elasticsearch index.
 
@@ -14,7 +15,7 @@ fields:
     type: string
     optional: false
     examples:
-      -   - http://localhost:9200
+      - - http://localhost:9200
     description: |-
       A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: index
@@ -73,7 +74,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -82,7 +83,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -91,7 +92,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -104,9 +105,9 @@ fields:
         default: '""'
         optional: true
         examples:
-          - '-----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----'
+          - "-----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----"
         secret: true
         description: |-
           An optional root certificate authority to use.
@@ -118,7 +119,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
           - - cert: foo
@@ -169,7 +170,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: '64'
+    default: "64"
     optional: true
     description: |-
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
@@ -187,7 +188,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to use basic authentication in requests.
@@ -233,7 +234,7 @@ fields:
         label: count
         kind: scalar
         type: int
-        default: '0'
+        default: "0"
         optional: true
         description: |-
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
@@ -242,7 +243,7 @@ fields:
         label: byte_size
         kind: scalar
         type: int
-        default: '0'
+        default: "0"
         optional: true
         description: |-
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
@@ -284,7 +285,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to connect to Amazon Elastic Service.
@@ -357,7 +358,7 @@ fields:
             label: from_ec2_role
             kind: scalar
             type: bool
-            default: 'false'
+            default: "false"
             optional: true
             description: |-
               Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].

@@ -1,7 +1,8 @@
-model_version: '1'
+model_version: "1"
 kind: source
 label: Pulsar
 name: pulsar
+icon: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGZpbGw9IiMwMDAwMDAiIHdpZHRoPSI4MDBweCIgaGVpZ2h0PSI4MDBweCIgdmlld0JveD0iMCAwIDI0IDI0IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI0IDguOTI1aC01Ljg2NmMtMS41ODYtMy4wNDEtMy4yNjItNS40MDItNS41NDQtNS40MDItMi45NyAwLTQuMzY3IDIuNTkzLTUuNzE3IDUuMTE1bC0uMTE4LjIySDB2MS41aDMuOTM0YzEuMzkgMCAxLjY3My40NjggMS42NzMuNDY4LTEuMDkgMS42OTEtMi40IDMuMzYzLTQuNTg0IDMuMzYzSDB2MS41NzRoMS4wM2M0LjIzNCAwIDYuMDgzLTMuNDM0IDcuNTY3LTYuMTkzIDEuMzYxLTIuNTQxIDIuMzEtNC4wOCAzLjk5My00LjA4IDEuNzQ3IDAgMy41ODQgMy44MDEgNS4yMDEgNy4xNTcuMjM3LjQ4OC40NzcuOTg4LjcyIDEuNDgzLTYuMi4xOTctOS4xNTUgMS42NDktMTEuNTU5IDIuODMzLTEuNzU5Ljg2Ni0zLjE0NyAxLjk0LTUuNDMzIDEuOTRIMHYxLjU3NGgxLjUwN2MyLjc1NCAwIDQuNDctLjg1IDYuMjk1LTEuNzUxIDIuNTMtMS4yNDMgNS4zOTgtMi42NTIgMTIuMTU3LTIuNjUyaDMuOTA3VjE0LjVIMjEuNjZhMS4xOCAxLjE4IDAgMCAxLS45NzItLjM5MyA3MC44MyA3MC44MyAwIDAgMS0xLjEzMy0yLjMyMWwtLjUxMS0xLjA0N3MuMzY2LS4zOTMgMS4zOC0uMzkzSDI0eiIvPjwvc3ZnPg==
 status: experimental
 description: |-
   Reads messages from an Apache Pulsar server.
@@ -110,7 +111,7 @@ fields:
             label: Enabled
             kind: scalar
             type: bool
-            default: 'false'
+            default: "false"
             optional: true
             description: |-
               Whether OAuth2 is enabled.
@@ -155,7 +156,7 @@ fields:
             label: Enabled
             kind: scalar
             type: bool
-            default: 'false'
+            default: "false"
             optional: true
             description: |-
               Whether Token Auth is enabled.

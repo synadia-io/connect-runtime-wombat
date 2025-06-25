@@ -1,8 +1,9 @@
-model_version: '1'
+model_version: "1"
 kind: source
 label: NSQ
 name: nsq
 status: preview
+icon: data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAzMiAzMiIgaWQ9Imljb24iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTI4LDI4SDRhMi4wMDIxLDIuMDAyMSwwLDAsMS0yLTJWMjFINHY1SDI4VjIxaDJ2NUEyLjAwMjEsMi4wMDIxLDAsMCwxLDI4LDI4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSI+PC9wYXRoPgogIDxyZWN0IHg9IjciIHk9IjIxIiB3aWR0aD0iMTgiIGhlaWdodD0iMiI+PC9yZWN0PgogIDxyZWN0IHg9IjciIHk9IjE2IiB3aWR0aD0iMTgiIGhlaWdodD0iMiI+PC9yZWN0PgogIDxyZWN0IHg9IjciIHk9IjExIiB3aWR0aD0iMTgiIGhlaWdodD0iMiI+PC9yZWN0PgogIDxyZWN0IHg9IjciIHk9IjYiIHdpZHRoPSIxOCIgaGVpZ2h0PSIyIj48L3JlY3Q+CiAgPHJlY3QgaWQ9Il9UcmFuc3BhcmVudF9SZWN0YW5nbGVfIiBkYXRhLW5hbWU9IjxUcmFuc3BhcmVudCBSZWN0YW5nbGU+IiBjbGFzcz0iY2xzLTEiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PC9yZWN0Pgo8L3N2Zz4=
 description: |-
   Subscribe to an NSQ instance topic and channel.
 
@@ -42,7 +43,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -51,7 +52,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -60,7 +61,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -73,9 +74,9 @@ fields:
         default: '""'
         optional: true
         examples:
-          - '-----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----'
+          - "-----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----"
         secret: true
         description: |-
           An optional root certificate authority to use.
@@ -87,7 +88,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
           - - cert: foo
@@ -162,7 +163,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: '100'
+    default: "100"
     optional: true
     description: |-
       The maximum number of pending messages to consume at any given time.
@@ -171,7 +172,7 @@ fields:
     label: max_attempts
     kind: scalar
     type: int
-    default: '5'
+    default: "5"
     optional: true
     description: |-
       The maximum number of attempts to successfully consume a messages.
