@@ -1,8 +1,8 @@
-model_version: '1'
+model_version: "1"
 label: NSQ
 name: nsq
 status: stable
-icon: data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAzMiAzMiIgaWQ9Imljb24iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTI4LDI4SDRhMi4wMDIxLDIuMDAyMSwwLDAsMS0yLTJWMjFINHY1SDI4VjIxaDJ2NUEyLjAwMjEsMi4wMDIxLDAsMCwxLDI4LDI4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSI+PC9wYXRoPgogIDxyZWN0IHg9IjciIHk9IjIxIiB3aWR0aD0iMTgiIGhlaWdodD0iMiI+PC9yZWN0PgogIDxyZWN0IHg9IjciIHk9IjE2IiB3aWR0aD0iMTgiIGhlaWdodD0iMiI+PC9yZWN0PgogIDxyZWN0IHg9IjciIHk9IjExIiB3aWR0aD0iMTgiIGhlaWdodD0iMiI+PC9yZWN0PgogIDxyZWN0IHg9IjciIHk9IjYiIHdpZHRoPSIxOCIgaGVpZ2h0PSIyIj48L3JlY3Q+CiAgPHJlY3QgaWQ9Il9UcmFuc3BhcmVudF9SZWN0YW5nbGVfIiBkYXRhLW5hbWU9IjxUcmFuc3BhcmVudCBSZWN0YW5nbGU+IiBjbGFzcz0iY2xzLTEiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PC9yZWN0Pgo8L3N2Zz4=
+icon: data:image/svg+xml;base64,PCEtLSBMaWNlbnNlOiBBcGFjaGUuIE1hZGUgYnkgQ2FyYm9uIERlc2lnbjogaHR0cHM6Ly9naXRodWIuY29tL2NhcmJvbi1kZXNpZ24tc3lzdGVtL2NhcmJvbiAtLT4KICA8c3ZnIHdpZHRoPSIyMDBweCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAzMiAzMiIgaWQ9Imljb24iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggZD0iTTI4LDI4SDRhMi4wMDIxLDIuMDAyMSwwLDAsMS0yLTJWMjFINHY1SDI4VjIxaDJ2NUEyLjAwMjEsMi4wMDIxLDAsMCwxLDI4LDI4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSIgIGZpbGw9IndoaXRlIiBzdHJva2U9IndoaXRlIi8+CiAgPHJlY3QgeD0iNyIgeT0iMjEiIHdpZHRoPSIxOCIgaGVpZ2h0PSIyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJ3aGl0ZSIvPgogIDxyZWN0IHg9IjciIHk9IjE2IiB3aWR0aD0iMTgiIGhlaWdodD0iMiIgZmlsbD0id2hpdGUiIHN0cm9rZT0id2hpdGUiLz4KICA8cmVjdCB4PSI3IiB5PSIxMSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjIiIGZpbGw9IndoaXRlIiBzdHJva2U9IndoaXRlIi8+CiAgPHJlY3QgeD0iNyIgeT0iNiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjIiIGZpbGw9IndoaXRlIiBzdHJva2U9IndoaXRlIi8+CiAgPHJlY3QgaWQ9Il9UcmFuc3BhcmVudF9SZWN0YW5nbGVfIiBkYXRhLW5hbWU9IiZsdDtUcmFuc3BhcmVudCBSZWN0YW5nbGUmZ3Q7IiBjbGFzcz0iY2xzLTEiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIi8+Cjwvc3ZnPgo=
 description: |-
   Publish to an NSQ topic.
 fields:
@@ -42,7 +42,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -51,7 +51,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -60,7 +60,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: "false"
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -73,9 +73,9 @@ fields:
         default: '""'
         optional: true
         examples:
-          - '-----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----'
+          - "-----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----"
         secret: true
         description: |-
           An optional root certificate authority to use.
@@ -87,7 +87,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: "[]"
         optional: true
         examples:
           - - cert: foo
@@ -138,7 +138,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: '64'
+    default: "64"
     optional: true
     description: |-
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
