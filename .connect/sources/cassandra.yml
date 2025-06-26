@@ -34,7 +34,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -43,7 +43,7 @@ fields:
         label: Skip Cert Verify
         kind: scalar
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -52,7 +52,7 @@ fields:
         label: Enable Renegotiation
         kind: scalar
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation. Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
@@ -61,7 +61,7 @@ fields:
         label: Root Certificate Authority
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - |-
@@ -76,7 +76,7 @@ fields:
         label: Client Certificates
         kind: list
         type: string
-        default: '[]'
+        default: []
         optional: true
         examples:
           -   - cert: foo
@@ -89,7 +89,7 @@ fields:
             label: Certificate
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -98,7 +98,7 @@ fields:
             label: Key
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate key to use.
@@ -108,7 +108,7 @@ fields:
             label: Password
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -132,7 +132,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to use password authentication
@@ -141,7 +141,7 @@ fields:
         label: Username
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The username to authenticate as.
@@ -150,7 +150,7 @@ fields:
         label: Password
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The password to authenticate with.
@@ -160,7 +160,7 @@ fields:
     label: Disable Initial Host Lookup
     kind: scalar
     type: bool
-    default: 'false'
+    default: false
     optional: true
     description: |-
       If enabled the driver will not attempt to get host info from the system.peers table. This can speed up queries but will mean that data_centre, rack and token information will not be available.
@@ -169,7 +169,7 @@ fields:
     label: Max Retries
     kind: scalar
     type: int
-    default: '3'
+    default: 3
     optional: true
     description: |-
       The maximum number of retries before giving up on a request.
@@ -187,7 +187,7 @@ fields:
         label: Initial Interval
         kind: scalar
         type: string
-        default: '"1s"'
+        default: "1s"
         optional: true
         description: |-
           The initial period to wait between retry attempts.
@@ -196,7 +196,7 @@ fields:
         label: Max Interval
         kind: scalar
         type: string
-        default: '"5s"'
+        default: "5s"
         optional: true
         description: |-
           The maximum period to wait between retry attempts.
@@ -205,7 +205,7 @@ fields:
     label: Timeout
     kind: scalar
     type: string
-    default: '"600ms"'
+    default: "600ms"
     optional: true
     description: |-
       The client connection timeout.
@@ -222,7 +222,7 @@ fields:
     label: Auto Replay Nacks
     kind: scalar
     type: bool
-    default: 'true'
+    default: true
     optional: true
     description: |-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

@@ -29,7 +29,7 @@ fields:
     label: URL
     kind: scalar
     type: string
-    default: '"tcp://localhost:8463"'
+    default: "tcp://localhost:8463"
     optional: true
     description: |-
       The url should always include schema and host.

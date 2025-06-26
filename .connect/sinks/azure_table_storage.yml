@@ -77,7 +77,7 @@ fields:
     name: timeout
     label: Timeout
     type: string
-    default: 5s
+    default: "5s"
     optional: true
     description: >-
       The maximum period to wait on an upload before abandoning it and reattempting.

@@ -32,7 +32,7 @@ fields:
     name: key
     label: Key
     type: string
-    default: '>'
+    default: ">"
     optional: true
     examples:
       - foo.bar.baz

@@ -35,7 +35,7 @@ fields:
     label: Kind
     kind: scalar
     type: string
-    default: '"simple"'
+    default: "simple"
     optional: true
     description: |-
       Specifies a simple, cluster-aware, or failover-aware redis client.
@@ -49,7 +49,7 @@ fields:
     label: Master
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     examples:
       - mymaster
@@ -67,7 +67,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -76,7 +76,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -85,7 +85,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -95,7 +95,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - '-----BEGIN CERTIFICATE-----
@@ -112,7 +112,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -124,7 +124,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -133,7 +133,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -143,7 +143,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -171,7 +171,7 @@ fields:
     label: use_patterns
     kind: scalar
     type: bool
-    default: 'false'
+    default: false
     optional: true
     description: |-
       Whether to use the PSUBSCRIBE command, allowing for glob-style patterns within target channel names.
@@ -180,7 +180,7 @@ fields:
     label: Auto Replay Nacks
     kind: scalar
     type: bool
-    default: 'true'
+    default: true
     optional: true
     description: |-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

@@ -79,7 +79,7 @@ fields:
     name: ack_wait
     label: Ack Wait
     type: string
-    default: 30s
+    default: "30s"
     optional: true
     examples:
       - 30s

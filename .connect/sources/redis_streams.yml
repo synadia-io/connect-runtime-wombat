@@ -29,7 +29,7 @@ fields:
     label: Kind
     kind: scalar
     type: string
-    default: '"simple"'
+    default: "simple"
     optional: true
     description: |-
       Specifies a simple, cluster-aware, or failover-aware redis client.
@@ -43,7 +43,7 @@ fields:
     label: Master
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     examples:
       - mymaster
@@ -61,7 +61,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -70,7 +70,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -79,7 +79,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: 'false'
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -89,7 +89,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - '-----BEGIN CERTIFICATE-----
@@ -106,7 +106,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: '[]'
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -118,7 +118,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -127,7 +127,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -137,7 +137,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -157,7 +157,7 @@ fields:
     label: Body Key
     kind: scalar
     type: string
-    default: '"body"'
+    default: "body"
     optional: true
     description: |-
       The field key to extract the raw message from. All other keys will be stored in the message as metadata.
@@ -174,7 +174,7 @@ fields:
     label: Auto Replay Nacks
     kind: scalar
     type: bool
-    default: 'true'
+    default: true
     optional: true
     description: |-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
@@ -183,7 +183,7 @@ fields:
     label: limit
     kind: scalar
     type: int
-    default: '10'
+    default: 10
     optional: true
     description: |-
       The maximum number of messages to consume from a single request.
@@ -192,7 +192,7 @@ fields:
     label: Client ID
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       An identifier for the client connection.
@@ -201,7 +201,7 @@ fields:
     label: consumer_group
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       An identifier for the consumer group of the stream.
@@ -210,7 +210,7 @@ fields:
     label: create_streams
     kind: scalar
     type: bool
-    default: 'true'
+    default: true
     optional: true
     description: |-
       Create subscribed streams if they do not exist (MKSTREAM option).
@@ -219,7 +219,7 @@ fields:
     label: start_from_oldest
     kind: scalar
     type: bool
-    default: 'true'
+    default: true
     optional: true
     description: |-
       If an offset is not found for a stream, determines whether to consume from the oldest available offset, otherwise messages are consumed from the latest offset.
@@ -228,7 +228,7 @@ fields:
     label: commit_period
     kind: scalar
     type: string
-    default: '"1s"'
+    default: "1s"
     optional: true
     description: |-
       The period of time between each commit of the current offset. Offsets are always committed during shutdown.
@@ -237,7 +237,7 @@ fields:
     label: Timeout
     kind: scalar
     type: string
-    default: '"1s"'
+    default: "1s"
     optional: true
     description: |-
       The length of time to poll for new messages before reattempting.
