@@ -34,7 +34,7 @@ fields:
     label: Verb
     kind: scalar
     type: string
-    default: '"POST"'
+    default: POST
     optional: true
     examples:
       - POST
@@ -47,7 +47,7 @@ fields:
     label: Headers
     kind: scalar
     type: object
-    default: "{}"
+    default: {}
     optional: true
     examples:
       - Content-Type: application/octet-stream
@@ -68,7 +68,7 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - foo_
@@ -82,7 +82,7 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - .*
@@ -94,7 +94,7 @@ fields:
     label: Dump Request Log Level
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       EXPERIMENTAL: Optionally set a level at which the request and response payload of each request made will be logged.
@@ -121,7 +121,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use OAuth version 1 in requests.
@@ -130,7 +130,7 @@ fields:
         label: consumer_key
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to identify the client to the service provider.
@@ -139,7 +139,7 @@ fields:
         label: consumer_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret used to establish ownership of the consumer key.
@@ -149,7 +149,7 @@ fields:
         label: access_token
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to gain access to the protected resources on behalf of the user.
@@ -158,7 +158,7 @@ fields:
         label: access_token_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret provided in order to establish ownership of a given access token.
@@ -168,7 +168,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use OAuth version 2 in requests.
@@ -177,7 +177,7 @@ fields:
         label: client_key
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to identify the client to the token provider.
@@ -186,7 +186,7 @@ fields:
         label: client_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret used to establish ownership of the client key.
@@ -196,7 +196,7 @@ fields:
         label: Token_url
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The URL of the token provider.
@@ -205,7 +205,7 @@ fields:
         label: scopes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         description: |-
           A list of optional requested permissions.
@@ -214,7 +214,7 @@ fields:
         label: endpoint_params
         kind: scalar
         type: object
-        default: "{}"
+        default: {}
         optional: true
         examples:
           - bar:
@@ -238,7 +238,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use OAuth version 2 in requests.
@@ -247,7 +247,7 @@ fields:
         label: client_key
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to identify the client to the token provider.
@@ -256,7 +256,7 @@ fields:
         label: client_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret used to establish ownership of the client key.
@@ -266,7 +266,7 @@ fields:
         label: Token_url
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The URL of the token provider.
@@ -275,7 +275,7 @@ fields:
         label: scopes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         description: |-
           A list of optional requested permissions.
@@ -284,7 +284,7 @@ fields:
         label: endpoint_params
         kind: scalar
         type: object
-        default: "{}"
+        default: {}
         optional: true
         examples:
           - bar:
@@ -308,7 +308,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use basic authentication in requests.
@@ -317,7 +317,7 @@ fields:
         label: Username
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A username to authenticate as.
@@ -326,7 +326,7 @@ fields:
         label: Password
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A password to authenticate with.
@@ -343,7 +343,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -352,7 +352,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -361,7 +361,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -371,7 +371,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - "-----BEGIN CERTIFICATE-----
@@ -388,7 +388,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -400,7 +400,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -409,7 +409,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -419,7 +419,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -448,7 +448,7 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - foo_
@@ -462,7 +462,7 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - .*
@@ -474,7 +474,7 @@ fields:
     label: Timeout
     kind: scalar
     type: string
-    default: '"5s"'
+    default: "5s"
     optional: true
     description: |-
       A static timeout to apply to requests.
@@ -483,7 +483,7 @@ fields:
     label: Retry Period
     kind: scalar
     type: string
-    default: '"1s"'
+    default: "1s"
     optional: true
     description: |-
       The base period to wait between failed requests.
@@ -492,7 +492,7 @@ fields:
     label: Max Retry Backoff
     kind: scalar
     type: string
-    default: '"300s"'
+    default: "300s"
     optional: true
     description: |-
       The maximum period to wait between failed requests.
@@ -501,7 +501,7 @@ fields:
     label: Retries
     kind: scalar
     type: int
-    default: "3"
+    default: 3
     optional: true
     description: |-
       The maximum number of retry attempts to make.
@@ -510,7 +510,7 @@ fields:
     label: Follow Redirects
     kind: scalar
     type: bool
-    default: "true"
+    default: true
     optional: true
     description: |-
       Whether or not to transparently follow redirects, i.e. responses with 300-399 status codes. If disabled, the response message will contain the body, status, and headers from the redirect response and the processor will not make a request to the URL set in the Location header of the response.
@@ -519,7 +519,7 @@ fields:
     label: Backoff On
     kind: list
     type: int
-    default: "[429]"
+    default: [429]
     optional: true
     description: |-
       A list of status codes whereby the request should be considered to have failed and retries should be attempted, but the period between them should be increased gradually.
@@ -528,7 +528,7 @@ fields:
     label: Drop On
     kind: list
     type: int
-    default: "[]"
+    default: []
     optional: true
     description: |-
       A list of status codes whereby the request should be considered to have failed but retries should not be attempted. This is useful for preventing wasted retries for requests that will never succeed. Note that with these status codes the _request_ is dropped, but _message_ that caused the request will not be dropped.
@@ -537,7 +537,7 @@ fields:
     label: Successful On
     kind: list
     type: int
-    default: "[]"
+    default: []
     optional: true
     description: |-
       A list of status codes whereby the attempt should be considered successful, this is useful for dropping requests that return non-2XX codes indicating that the message has been dealt with, such as a 303 See Other or a 409 Conflict. All 2XX codes are considered successful unless they are present within `backoff_on` or `drop_on`, regardless of this field.
@@ -554,7 +554,7 @@ fields:
     label: Disable HTTP2
     kind: scalar
     type: bool
-    default: "false"
+    default: false
     optional: true
     description: |-
       Whether or not to disable disable HTTP/2
@@ -563,7 +563,7 @@ fields:
     label: Batch as Multipart
     kind: scalar
     type: bool
-    default: "false"
+    default: false
     optional: true
     description: |-
       Send message batches as a single request using https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html[RFC1341^]. If disabled messages in batches will be sent as individual requests.
@@ -572,7 +572,7 @@ fields:
     label: Propagate Response
     kind: scalar
     type: bool
-    default: "false"
+    default: false
     optional: true
     description: |-
       Whether responses from the server should be [propagated back](https://wombat.dev/guides/sync_responses/) to the input.
@@ -581,7 +581,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: "64"
+    default: 64
     optional: true
     description: |-
       The maximum number of parallel message batches to have in flight at any given time.
@@ -608,7 +608,7 @@ fields:
         label: count
         kind: scalar
         type: int
-        default: "0"
+        default: 0
         optional: true
         description: |-
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
@@ -617,7 +617,7 @@ fields:
         label: byte_size
         kind: scalar
         type: int
-        default: "0"
+        default: 0
         optional: true
         description: |-
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
@@ -626,7 +626,7 @@ fields:
         label: period
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - 1s
@@ -639,7 +639,7 @@ fields:
         label: check
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - this.type == "end_of_transaction"
