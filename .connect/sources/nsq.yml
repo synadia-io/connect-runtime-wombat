@@ -43,7 +43,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -52,7 +52,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -61,7 +61,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -88,7 +88,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -163,7 +163,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: "100"
+    default: 100
     optional: true
     description: |-
       The maximum number of pending messages to consume at any given time.
@@ -172,7 +172,7 @@ fields:
     label: max_attempts
     kind: scalar
     type: int
-    default: "5"
+    default: 5
     optional: true
     description: |-
       The maximum number of attempts to successfully consume a messages.

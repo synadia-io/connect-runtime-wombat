@@ -111,7 +111,7 @@ fields:
             label: Enabled
             kind: scalar
             type: bool
-            default: "false"
+            default: false
             optional: true
             description: |-
               Whether OAuth2 is enabled.
@@ -156,7 +156,7 @@ fields:
             label: Enabled
             kind: scalar
             type: bool
-            default: "false"
+            default: false
             optional: true
             description: |-
               Whether Token Auth is enabled.

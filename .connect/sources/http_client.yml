@@ -38,7 +38,7 @@ fields:
     label: Headers
     kind: scalar
     type: object
-    default: "{}"
+    default: {}
     optional: true
     examples:
       - Content-Type: application/octet-stream
@@ -59,7 +59,7 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - foo_
@@ -73,7 +73,7 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - .*
@@ -112,7 +112,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use OAuth version 1 in requests.
@@ -159,7 +159,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use OAuth version 2 in requests.
@@ -196,7 +196,7 @@ fields:
         label: scopes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         description: |-
           A list of optional requested permissions.
@@ -205,7 +205,7 @@ fields:
         label: endpoint_params
         kind: scalar
         type: object
-        default: "{}"
+        default: {}
         optional: true
         examples:
           - bar:
@@ -229,7 +229,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use OAuth version 2 in requests.
@@ -266,7 +266,7 @@ fields:
         label: scopes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         description: |-
           A list of optional requested permissions.
@@ -275,7 +275,7 @@ fields:
         label: endpoint_params
         kind: scalar
         type: object
-        default: "{}"
+        default: {}
         optional: true
         examples:
           - bar:
@@ -299,7 +299,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to use basic authentication in requests.
@@ -334,7 +334,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -343,7 +343,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -352,7 +352,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -379,7 +379,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -439,7 +439,7 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - foo_
@@ -453,7 +453,7 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - .*
@@ -492,7 +492,7 @@ fields:
     label: Retries
     kind: scalar
     type: int
-    default: "3"
+    default: 3
     optional: true
     description: |-
       The maximum number of retry attempts to make.
@@ -501,7 +501,7 @@ fields:
     label: Follow Redirects
     kind: scalar
     type: bool
-    default: "true"
+    default: true
     optional: true
     description: |-
       Whether or not to transparently follow redirects, i.e. responses with 300-399 status codes. If disabled, the response message will contain the body, status, and headers from the redirect response and the processor will not make a request to the URL set in the Location header of the response.
@@ -510,7 +510,7 @@ fields:
     label: Backoff_on
     kind: list
     type: int
-    default: "[429]"
+    default: [429]
     optional: true
     description: |-
       A list of status codes whereby the request should be considered to have failed and retries should be attempted, but the period between them should be increased gradually.
@@ -519,7 +519,7 @@ fields:
     label: Drop On
     kind: list
     type: int
-    default: "[]"
+    default: []
     optional: true
     description: |-
       A list of status codes whereby the request should be considered to have failed but retries should not be attempted. This is useful for preventing wasted retries for requests that will never succeed. Note that with these status codes the _request_ is dropped, but _message_ that caused the request will not be dropped.
@@ -528,7 +528,7 @@ fields:
     label: Successful On
     kind: list
     type: int
-    default: "[]"
+    default: []
     optional: true
     description: |-
       A list of status codes whereby the attempt should be considered successful, this is useful for dropping requests that return non-2XX codes indicating that the message has been dealt with, such as a 303 See Other or a 409 Conflict. All 2XX codes are considered successful unless they are present within `backoff_on` or `drop_on`, regardless of this field.
@@ -545,7 +545,7 @@ fields:
     label: Disable HTTP2
     kind: scalar
     type: bool
-    default: "false"
+    default: false
     optional: true
     description: |-
       Whether or not to disable disable HTTP/2
@@ -562,7 +562,7 @@ fields:
     label: drop_empty_bodies
     kind: scalar
     type: bool
-    default: "true"
+    default: true
     optional: true
     description: |-
       Whether empty payloads received from the target server should be dropped.
@@ -580,7 +580,7 @@ fields:
         label: Enabled
         kind: scalar
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Enables streaming mode.
@@ -589,7 +589,7 @@ fields:
         label: reconnect
         kind: scalar
         type: bool
-        default: "true"
+        default: true
         optional: true
         description: |-
           Sets whether to re-establish the connection once it is lost.
@@ -607,7 +607,7 @@ fields:
     label: Auto Replay Nacks
     kind: scalar
     type: bool
-    default: "true"
+    default: true
     optional: true
     description: |-
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.

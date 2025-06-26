@@ -42,7 +42,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -51,7 +51,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -60,7 +60,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -87,7 +87,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -269,7 +269,7 @@ fields:
                 label: from_ec2_role
                 kind: scalar
                 type: bool
-                default: "false"
+                default: false
                 optional: true
                 description: |-
                   Use the credentials of a host EC2 machine configured to assume https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html[an IAM role associated with the instance^].
@@ -340,7 +340,7 @@ fields:
         label: include_prefixes
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - foo_
@@ -354,7 +354,7 @@ fields:
         label: include_patterns
         kind: list
         type: string
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - .*
@@ -377,7 +377,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: "10"
+    default: 10
     optional: true
     description: |-
       The maximum number of batches to be sending in parallel at any given time.
@@ -404,7 +404,7 @@ fields:
         label: count
         kind: scalar
         type: int
-        default: "0"
+        default: 0
         optional: true
         description: |-
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
@@ -413,7 +413,7 @@ fields:
         label: byte_size
         kind: scalar
         type: int
-        default: "0"
+        default: 0
         optional: true
         description: |-
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
@@ -454,7 +454,7 @@ fields:
     label: Idempotent Write
     kind: scalar
     type: bool
-    default: "true"
+    default: true
     optional: true
     description: |-
       Enable the idempotent write producer option. This requires the `IDEMPOTENT_WRITE` permission on `CLUSTER` and can be disabled if this permission is not available.

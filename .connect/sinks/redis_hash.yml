@@ -85,7 +85,7 @@ fields:
         name: enabled
         label: Enabled
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether custom TLS settings are enabled.
@@ -94,7 +94,7 @@ fields:
         name: skip_cert_verify
         label: Skip Certificate Verification
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to skip server side certificate verification.
@@ -103,7 +103,7 @@ fields:
         name: enable_renegotiation
         label: Enable Renegotiation
         type: bool
-        default: "false"
+        default: false
         optional: true
         description: |-
           Whether to allow the remote server to repeatedly request renegotiation.
@@ -130,7 +130,7 @@ fields:
         label: Client Certificates
         kind: list
         type: object
-        default: "[]"
+        default: []
         optional: true
         examples:
           - - cert: foo
@@ -193,7 +193,7 @@ fields:
     label: Walk Metadata
     kind: scalar
     type: bool
-    default: "false"
+    default: false
     optional: true
     description: |-
       Whether all metadata fields of messages should be walked and added to the list of hash fields to set.
@@ -202,7 +202,7 @@ fields:
     label: Walk JSON Object
     kind: scalar
     type: bool
-    default: "false"
+    default: false
     optional: true
     description: |-
       Whether to walk each message as a JSON object and add each key/value pair to the list of hash fields to set.
@@ -211,7 +211,7 @@ fields:
     label: Fields
     kind: scalar
     type: object
-    default: "{}"
+    default: {}
     optional: true
     description: |-
       A map of key/value pairs to set as hash fields.
@@ -220,7 +220,7 @@ fields:
     label: Max In Flight
     kind: scalar
     type: int
-    default: "64"
+    default: 64
     optional: true
     description: |-
       The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
