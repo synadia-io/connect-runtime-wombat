@@ -55,7 +55,7 @@ fields:
         name: type
         label: Type
         type: string
-        default: '"direct"'
+        default: "direct"
         optional: true
         description: >-
           The type of the exchange.
@@ -77,7 +77,7 @@ fields:
     name: key
     label: Key
     type: expression
-    default: '""'
+    default: ""
     optional: true
     description: >-
       The binding key to set for each message.
@@ -85,7 +85,7 @@ fields:
     name: type
     label: Type
     type: expression
-    default: '""'
+    default: ""
     optional: true
     description: >-
       The type property to set for each message.
@@ -93,7 +93,7 @@ fields:
     name: content_type
     label: Content Type
     type: string
-    default: '"application/octet-stream"'
+    default: "application/octet-stream"
     optional: true
     description: >-
       The content type attribute to set for each message.
@@ -101,7 +101,7 @@ fields:
     name: content_encoding
     label: Content Encoding
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       The content encoding attribute to set for each message.
@@ -109,7 +109,7 @@ fields:
     name: correlation_id
     label: Correlation ID
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       Set the correlation ID of each message with a dynamic interpolated expression.
@@ -117,7 +117,7 @@ fields:
     name: reply_to
     label: Reply To
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       Carries response queue name - set with a dynamic interpolated expression.
@@ -125,7 +125,7 @@ fields:
     name: expiration
     label: Expiration
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       Set the per-message TTL
@@ -133,7 +133,7 @@ fields:
     name: message_id
     label: Message ID
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       Set the message ID of each message with a dynamic interpolated expression.
@@ -141,7 +141,7 @@ fields:
     name: user_id
     label: User ID
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       Set the user ID to the name of the publisher.   If this property is set by a
@@ -151,7 +151,7 @@ fields:
     name: app_id
     label: Application ID
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       Set the application ID of each message with a dynamic interpolated expression.
@@ -176,7 +176,7 @@ fields:
     name: priority
     label: Priority
     type: expression
-    default: '""'
+    default: ""
     optional: true
     examples:
       - "0"
@@ -226,7 +226,7 @@ fields:
     name: timeout
     label: Timeout
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: >-
       The maximum period to wait before abandoning it and reattempting. If not set,
@@ -268,7 +268,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - "-----BEGIN CERTIFICATE----- ... -----END CERTIFICATE-----"
@@ -294,7 +294,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -302,7 +302,7 @@ fields:
             name: key
             label: Key
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate key to use.
@@ -311,7 +311,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo

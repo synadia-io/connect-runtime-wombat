@@ -27,7 +27,7 @@ fields:
     label: User
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       A user ID to connect as.

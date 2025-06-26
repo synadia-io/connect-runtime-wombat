@@ -121,7 +121,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - "-----BEGIN CERTIFICATE-----
@@ -150,7 +150,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -159,7 +159,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -169,7 +169,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -198,7 +198,7 @@ fields:
         label: mechanism
         kind: scalar
         type: string
-        default: '"none"'
+        default: "none"
         optional: true
         description: |-
           The SASL authentication mechanism to use.
@@ -207,7 +207,7 @@ fields:
         label: User
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - ${USER}
@@ -218,7 +218,7 @@ fields:
         label: Password
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - ${PASSWORD}

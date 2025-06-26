@@ -25,7 +25,7 @@ fields:
     label: User
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       A user ID to connect as.
@@ -42,7 +42,7 @@ fields:
     label: Path
     kind: scalar
     type: string
-    default: '"${!counter()}-${!timestamp_unix_nano()}.txt"'
+    default: "${!counter()}-${!timestamp_unix_nano()}.txt"
     optional: true
     description: |-
       The path to upload messages as, interpolation functions should be used in order to generate unique file paths.
@@ -96,7 +96,7 @@ fields:
         label: period
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - 1s
@@ -109,7 +109,7 @@ fields:
         label: check
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - this.type == "end_of_transaction"

@@ -18,7 +18,7 @@ fields:
     label: Into
     kind: scalar
     type: scanner
-    default: '{"to_the_end":{}}'
+    default: {"to_the_end":{}}
     optional: true
     description: |-
       The child scanner to feed the decompressed stream into.

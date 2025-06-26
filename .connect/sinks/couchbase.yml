@@ -48,7 +48,7 @@ fields:
     label: Collection
     kind: scalar
     type: string
-    default: '"_default"'
+    default: "_default"
     optional: true
     description: |-
       Bucket collection.
@@ -57,7 +57,7 @@ fields:
     label: Transcoder
     kind: scalar
     type: string
-    default: '"legacy"'
+    default: "legacy"
     optional: true
     description: |-
       Couchbase transcoder to use.
@@ -66,7 +66,7 @@ fields:
     label: Timeout
     kind: scalar
     type: string
-    default: '"15s"'
+    default: "15s"
     optional: true
     description: |-
       Operation timeout.
@@ -93,7 +93,7 @@ fields:
     label: Operation
     kind: scalar
     type: string
-    default: '"upsert"'
+    default: "upsert"
     optional: true
     description: |-
       Couchbase operation to perform.
@@ -147,7 +147,7 @@ fields:
         label: period
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - 1s
@@ -160,7 +160,7 @@ fields:
         label: check
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - this.type == "end_of_transaction"

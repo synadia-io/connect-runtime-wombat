@@ -18,7 +18,7 @@ fields:
     label: Max Buffer Size
     kind: scalar
     type: int
-    default: '65536'
+    default: 65536
     optional: true
     description: |-
       Set the maximum buffer size for storing line data, this limits the maximum size that a line can be without causing an error.
@@ -27,7 +27,7 @@ fields:
     label: Omit Empty
     kind: scalar
     type: bool
-    default: 'false'
+    default: false
     optional: true
     description: |-
       Omit empty lines.

@@ -71,7 +71,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - "-----BEGIN CERTIFICATE-----
@@ -100,7 +100,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -109,7 +109,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -119,7 +119,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo

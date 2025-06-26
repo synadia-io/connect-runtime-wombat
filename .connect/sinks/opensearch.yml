@@ -49,7 +49,7 @@ fields:
     label: Pipeline
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       An optional pipeline id to preprocess incoming documents.
@@ -58,7 +58,7 @@ fields:
     label: Routing
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       The routing key to use for the document.
@@ -102,7 +102,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - "-----BEGIN CERTIFICATE-----
@@ -131,7 +131,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -140,7 +140,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -150,7 +150,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -197,7 +197,7 @@ fields:
         label: Username
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A username to authenticate as.
@@ -206,7 +206,7 @@ fields:
         label: Password
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A password to authenticate with.
@@ -252,7 +252,7 @@ fields:
         label: period
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - 1s
@@ -265,7 +265,7 @@ fields:
         label: check
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - this.type == "end_of_transaction"
@@ -294,7 +294,7 @@ fields:
         label: Region
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The AWS region to target.
@@ -303,7 +303,7 @@ fields:
         label: endpoint
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           Allows you to specify a custom endpoint for the AWS API.
@@ -321,7 +321,7 @@ fields:
             label: profile
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A profile from `~/.aws/credentials` to use.
@@ -330,7 +330,7 @@ fields:
             label: ID
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               The ID of credentials to use.
@@ -339,7 +339,7 @@ fields:
             label: Secret
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               The secret for the credentials being used.
@@ -349,7 +349,7 @@ fields:
             label: Token
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               The token for the credentials being used, required when using short term credentials.
@@ -367,7 +367,7 @@ fields:
             label: Role
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A role ARN to assume.
@@ -376,7 +376,7 @@ fields:
             label: Role_external_id
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               An external ID to provide when assuming a role.

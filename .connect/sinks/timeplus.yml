@@ -16,7 +16,7 @@ fields:
     label: Target
     kind: scalar
     type: string
-    default: '"timeplus"'
+    default: "timeplus"
     optional: true
     description: |-
       The destination type, either Timeplus Enterprise or timeplusd
@@ -29,7 +29,7 @@ fields:
     label: URL
     kind: scalar
     type: string
-    default: '"https://us-west-2.timeplus.cloud"'
+    default: "https://us-west-2.timeplus.cloud"
     optional: true
     examples:
       - http://localhost:8000
@@ -128,7 +128,7 @@ fields:
         label: period
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - 1s
@@ -141,7 +141,7 @@ fields:
         label: check
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - this.type == "end_of_transaction"

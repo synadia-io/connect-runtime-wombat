@@ -31,7 +31,7 @@ fields:
     label: Key
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       The key to publish messages with.
@@ -40,7 +40,7 @@ fields:
     label: Ordering Key
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       The ordering key to publish messages with.
@@ -85,7 +85,7 @@ fields:
             label: audience
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               OAuth2 audience.
@@ -94,7 +94,7 @@ fields:
             label: issuer_url
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               OAuth2 issuer URL.
@@ -103,7 +103,7 @@ fields:
             label: scope
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               OAuth2 scope to request.
@@ -112,7 +112,7 @@ fields:
             label: Private Key File
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               The path to a file containing a private key.
@@ -139,7 +139,7 @@ fields:
             label: Token
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               Actual base64 encoded token.

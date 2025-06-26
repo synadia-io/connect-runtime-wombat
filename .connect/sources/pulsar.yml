@@ -63,7 +63,7 @@ fields:
     label: subscription_type
     kind: scalar
     type: string
-    default: '"shared"'
+    default: "shared"
     optional: true
     description: |-
       Specify the subscription type for this consumer.
@@ -80,7 +80,7 @@ fields:
     label: subscription_initial_position
     kind: scalar
     type: string
-    default: '"latest"'
+    default: "latest"
     optional: true
     description: |-
       Specify the subscription initial position for this consumer.
@@ -120,7 +120,7 @@ fields:
             label: audience
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               OAuth2 audience.
@@ -129,7 +129,7 @@ fields:
             label: issuer_url
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               OAuth2 issuer URL.
@@ -138,7 +138,7 @@ fields:
             label: scope
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               OAuth2 scope to request.
@@ -165,7 +165,7 @@ fields:
             label: Token
             kind: scalar
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               Actual base64 encoded token.

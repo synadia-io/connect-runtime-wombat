@@ -47,7 +47,7 @@ fields:
         label: period
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - 1s
@@ -60,7 +60,7 @@ fields:
         label: check
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - this.type == "end_of_transaction"

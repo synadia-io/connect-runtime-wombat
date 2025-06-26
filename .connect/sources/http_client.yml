@@ -25,7 +25,7 @@ fields:
     label: Verb
     kind: scalar
     type: string
-    default: '"GET"'
+    default: "GET"
     optional: true
     examples:
       - POST
@@ -85,7 +85,7 @@ fields:
     label: Dump Request Log Level
     kind: scalar
     type: string
-    default: '""'
+    default: ""
     optional: true
     description: |-
       EXPERIMENTAL: Optionally set a level at which the request and response payload of each request made will be logged.
@@ -121,7 +121,7 @@ fields:
         label: consumer_key
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to identify the client to the service provider.
@@ -130,7 +130,7 @@ fields:
         label: consumer_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret used to establish ownership of the consumer key.
@@ -140,7 +140,7 @@ fields:
         label: access_token
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to gain access to the protected resources on behalf of the user.
@@ -149,7 +149,7 @@ fields:
         label: access_token_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret provided in order to establish ownership of a given access token.
@@ -168,7 +168,7 @@ fields:
         label: client_key
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to identify the client to the token provider.
@@ -177,7 +177,7 @@ fields:
         label: client_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret used to establish ownership of the client key.
@@ -187,7 +187,7 @@ fields:
         label: Token_url
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The URL of the token provider.
@@ -238,7 +238,7 @@ fields:
         label: client_key
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A value used to identify the client to the token provider.
@@ -247,7 +247,7 @@ fields:
         label: client_secret
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A secret used to establish ownership of the client key.
@@ -257,7 +257,7 @@ fields:
         label: Token_url
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           The URL of the token provider.
@@ -308,7 +308,7 @@ fields:
         label: Username
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A username to authenticate as.
@@ -317,7 +317,7 @@ fields:
         label: Password
         kind: scalar
         type: string
-        default: '""'
+        default: ""
         optional: true
         description: |-
           A password to authenticate with.
@@ -362,7 +362,7 @@ fields:
         name: root_cas
         label: Root Certificate Authority
         type: string
-        default: '""'
+        default: ""
         optional: true
         examples:
           - "-----BEGIN CERTIFICATE-----
@@ -391,7 +391,7 @@ fields:
             name: cert
             label: Certificate
             type: string
-            default: '""'
+            default: ""
             optional: true
             description: |-
               A plain text certificate to use.
@@ -400,7 +400,7 @@ fields:
             name: key
             path: tls.client_certs[].key
             type: string
-            default: '""'
+            default: ""
             optional: true
             secret: true
             description: |-
@@ -410,7 +410,7 @@ fields:
             name: password
             label: Password
             type: string
-            default: '""'
+            default: ""
             optional: true
             examples:
               - foo
@@ -465,7 +465,7 @@ fields:
     label: Timeout
     kind: scalar
     type: string
-    default: '"5s"'
+    default: "5s"
     optional: true
     description: |-
       A static timeout to apply to requests.
@@ -474,7 +474,7 @@ fields:
     label: Retry Period
     kind: scalar
     type: string
-    default: '"1s"'
+    default: "1s"
     optional: true
     description: |-
       The base period to wait between failed requests.
@@ -483,7 +483,7 @@ fields:
     label: Max Retry Backoff
     kind: scalar
     type: string
-    default: '"300s"'
+    default: "300s"
     optional: true
     description: |-
       The maximum period to wait between failed requests.
@@ -598,7 +598,7 @@ fields:
         label: scanner
         kind: scalar
         type: scanner
-        default: '{"lines":{}}'
+        default: {"lines":{}}
         optional: true
         description: |-
           The scanner by which the stream of bytes consumed will be broken out into individual messages. Scanners are useful for processing large sources of data without holding the entirety of it within memory. For example, the `csv` scanner allows you to process individual CSV rows without loading the entire CSV file in memory at once.
