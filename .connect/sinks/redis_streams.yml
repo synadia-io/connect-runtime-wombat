@@ -202,7 +202,7 @@ fields:
     fields:
       - path: metadata.exclude_prefixes
         name: exclude_prefixes
-        label: exclude_prefixes
+        label: Exclude Prefixes
         kind: list
         type: string
         default: []
@@ -229,7 +229,7 @@ fields:
     fields:
       - path: batching.count
         name: count
-        label: count
+        label: Count
         kind: scalar
         type: int
         default: 0
@@ -238,7 +238,7 @@ fields:
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
       - path: batching.byte_size
         name: byte_size
-        label: byte_size
+        label: Byte Size
         kind: scalar
         type: int
         default: 0
@@ -247,7 +247,7 @@ fields:
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
       - path: batching.period
         name: period
-        label: period
+        label: Period
         kind: scalar
         type: string
         default: ""
@@ -260,7 +260,7 @@ fields:
           A period in which an incomplete batch should be flushed regardless of its size.
       - path: batching.check
         name: check
-        label: check
+        label: Check
         kind: scalar
         type: string
         default: ""

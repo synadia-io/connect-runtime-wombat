@@ -209,8 +209,8 @@ fields:
   - path: fields
     name: fields
     label: Fields
-    kind: scalar
-    type: object
+    kind: map
+    type: string
     default: {}
     optional: true
     description: |-

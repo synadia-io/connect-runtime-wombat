@@ -82,7 +82,7 @@ fields:
               Whether OAuth2 is enabled.
           - path: auth.oauth2.audience
             name: audience
-            label: audience
+            label: Audience
             kind: scalar
             type: string
             default: ""
@@ -91,7 +91,7 @@ fields:
               OAuth2 audience.
           - path: auth.oauth2.issuer_url
             name: issuer_url
-            label: issuer_url
+            label: Issuer Url
             kind: scalar
             type: string
             default: ""
@@ -100,7 +100,7 @@ fields:
               OAuth2 issuer URL.
           - path: auth.oauth2.scope
             name: scope
-            label: scope
+            label: Scope
             kind: scalar
             type: string
             default: ""

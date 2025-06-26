@@ -24,7 +24,7 @@ fields:
       The topic to publish to.
   - path: user_agent
     name: user_agent
-    label: User_agent
+    label: User Agent
     kind: scalar
     type: string
     optional: false

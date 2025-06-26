@@ -68,7 +68,7 @@ fields:
       The maximum amount of time in seconds that the client will wait before sending a PINGREQ message to the broker.
   - path: will
     name: will
-    label: Last Will and Testament
+    label: Last Will And Testament
     type: object
     optional: true
     description: |-

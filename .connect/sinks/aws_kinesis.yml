@@ -34,7 +34,7 @@ fields:
       A optional hash key for partitioning messages.
   - path: max_in_flight
     name: max_in_flight
-    label: Max in Flight
+    label: Max In Flight
     type: int
     default: 64
     optional: true

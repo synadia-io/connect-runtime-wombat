@@ -168,7 +168,7 @@ fields:
       A list of channels to consume from.
   - path: use_patterns
     name: use_patterns
-    label: use_patterns
+    label: Use Patterns
     kind: scalar
     type: bool
     default: false

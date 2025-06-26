@@ -63,7 +63,7 @@ fields:
           Whether to enable queue declaration.
       - path: queue_declare.durable
         name: durable
-        label: durable
+        label: Durable
         kind: scalar
         type: bool
         default: true
@@ -72,7 +72,7 @@ fields:
           Whether the declared queue is durable.
       - path: queue_declare.auto_delete
         name: auto_delete
-        label: auto_delete
+        label: Auto Delete
         kind: scalar
         type: bool
         default: false
@@ -81,7 +81,7 @@ fields:
           Whether the declared queue will auto-delete.
   - path: queue_declare
     name: queue_declare
-    label: Queue_declare
+    label: Queue Declare
     kind: scalar
     type: object
     optional: false
@@ -99,7 +99,7 @@ fields:
           Whether to enable queue declaration.
       - path: queue_declare.durable
         name: durable
-        label: durable
+        label: Durable
         kind: scalar
         type: bool
         default: true
@@ -108,7 +108,7 @@ fields:
           Whether the declared queue is durable.
       - path: queue_declare.auto_delete
         name: auto_delete
-        label: auto_delete
+        label: Auto Delete
         kind: scalar
         type: bool
         default: false
@@ -129,7 +129,7 @@ fields:
     fields:
       - path: bindings_declare[].exchange
         name: exchange
-        label: exchange
+        label: Exchange
         kind: scalar
         type: string
         default: ""

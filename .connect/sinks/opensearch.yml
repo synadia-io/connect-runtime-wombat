@@ -231,7 +231,7 @@ fields:
     fields:
       - path: batching.count
         name: count
-        label: count
+        label: Count
         kind: scalar
         type: int
         default: 0
@@ -240,7 +240,7 @@ fields:
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
       - path: batching.byte_size
         name: byte_size
-        label: byte_size
+        label: Byte Size
         kind: scalar
         type: int
         default: 0
@@ -249,7 +249,7 @@ fields:
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
       - path: batching.period
         name: period
-        label: period
+        label: Period
         kind: scalar
         type: string
         default: ""
@@ -262,7 +262,7 @@ fields:
           A period in which an incomplete batch should be flushed regardless of its size.
       - path: batching.check
         name: check
-        label: check
+        label: Check
         kind: scalar
         type: string
         default: ""
@@ -300,7 +300,7 @@ fields:
           The AWS region to target.
       - path: aws.endpoint
         name: endpoint
-        label: endpoint
+        label: Endpoint
         kind: scalar
         type: string
         default: ""
@@ -318,7 +318,7 @@ fields:
         fields:
           - path: aws.credentials.profile
             name: profile
-            label: profile
+            label: Profile
             kind: scalar
             type: string
             default: ""
@@ -355,7 +355,7 @@ fields:
               The token for the credentials being used, required when using short term credentials.
           - path: aws.credentials.from_ec2_role
             name: from_ec2_role
-            label: from_ec2_role
+            label: From Ec2 Role
             kind: scalar
             type: bool
             default: false
@@ -373,7 +373,7 @@ fields:
               A role ARN to assume.
           - path: aws.credentials.role_external_id
             name: role_external_id
-            label: Role_external_id
+            label: Role External Id
             kind: scalar
             type: string
             default: ""
