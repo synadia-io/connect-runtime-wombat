@@ -58,7 +58,7 @@ fields:
     name: message_timeout
     label: Message Timeout
     type: string
-    default: 30s
+    default: "30s"
     optional: true
     description: |-
       The time to process messages before needing to refresh the receipt handle. Messages will be eligible  for refresh when half of the timeout has elapsed. This sets MessageVisibility for each received message.

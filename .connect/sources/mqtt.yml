@@ -41,7 +41,7 @@ fields:
     name: connect_timeout
     label: Connect Timeout
     type: string
-    default: 30s
+    default: "30s"
     optional: true
     description: |-
       The maximum amount of time to wait in order to establish a connection before the attempt is abandoned.

@@ -48,7 +48,7 @@ fields:
     name: publish_timeout
     label: Publish Timeout
     type: string
-    default: 1m
+    default: "1m"
     optional: true
     description: >-
       The maximum duration to wait for a message to be published before timing out.

@@ -24,7 +24,7 @@ fields:
     name: dequeue_visibility_timeout
     label: Dequeue Visibility Timeout
     type: string
-    default: 30s
+    default: "30s"
     optional: true
     description: |-
       The timeout duration until a dequeued message gets visible again.

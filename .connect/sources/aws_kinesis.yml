@@ -84,7 +84,7 @@ fields:
     name: commit_period
     label: Commit Period
     type: string
-    default: 5s
+    default: "5s"
     optional: true
     description: |-
       The period of time between each update to the checkpoint table.
@@ -92,7 +92,7 @@ fields:
     name: rebalance_period
     label: Rebalance Period
     type: string
-    default: 30s
+    default: "30s"
     optional: true
     description: |-
       The period of time between each attempt to rebalance shards across clients.
@@ -100,7 +100,7 @@ fields:
     name: lease_period
     label: Lease Period
     type: string
-    default: 30s
+    default: "30s"
     optional: true
     description: |-
       The period of time after which a client that has failed to update a shard checkpoint is assumed to be inactive.
