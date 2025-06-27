@@ -25,7 +25,7 @@ fields:
       A list of nsqd addresses to connect to.
   - path: lookupd_http_addresses
     name: lookupd_http_addresses
-    label: lookupd_http_addresses
+    label: Lookupd Http Addresses
     kind: list
     type: string
     optional: false
@@ -169,7 +169,7 @@ fields:
       The maximum number of pending messages to consume at any given time.
   - path: max_attempts
     name: max_attempts
-    label: max_attempts
+    label: Max Attempts
     kind: scalar
     type: int
     default: 5

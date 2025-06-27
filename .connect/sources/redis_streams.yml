@@ -180,7 +180,7 @@ fields:
       Whether messages that are rejected (nacked) at the output level should be automatically replayed indefinitely, eventually resulting in back pressure if the cause of the rejections is persistent. If set to `false` these messages will instead be deleted. Disabling auto replays can greatly improve memory efficiency of high throughput streams as the original shape of the data can be discarded immediately upon consumption and mutation.
   - path: limit
     name: limit
-    label: limit
+    label: Limit
     kind: scalar
     type: int
     default: 10
@@ -198,7 +198,7 @@ fields:
       An identifier for the client connection.
   - path: consumer_group
     name: consumer_group
-    label: consumer_group
+    label: Consumer Group
     kind: scalar
     type: string
     default: ""
@@ -207,7 +207,7 @@ fields:
       An identifier for the consumer group of the stream.
   - path: create_streams
     name: create_streams
-    label: create_streams
+    label: Create Streams
     kind: scalar
     type: bool
     default: true
@@ -216,7 +216,7 @@ fields:
       Create subscribed streams if they do not exist (MKSTREAM option).
   - path: start_from_oldest
     name: start_from_oldest
-    label: start_from_oldest
+    label: Start From Oldest
     kind: scalar
     type: bool
     default: true
@@ -225,7 +225,7 @@ fields:
       If an offset is not found for a stream, determines whether to consume from the oldest available offset, otherwise messages are consumed from the latest offset.
   - path: commit_period
     name: commit_period
-    label: commit_period
+    label: Commit Period
     kind: scalar
     type: string
     default: "1s"

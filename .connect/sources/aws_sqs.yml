@@ -32,7 +32,7 @@ fields:
       Whether to set the visibility timeout of the consumed message to zero once it is nacked. Disabling honors the preset visibility timeout specified for the queue.
   - path: max_number_of_messages
     name: max_number_of_messages
-    label: Max Number of Messages
+    label: Max Number Of Messages
     type: int
     default: 10
     optional: true

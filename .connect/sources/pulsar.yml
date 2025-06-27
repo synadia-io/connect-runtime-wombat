@@ -44,7 +44,7 @@ fields:
       A list of topics to subscribe to. This or topics_pattern must be set.
   - path: topics_pattern
     name: topics_pattern
-    label: Topics_pattern
+    label: Topics Pattern
     kind: scalar
     type: string
     optional: false
@@ -52,7 +52,7 @@ fields:
       A regular expression matching the topics to subscribe to. This or topics must be set.
   - path: subscription_name
     name: subscription_name
-    label: subscription_name
+    label: Subscription Name
     kind: scalar
     type: string
     optional: false
@@ -60,7 +60,7 @@ fields:
       Specify the subscription name for this consumer.
   - path: subscription_type
     name: subscription_type
-    label: subscription_type
+    label: Subscription Type
     kind: scalar
     type: string
     default: "shared"
@@ -77,7 +77,7 @@ fields:
           - exclusive
   - path: subscription_initial_position
     name: subscription_initial_position
-    label: subscription_initial_position
+    label: Subscription Initial Position
     kind: scalar
     type: string
     default: "latest"
@@ -117,7 +117,7 @@ fields:
               Whether OAuth2 is enabled.
           - path: auth.oauth2.audience
             name: audience
-            label: audience
+            label: Audience
             kind: scalar
             type: string
             default: ""
@@ -126,7 +126,7 @@ fields:
               OAuth2 audience.
           - path: auth.oauth2.issuer_url
             name: issuer_url
-            label: issuer_url
+            label: Issuer Url
             kind: scalar
             type: string
             default: ""
@@ -135,7 +135,7 @@ fields:
               OAuth2 issuer URL.
           - path: auth.oauth2.scope
             name: scope
-            label: scope
+            label: Scope
             kind: scalar
             type: string
             default: ""

@@ -45,8 +45,8 @@ fields:
   - path: headers
     name: headers
     label: Headers
-    kind: scalar
-    type: object
+    kind: map
+    type: string
     default: {}
     optional: true
     examples:
@@ -65,7 +65,7 @@ fields:
     fields:
       - path: metadata.include_prefixes
         name: include_prefixes
-        label: include_prefixes
+        label: Include Prefixes
         kind: list
         type: string
         default: []
@@ -79,7 +79,7 @@ fields:
           Provide a list of explicit metadata key prefixes to match against.
       - path: metadata.include_patterns
         name: include_patterns
-        label: include_patterns
+        label: Include Patterns
         kind: list
         type: string
         default: []
@@ -127,7 +127,7 @@ fields:
           Whether to use OAuth version 1 in requests.
       - path: oauth.consumer_key
         name: consumer_key
-        label: consumer_key
+        label: Consumer Key
         kind: scalar
         type: string
         default: ""
@@ -136,7 +136,7 @@ fields:
           A value used to identify the client to the service provider.
       - path: oauth.consumer_secret
         name: consumer_secret
-        label: consumer_secret
+        label: Consumer Secret
         kind: scalar
         type: string
         default: ""
@@ -146,7 +146,7 @@ fields:
         secret: true
       - path: oauth.access_token
         name: access_token
-        label: access_token
+        label: Access Token
         kind: scalar
         type: string
         default: ""
@@ -155,7 +155,7 @@ fields:
           A value used to gain access to the protected resources on behalf of the user.
       - path: oauth.access_token_secret
         name: access_token_secret
-        label: access_token_secret
+        label: Access Token Secret
         kind: scalar
         type: string
         default: ""
@@ -174,7 +174,7 @@ fields:
           Whether to use OAuth version 2 in requests.
       - path: oauth2.client_key
         name: client_key
-        label: client_key
+        label: Client Key
         kind: scalar
         type: string
         default: ""
@@ -183,7 +183,7 @@ fields:
           A value used to identify the client to the token provider.
       - path: oauth2.client_secret
         name: client_secret
-        label: client_secret
+        label: Client Secret
         kind: scalar
         type: string
         default: ""
@@ -193,7 +193,7 @@ fields:
         secret: true
       - path: oauth2.token_url
         name: token_url
-        label: Token_url
+        label: Token Url
         kind: scalar
         type: string
         default: ""
@@ -202,7 +202,7 @@ fields:
           The URL of the token provider.
       - path: oauth2.scopes
         name: scopes
-        label: scopes
+        label: Scopes
         kind: list
         type: string
         default: []
@@ -211,7 +211,7 @@ fields:
           A list of optional requested permissions.
       - path: oauth2.endpoint_params
         name: endpoint_params
-        label: endpoint_params
+        label: Endpoint Params
         kind: scalar
         type: object
         default: {}
@@ -244,7 +244,7 @@ fields:
           Whether to use OAuth version 2 in requests.
       - path: oauth2.client_key
         name: client_key
-        label: client_key
+        label: Client Key
         kind: scalar
         type: string
         default: ""
@@ -253,7 +253,7 @@ fields:
           A value used to identify the client to the token provider.
       - path: oauth2.client_secret
         name: client_secret
-        label: client_secret
+        label: Client Secret
         kind: scalar
         type: string
         default: ""
@@ -263,7 +263,7 @@ fields:
         secret: true
       - path: oauth2.token_url
         name: token_url
-        label: Token_url
+        label: Token Url
         kind: scalar
         type: string
         default: ""
@@ -272,7 +272,7 @@ fields:
           The URL of the token provider.
       - path: oauth2.scopes
         name: scopes
-        label: scopes
+        label: Scopes
         kind: list
         type: string
         default: []
@@ -281,7 +281,7 @@ fields:
           A list of optional requested permissions.
       - path: oauth2.endpoint_params
         name: endpoint_params
-        label: endpoint_params
+        label: Endpoint Params
         kind: scalar
         type: object
         default: {}
@@ -445,7 +445,7 @@ fields:
     fields:
       - path: extract_headers.include_prefixes
         name: include_prefixes
-        label: include_prefixes
+        label: Include Prefixes
         kind: list
         type: string
         default: []
@@ -459,7 +459,7 @@ fields:
           Provide a list of explicit metadata key prefixes to match against.
       - path: extract_headers.include_patterns
         name: include_patterns
-        label: include_patterns
+        label: Include Patterns
         kind: list
         type: string
         default: []
@@ -560,7 +560,7 @@ fields:
       Whether or not to disable disable HTTP/2
   - path: batch_as_multipart
     name: batch_as_multipart
-    label: Batch as Multipart
+    label: Batch As Multipart
     kind: scalar
     type: bool
     default: false
@@ -605,7 +605,7 @@ fields:
     fields:
       - path: batching.count
         name: count
-        label: count
+        label: Count
         kind: scalar
         type: int
         default: 0
@@ -614,7 +614,7 @@ fields:
           A number of messages at which the batch should be flushed. If `0` disables count based batching.
       - path: batching.byte_size
         name: byte_size
-        label: byte_size
+        label: Byte Size
         kind: scalar
         type: int
         default: 0
@@ -623,7 +623,7 @@ fields:
           An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
       - path: batching.period
         name: period
-        label: period
+        label: Period
         kind: scalar
         type: string
         default: ""
@@ -636,7 +636,7 @@ fields:
           A period in which an incomplete batch should be flushed regardless of its size.
       - path: batching.check
         name: check
-        label: check
+        label: Check
         kind: scalar
         type: string
         default: ""

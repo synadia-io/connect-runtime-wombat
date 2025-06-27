@@ -44,7 +44,7 @@ fields:
       A list of URLs to connect to. The first URL to successfully establish a connection will be used until the connection is closed. If an item of the list contains commas it will be expanded into multiple URLs.
   - path: source_address
     name: source_address
-    label: source_address
+    label: Source Address
     kind: scalar
     type: string
     optional: false
@@ -56,7 +56,7 @@ fields:
       The source address to consume from.
   - path: azure_renew_lock
     name: azure_renew_lock
-    label: azure_renew_lock
+    label: Azure Renew Lock
     kind: scalar
     type: bool
     default: false
@@ -65,7 +65,7 @@ fields:
       Experimental: Azure service bus specific option to renew lock if processing takes more then configured lock time
   - path: read_header
     name: read_header
-    label: read_header
+    label: Read Header
     kind: scalar
     type: bool
     default: false
@@ -74,7 +74,7 @@ fields:
       Read additional message header fields into `amqp_*` metadata properties.
   - path: credit
     name: credit
-    label: credit
+    label: Credit
     kind: scalar
     type: int
     default: 64
@@ -195,7 +195,7 @@ fields:
     fields:
       - path: sasl.mechanism
         name: mechanism
-        label: mechanism
+        label: Mechanism
         kind: scalar
         type: string
         default: "none"

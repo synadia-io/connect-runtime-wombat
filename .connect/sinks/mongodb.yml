@@ -83,7 +83,7 @@ fields:
       Whether to perform an upsert operation.
   - path: max_in_flight
     name: max_in_flight
-    label: Max in Flight
+    label: Max In Flight
     type: int
     default: 1024
     optional: true
