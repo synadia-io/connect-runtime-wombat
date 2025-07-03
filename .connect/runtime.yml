@@ -1,10 +1,8 @@
 model_version: "1"
 name: wombat
 label: Wombat
-# image: registry.synadia.io/connect-runtime-wombat
-# default_version: latest
-image: connect-runtime-wombat
-default_version: local
+image: registry.synadia.io/connect-runtime-wombat
+default_version: latest
 author:
   name: Synadia
   email: connect@synadia.com
