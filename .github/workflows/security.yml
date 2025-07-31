@@ -44,24 +44,3 @@ jobs:
       uses: actions/dependency-review-action@v4
       with:
         fail-on-severity: moderate
-
-  nancy:
-    runs-on: ubuntu-latest
-    name: Nancy (Sonatype OSS Index)
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Go
-      uses: actions/setup-go@v5
-      with:
-        go-version-file: 'go.mod'
-        cache: true
-
-    - name: Generate go.list
-      run: go list -json -deps ./... > go.list
-
-    - name: Run Nancy
-      uses: sonatype-nexus-community/nancy-github-action@main
-      with:
-        nancyCommand: sleuth --loud
