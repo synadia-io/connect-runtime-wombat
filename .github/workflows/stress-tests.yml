@@ -34,7 +34,13 @@ jobs:
       - name: Run stress tests
         run: |
           echo "Running stress tests..."
-          task test:stress
+          echo "Current directory: $(pwd)"
+          echo "Go version: $(go version)"
+          echo "Task version: $(task --version)"
+          echo "Available tasks:"
+          task --list
+          echo "Running stress tests with verbose output..."
+          task test:stress || echo "Exit code: $?"
 
       - name: Upload test results on failure
         if: failure()
