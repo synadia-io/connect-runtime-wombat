@@ -77,6 +77,11 @@ var _ = Describe("NATS Stress Tests", func() {
 
 			// Producer configuration with high throughput
 			producerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -154,6 +159,11 @@ output:
 					defer GinkgoRecover()
 
 					config := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -186,6 +196,9 @@ output:
 						publishErrors.Add(1)
 					}
 				}(i)
+				if i%10 == 0 {
+					time.Sleep(10 * time.Millisecond)
+				}
 			}
 
 			wg.Wait()
@@ -232,6 +245,11 @@ output:
 
 			// Producer configuration - generate 1MB messages
 			producerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -295,6 +313,11 @@ output:
 
 			// Consumer configuration
 			consumerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   nats_jetstream:
     urls: ["%s"]
@@ -346,6 +369,11 @@ output:
 
 			// Producer configuration
 			producerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -447,6 +475,11 @@ output:
 
 					for j := 0; j < updatesPerKey; j++ {
 						config := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: 1
@@ -548,6 +581,11 @@ output:
 			go func() {
 				for sent.Load() < int64(messageCount) {
 					config := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: 100
