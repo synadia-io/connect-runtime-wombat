@@ -38,7 +38,7 @@ var _ = Describe("NATS Stress Tests", func() {
 		opts.MaxPending = 10 * 1024 * 1024 // 10MB
 
 		// Increase handshake timout b/c registering many concurrent publishers creates a thundering herd problem
-		opts.AuthTimeout = 10
+		opts.AuthTimeout = 30
 
 		var err error
 		srv = test.RunServer(&opts)
@@ -199,6 +199,10 @@ output:
 						publishErrors.Add(1)
 					}
 				}(i)
+				// -- this fix works, but do not know why 
+				//if i%10 == 0 {
+				//	time.Sleep(10 * time.Millisecond)
+				//}
 			}
 
 			wg.Wait()
@@ -207,7 +211,7 @@ output:
 			// Verify all messages received
 			Eventually(func() int64 {
 				return received.Load()
-			}, 120*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
+			}, 5*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
 
 			rate := float64(totalMessages) / duration.Seconds()
 
@@ -473,8 +477,8 @@ output:
 
 					key := fmt.Sprintf("stress_key_%d", keyID)
 
-					for j := 0; j < updatesPerKey; j++ {
-						config := fmt.Sprintf(`
+					// Create a single stream for all updates to this key
+					config := fmt.Sprintf(`
 logger:
   level: warn
   format: json
@@ -482,10 +486,11 @@ logger:
 
 input:
   generate:
-    count: 1
+    count: %d
+    interval: "0s"
     mapping: |
       root.key = "%s"
-      root.version = %d
+      root.version = counter()
       root.timestamp = timestamp_unix_nano()
       root.data = uuid_v4()
 
@@ -494,25 +499,25 @@ output:
     urls: ["%s"]
     bucket: "%s"
     key: "%s"
-`, key, j, srv.ClientURL(), kvBucket, key)
+    max_in_flight: 10
+`, updatesPerKey, key, srv.ClientURL(), kvBucket, key)
 
-						builder := service.NewStreamBuilder()
-						if err := builder.SetYAML(config); err != nil {
-							errors.Add(1)
-							continue
-						}
+					builder := service.NewStreamBuilder()
+					if err := builder.SetYAML(config); err != nil {
+						errors.Add(int64(updatesPerKey))
+						return
+					}
 
-						stream, err := builder.Build()
-						if err != nil {
-							errors.Add(1)
-							continue
-						}
+					stream, err := builder.Build()
+					if err != nil {
+						errors.Add(int64(updatesPerKey))
+						return
+					}
 
-						if err := stream.Run(context.Background()); err != nil {
-							errors.Add(1)
-						} else {
-							written.Add(1)
-						}
+					if err := stream.Run(context.Background()); err != nil {
+						errors.Add(int64(updatesPerKey))
+					} else {
+						written.Add(int64(updatesPerKey))
 					}
 				}(i)
 			}
