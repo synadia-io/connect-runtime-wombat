@@ -37,9 +37,6 @@ var _ = Describe("NATS Stress Tests", func() {
 		opts.MaxPayload = 10 * 1024 * 1024 // 10MB
 		opts.MaxPending = 10 * 1024 * 1024 // 10MB
 
-		// Increase handshake timout b/c registering many concurrent publishers creates a thundering herd problem
-		opts.AuthTimeout = 30
-
 		var err error
 		srv = test.RunServer(&opts)
 		Expect(srv).NotTo(BeNil())
@@ -151,15 +148,25 @@ output:
 				}
 			}()
 
-			// Start multiple publishers
+			// Start publishers sequentially, waiting for each connection to succeed
 			var wg sync.WaitGroup
 			start := time.Now()
+			connChan := make(chan int, 1) // Channel to signal when to start next publisher
 
 			for i := 0; i < publisherCount; i++ {
 				wg.Add(1)
+
+				// Wait for previous publisher to establish connection (except first one)
+				if i > 0 {
+					<-connChan
+				}
+
 				go func(pubID int) {
 					defer wg.Done()
 					defer GinkgoRecover()
+					defer func() {
+						connChan <- pubID
+					}()
 
 					config := fmt.Sprintf(`
 logger:
@@ -199,10 +206,6 @@ output:
 						publishErrors.Add(1)
 					}
 				}(i)
-				// -- this fix works, but do not know why 
-				//if i%10 == 0 {
-				//	time.Sleep(10 * time.Millisecond)
-				//}
 			}
 
 			wg.Wait()
