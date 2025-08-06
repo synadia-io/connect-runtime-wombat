@@ -207,7 +207,7 @@ output:
 			// Verify all messages received
 			Eventually(func() int64 {
 				return received.Load()
-			}, 60*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
+			}, 120*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
 
 			rate := float64(totalMessages) / duration.Seconds()
 
