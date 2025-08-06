@@ -480,8 +480,8 @@ output:
 
 					key := fmt.Sprintf("stress_key_%d", keyID)
 
-					// Create a single stream for all updates to this key
-					config := fmt.Sprintf(`
+					for j := 0; j < updatesPerKey; j++ {
+						config := fmt.Sprintf(`
 logger:
   level: warn
   format: json
@@ -489,11 +489,10 @@ logger:
 
 input:
   generate:
-    count: %d
-    interval: "0s"
+    count: 1
     mapping: |
       root.key = "%s"
-      root.version = counter()
+      root.version = %d
       root.timestamp = timestamp_unix_nano()
       root.data = uuid_v4()
 
@@ -502,25 +501,25 @@ output:
     urls: ["%s"]
     bucket: "%s"
     key: "%s"
-    max_in_flight: 10
-`, updatesPerKey, key, srv.ClientURL(), kvBucket, key)
+`, key, j, srv.ClientURL(), kvBucket, key)
 
-					builder := service.NewStreamBuilder()
-					if err := builder.SetYAML(config); err != nil {
-						errors.Add(int64(updatesPerKey))
-						return
-					}
+						builder := service.NewStreamBuilder()
+						if err := builder.SetYAML(config); err != nil {
+							errors.Add(1)
+							continue
+						}
 
-					stream, err := builder.Build()
-					if err != nil {
-						errors.Add(int64(updatesPerKey))
-						return
-					}
+						stream, err := builder.Build()
+						if err != nil {
+							errors.Add(1)
+							continue
+						}
 
-					if err := stream.Run(context.Background()); err != nil {
-						errors.Add(int64(updatesPerKey))
-					} else {
-						written.Add(int64(updatesPerKey))
+						if err := stream.Run(context.Background()); err != nil {
+							errors.Add(1)
+						} else {
+							written.Add(1)
+						}
 					}
 				}(i)
 			}
