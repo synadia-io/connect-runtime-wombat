@@ -36,7 +36,7 @@ var _ = Describe("NATS Stress Tests", func() {
 		// Increase limits for stress testing
 		opts.MaxPayload = 10 * 1024 * 1024 // 10MB
 		opts.MaxPending = 10 * 1024 * 1024 // 10MB
-		
+
 		// Increase handshake timout b/c registering many concurrent publishers creates a thundering herd problem
 		opts.AuthTimeout = 10
 
