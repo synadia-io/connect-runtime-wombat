@@ -148,7 +148,7 @@ output:
 				}
 			}()
 
-			// Start publishers sequentially, waiting for each connection to succeed
+			// Start publishers sequentially, to avoid a thundering herd problem where published messages get dropped
 			var wg sync.WaitGroup
 			start := time.Now()
 			connChan := make(chan int, 1) // Channel to signal when to start next publisher
@@ -156,15 +156,17 @@ output:
 			for i := 0; i < publisherCount; i++ {
 				wg.Add(1)
 
-				// Wait for previous publisher to establish connection (except first one)
 				if i > 0 {
+					// Wait for previous publisher to establish connection
 					<-connChan
 				}
 
 				go func(pubID int) {
 					defer wg.Done()
 					defer GinkgoRecover()
+
 					defer func() {
+						// Start next publisher
 						connChan <- pubID
 					}()
 
