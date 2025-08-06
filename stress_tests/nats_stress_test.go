@@ -37,6 +37,9 @@ var _ = Describe("NATS Stress Tests", func() {
 		opts.MaxPayload = 10 * 1024 * 1024 // 10MB
 		opts.MaxPending = 10 * 1024 * 1024 // 10MB
 
+		// Increase handshake timout b/c registering many concurrent publishers creates a thundering herd problem
+		opts.AuthTimeout = 10
+
 		var err error
 		srv = test.RunServer(&opts)
 		Expect(srv).NotTo(BeNil())
@@ -196,9 +199,6 @@ output:
 						publishErrors.Add(1)
 					}
 				}(i)
-				if i%10 == 0 {
-					time.Sleep(10 * time.Millisecond)
-				}
 			}
 
 			wg.Wait()
