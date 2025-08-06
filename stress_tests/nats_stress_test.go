@@ -36,7 +36,7 @@ var _ = Describe("NATS Stress Tests", func() {
 		// Increase limits for stress testing
 		opts.MaxPayload = 10 * 1024 * 1024 // 10MB
 		opts.MaxPending = 10 * 1024 * 1024 // 10MB
-		12
+		
 		// Increase handshake timout b/c registering many concurrent publishers creates a thundering herd problem
 		opts.AuthTimeout = 10
 
@@ -207,7 +207,7 @@ output:
 			// Verify all messages received
 			Eventually(func() int64 {
 				return received.Load()
-			}, 60*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
+			}, 30*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
 
 			rate := float64(totalMessages) / duration.Seconds()
 
