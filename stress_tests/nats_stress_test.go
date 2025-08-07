@@ -193,15 +193,15 @@ output:
 					}
 
 					stream, err := builder.Build()
-					if err != nil {
-						publishErrors.Add(1)
-						<-queue // Release slot on error
-						return
-					}
 
 					// Release queue slot after stream is built and the handshake with the nats server is successful
 					// but _before_ we kick of the stream since we want to run these streams concurrently
 					<-queue
+
+					if err != nil {
+						publishErrors.Add(1)
+						return
+					}
 
 					// Now all streams can run concurrently
 					if err := stream.Run(context.Background()); err != nil {
