@@ -148,27 +148,21 @@ output:
 				}
 			}()
 
-			// Start publishers sequentially, to avoid a thundering herd problem where published messages get dropped
+			// Start publishers sequentially in batches of 5 to avoid a thundering herd problem where published
+			// messages get dropped during the nats-server handshake
 			var wg sync.WaitGroup
 			start := time.Now()
-			connChan := make(chan int, 1) // Channel to signal when to start next publisher
+			queue := make(chan int, 5)
 
 			for i := 0; i < publisherCount; i++ {
 				wg.Add(1)
-
-				if i > 0 {
-					// Wait for previous publisher to establish connection
-					<-connChan
-				}
 
 				go func(pubID int) {
 					defer wg.Done()
 					defer GinkgoRecover()
 
-					defer func() {
-						// Start next publisher
-						connChan <- pubID
-					}()
+					// Acquire queue slot, block if 5 are already connecting to nats-server
+					queue <- 1
 
 					config := fmt.Sprintf(`
 logger:
@@ -201,9 +195,15 @@ output:
 					stream, err := builder.Build()
 					if err != nil {
 						publishErrors.Add(1)
+						<-queue // Release slot on error
 						return
 					}
 
+					// Release queue slot after stream is built and the handshake with the nats server is successful
+					// but _before_ we kick of the stream since we want to run these streams concurrently
+					<-queue
+
+					// Now all streams can run concurrently
 					if err := stream.Run(context.Background()); err != nil {
 						publishErrors.Add(1)
 					}
