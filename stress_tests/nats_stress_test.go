@@ -77,6 +77,11 @@ var _ = Describe("NATS Stress Tests", func() {
 
 			// Producer configuration with high throughput
 			producerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -143,17 +148,28 @@ output:
 				}
 			}()
 
-			// Start multiple publishers
+			// Start publishers sequentially in batches of 5 to avoid a thundering herd problem where published
+			// messages get dropped during the nats-server handshake
 			var wg sync.WaitGroup
 			start := time.Now()
+			queue := make(chan int, 5)
 
 			for i := 0; i < publisherCount; i++ {
 				wg.Add(1)
+
 				go func(pubID int) {
 					defer wg.Done()
 					defer GinkgoRecover()
 
+					// Acquire queue slot, block if 5 are already connecting to nats-server
+					queue <- 1
+
 					config := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -177,11 +193,17 @@ output:
 					}
 
 					stream, err := builder.Build()
+
+					// Release queue slot after stream is built and the handshake with the nats server is successful
+					// but _before_ we kick of the stream since we want to run these streams concurrently
+					<-queue
+
 					if err != nil {
 						publishErrors.Add(1)
 						return
 					}
 
+					// Now all streams can run concurrently
 					if err := stream.Run(context.Background()); err != nil {
 						publishErrors.Add(1)
 					}
@@ -194,7 +216,7 @@ output:
 			// Verify all messages received
 			Eventually(func() int64 {
 				return received.Load()
-			}, 30*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
+			}, 5*time.Second, 100*time.Millisecond).Should(Equal(int64(totalMessages)))
 
 			rate := float64(totalMessages) / duration.Seconds()
 
@@ -232,6 +254,11 @@ output:
 
 			// Producer configuration - generate 1MB messages
 			producerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -295,6 +322,11 @@ output:
 
 			// Consumer configuration
 			consumerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   nats_jetstream:
     urls: ["%s"]
@@ -346,6 +378,11 @@ output:
 
 			// Producer configuration
 			producerConfig := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: %d
@@ -447,6 +484,11 @@ output:
 
 					for j := 0; j < updatesPerKey; j++ {
 						config := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: 1
@@ -548,6 +590,11 @@ output:
 			go func() {
 				for sent.Load() < int64(messageCount) {
 					config := fmt.Sprintf(`
+logger:
+  level: warn
+  format: json
+  add_timestamp: true
+
 input:
   generate:
     count: 100

@@ -19,7 +19,7 @@ tasks:
   test:integration:
     desc: Run integration tests
     cmds:
-      - go run github.com/onsi/ginkgo/v2/ginkgo -v ./test/integration
+      - go run github.com/onsi/ginkgo/v2/ginkgo -p -v ./test/integration
 
   test:benchmark:
     desc: Run performance benchmarks
@@ -34,7 +34,7 @@ tasks:
   test:stress:
     desc: Run stress tests
     cmds:
-      - go run github.com/onsi/ginkgo/v2/ginkgo -v ./stress_tests
+      - go run github.com/onsi/ginkgo/v2/ginkgo -p -v ./stress_tests
 
   test:coverage:
     desc: Run tests with coverage report
