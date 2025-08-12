@@ -84,7 +84,7 @@ tasks:
     cmds:
       - nats kv add TMP > /dev/null
       - defer: nats kv del --force TMP
-      - cd ../connect-node && go run ./cmd/connect-node/main.go library crawl ../connect-runtime-wombat --bucket=TMP
+      - cd ../connect-node && go run ./cmd/connect-node crawl ../connect-runtime-wombat --bucket=TMP
 
   validate:
     cmds:
