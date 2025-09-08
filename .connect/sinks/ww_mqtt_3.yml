@@ -1,0 +1,96 @@
+model_version: '1'
+kind: sink
+label: MQTT3
+name: ww_mqtt_3
+status: stable
+description: "Pushes messages to an MQTT broker.\n\nUses mqtt output component found in [wombatwisdom/components](https://github.com/wombatwisdom/components). \n\n\n"
+fields:
+    - default: '["tcp://localhost:1883"]'
+      description: List of MQTT broker URLs to connect to.
+      kind: scalar
+      label: urls
+      name: urls
+      optional: true
+      path: urls
+      type: array
+    - default: '""'
+      description: Unique client identifier. If empty, one will be generated.
+      kind: scalar
+      label: client_id
+      name: client_id
+      optional: true
+      path: client_id
+      type: string
+    - default: ""
+      description: Topic to publish to. Can contain interpolation functions.
+      kind: scalar
+      label: topic
+      name: topic
+      optional: false
+      path: topic
+      type: string
+    - default: "0"
+      description: Quality of Service level (0, 1, or 2)
+      kind: scalar
+      label: qos
+      name: qos
+      optional: true
+      path: qos
+      type: int
+    - default: "false"
+      description: Set the retained flag on published messages
+      kind: scalar
+      label: retained
+      name: retained
+      optional: true
+      path: retained
+      type: bool
+    - default: '"5s"'
+      description: Timeout for write operations
+      kind: scalar
+      label: write_timeout
+      name: write_timeout
+      optional: true
+      path: write_timeout
+      type: string
+    - default: '"30s"'
+      description: Connection timeout
+      kind: scalar
+      label: connect_timeout
+      name: connect_timeout
+      optional: true
+      path: connect_timeout
+      type: string
+    - default: '"60s"'
+      description: Keep alive interval
+      kind: scalar
+      label: keepalive
+      name: keepalive
+      optional: true
+      path: keepalive
+      type: string
+    - default: ""
+      description: Authentication configuration
+      fields:
+        - default: '""'
+          description: Username for authentication
+          kind: scalar
+          label: username
+          name: username
+          optional: true
+          path: auth.username
+          type: string
+        - default: '""'
+          description: Password for authentication
+          kind: scalar
+          label: password
+          name: password
+          optional: true
+          path: auth.password
+          type: string
+      kind: scalar
+      label: auth
+      name: auth
+      optional: false
+      path: auth
+      type: object

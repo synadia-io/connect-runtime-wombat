@@ -22,6 +22,7 @@ components:
     - mongodb
     - mongodb_change_stream
     - mqtt
+    - ww_mqtt_3
     - nats
     - nats_jetstream
     - nats_kv
@@ -64,6 +65,7 @@ components:
     - http_client
     - kafka_franz
     - mongodb
+    - ww_mqtt_3
     - nats
     - nats_jetstream
     - nats_kv
