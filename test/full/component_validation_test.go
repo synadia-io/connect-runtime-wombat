@@ -64,7 +64,7 @@ var _ = Describe("Component Validation", func() {
 				}
 			}
 
-			Expect(len(results)).To(Equal(31), "Expected 31 source components")
+			Expect(len(results)).To(Equal(32), "Expected 32 source components")
 		})
 	})
 
@@ -78,7 +78,7 @@ var _ = Describe("Component Validation", func() {
 				}
 			}
 
-			Expect(len(results)).To(Equal(39), "Expected 39 sink components")
+			Expect(len(results)).To(Equal(38), "Expected 38 sink components")
 		})
 	})
 
@@ -374,7 +374,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     key: "test-hash"`
 
 	// Elasticsearch/OpenSearch
-	case "elasticsearch":
+	case "elasticsearch_v8":
 		return `
     urls: ["http://localhost:9200"]
     index: "test-index"`
@@ -612,7 +612,17 @@ func getMinimalConfig(componentName string, wombatType string) string {
     url: "http://localhost:8000"
     apikey: "test-key"
     stream: "test"`
-
+	case "ww_mqtt_3":
+		if wombatType == "input" {
+			return `
+    urls: ["tcp://localhost:1883"]
+    filters: {"test/topic": 1}
+    client_id: "test-client"`
+		}
+		return `
+    urls: ["tcp://localhost:1883"]
+    topic: "test/topic"
+    client_id: "test-client"`
 	default:
 		// Return empty config for components we don't have defaults for
 		return " {}"

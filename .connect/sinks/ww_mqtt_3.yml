@@ -2,7 +2,7 @@ model_version: '1'
 kind: sink
 label: MQTT3
 name: ww_mqtt_3
-status: stable
+status: preview
 description: "Pushes messages to an MQTT broker.\n\nUses mqtt output component found in [wombatwisdom/components](https://github.com/wombatwisdom/components). \n\n\n"
 fields:
     - default: '["tcp://localhost:1883"]'

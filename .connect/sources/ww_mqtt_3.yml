@@ -2,7 +2,7 @@ model_version: '1'
 kind: source
 label: MQTT3
 name: ww_mqtt_3
-status: stable
+status: preview
 description: |+
     Subscribe to topics on MQTT brokers.
 

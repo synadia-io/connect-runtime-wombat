@@ -56,7 +56,7 @@ components:
     - couchbase
     - cypher
     - discord
-    - elasticsearch
+    - elasticsearch_v8
     - gcp_bigquery
     - gcp_bigtable
     - gcp_cloud_storage
@@ -83,7 +83,6 @@ components:
     - sql
     - sql_insert
     - sql_raw
-    - timeplus
   scanner:
     - decompress
     - to_the_end
