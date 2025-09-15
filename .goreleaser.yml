@@ -1,0 +1,37 @@
+version: 2
+project_name: connect-runtime-wombat
+
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+
+git:
+  tag_sort: -version:creatordate
+  prerelease_suffix: "-"
+
+before:
+  hooks:
+    - go mod tidy
+
+dockers:
+  - image_templates:
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:{{ .Tag }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:latest"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/amd64,linux/arm64"
+      - "--push"
+
+changelog:
+  use: github
+  sort: asc
+  groups:
+    - title: 'Changes:'
+      order: 999
+  filters:
+    exclude:
+      - '^Merge pull request'
+      - '^Merge branch'
