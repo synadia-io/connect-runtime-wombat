@@ -114,7 +114,6 @@ tasks:
     cmds:
       - task: lint
       - task: format:check
-      - task: check:license
   format:check:
     desc: Check code formatting
     cmds:
