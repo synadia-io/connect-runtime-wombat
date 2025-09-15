@@ -115,6 +115,15 @@ tasks:
       - task: lint
       - task: format:check
       - task: check:license
+  format:check:
+    desc: Check code formatting
+    cmds:
+      - |
+        if [ -n "$(gofmt -l .)" ]; then
+          echo "Code is not formatted. Please run 'task fmt'"
+          gofmt -l .
+          exit 1
+        fi
   release:snapshot:
     desc: Create a local snapshot release (no tags)
     env:
