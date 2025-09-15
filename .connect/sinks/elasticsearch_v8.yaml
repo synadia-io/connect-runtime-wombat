@@ -1,0 +1,310 @@
+model_version: "1"
+kind: sink
+label: elasticsearch_v8
+name: elasticsearch_v8
+status: experimental
+description: |
+    Publishes messages into an Elasticsearch index. If the index does not exist then it is created with a dynamic mapping.
+
+    Both the `id` and `index` fields can be dynamically set using function interpolations described xref:configuration:interpolation.adoc#bloblang-queries[here]. When sending batched messages these interpolations are performed per message part.
+
+    # Performance
+
+    This output benefits from sending multiple messages in flight in parallel for improved performance. You can tune the max number of in flight messages (or message batches) with the field `max_in_flight`.
+
+    This output benefits from sending messages as a batch for improved performance. Batches can be formed at both the input and output level. You can find out more xref:configuration:batching.adoc[in this doc].
+fields:
+    - default: ""
+      description: A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
+      examples:
+        - - http://localhost:9200
+      kind: scalar
+      label: urls
+      name: urls
+      optional: false
+      path: urls
+      type: array
+    - default: ""
+      description: The index to place messages.
+      kind: scalar
+      label: index
+      name: index
+      optional: false
+      path: index
+      type: string
+    - default: ""
+      description: 'The action to take on the document. This field must resolve to one of the following action types: `index`, `update`, `delete`, `create` or `upsert`. See the `Updating Documents` example for more on how the `update` action works and the `Create Documents` and `Upserting Documents` examples for how to use the `create` and `upsert` actions respectively.'
+      kind: scalar
+      label: action
+      name: action
+      optional: false
+      path: action
+      type: string
+    - default: ""
+      description: The ID for indexed messages. Interpolation should be used in order to create a unique ID for each message.
+      examples:
+        - ${!counter()}-${!timestamp_unix()}
+      kind: scalar
+      label: id
+      name: id
+      optional: false
+      path: id
+      type: string
+    - default: '""'
+      description: An optional pipeline id to preprocess incoming documents.
+      kind: scalar
+      label: pipeline
+      name: pipeline
+      optional: true
+      path: pipeline
+      type: string
+    - default: '""'
+      description: The routing key to use for the document.
+      kind: scalar
+      label: routing
+      name: routing
+      optional: true
+      path: routing
+      type: string
+    - default: "0"
+      description: Specify how many times should an update operation be retried when a conflict occurs
+      kind: scalar
+      label: retry_on_conflict
+      name: retry_on_conflict
+      optional: true
+      path: retry_on_conflict
+      type: int
+    - default: ""
+      description: Custom TLS settings can be used to override system defaults.
+      fields:
+        - default: "false"
+          description: Whether custom TLS settings are enabled.
+          kind: scalar
+          label: enabled
+          name: enabled
+          optional: true
+          path: tls.enabled
+          type: bool
+        - default: "false"
+          description: Whether to skip server side certificate verification.
+          kind: scalar
+          label: skip_cert_verify
+          name: skip_cert_verify
+          optional: true
+          path: tls.skip_cert_verify
+          type: bool
+        - default: "false"
+          description: 'Whether to allow the remote server to repeatedly request renegotiation. Enable this option if you''re seeing the error message `local error: tls: no renegotiation`.'
+          kind: scalar
+          label: enable_renegotiation
+          name: enable_renegotiation
+          optional: true
+          path: tls.enable_renegotiation
+          type: bool
+        - default: '""'
+          description: An optional root certificate authority to use. This is a string, representing a certificate chain from the parent trusted root certificate, to possible intermediate signing certificates, to the host certificate.
+          examples:
+            - |-
+              -----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----
+          kind: scalar
+          label: root_cas
+          name: root_cas
+          optional: true
+          path: tls.root_cas
+          secret: true
+          type: string
+        - default: '""'
+          description: An optional path of a root certificate authority file to use. This is a file, often with a .pem extension, containing a certificate chain from the parent trusted root certificate, to possible intermediate signing certificates, to the host certificate.
+          examples:
+            - ./root_cas.pem
+          kind: scalar
+          label: root_cas_file
+          name: root_cas_file
+          optional: true
+          path: tls.root_cas_file
+          type: string
+        - default: '[]'
+          description: A list of client certificates to use. For each certificate either the fields `cert` and `key`, or `cert_file` and `key_file` should be specified, but not both.
+          examples:
+            - - cert: foo
+                key: bar
+            - - cert_file: ./example.pem
+                key_file: ./example.key
+          fields:
+            - default: '""'
+              description: A plain text certificate to use.
+              kind: scalar
+              label: cert
+              name: cert
+              optional: true
+              path: tls.client_certs[].cert
+              type: string
+            - default: '""'
+              description: A plain text certificate key to use.
+              kind: scalar
+              label: key
+              name: key
+              optional: true
+              path: tls.client_certs[].key
+              secret: true
+              type: string
+            - default: '""'
+              description: The path of a certificate to use.
+              kind: scalar
+              label: cert_file
+              name: cert_file
+              optional: true
+              path: tls.client_certs[].cert_file
+              type: string
+            - default: '""'
+              description: The path of a certificate key to use.
+              kind: scalar
+              label: key_file
+              name: key_file
+              optional: true
+              path: tls.client_certs[].key_file
+              type: string
+            - default: '""'
+              description: |-
+                A plain text password for when the private key is password encrypted in PKCS#1 or PKCS#8 format. The obsolete `pbeWithMD5AndDES-CBC` algorithm is not supported for the PKCS#8 format.
+
+                Because the obsolete pbeWithMD5AndDES-CBC algorithm does not authenticate the ciphertext, it is vulnerable to padding oracle attacks that can let an attacker recover the plaintext.
+              examples:
+                - foo
+                - ${KEY_PASSWORD}
+              kind: scalar
+              label: password
+              name: password
+              optional: true
+              path: tls.client_certs[].password
+              secret: true
+              type: string
+          kind: scalar
+          label: client_certs
+          name: client_certs
+          optional: true
+          path: tls.client_certs
+          type: array
+      kind: scalar
+      label: tls
+      name: tls
+      optional: false
+      path: tls
+      type: object
+    - default: "64"
+      description: The maximum number of messages to have in flight at a given time. Increase this to improve throughput.
+      kind: scalar
+      label: max_in_flight
+      name: max_in_flight
+      optional: true
+      path: max_in_flight
+      type: int
+    - default: ""
+      description: Allows you to specify basic authentication.
+      fields:
+        - default: "false"
+          description: Whether to use basic authentication in requests.
+          kind: scalar
+          label: enabled
+          name: enabled
+          optional: true
+          path: basic_auth.enabled
+          type: bool
+        - default: '""'
+          description: A username to authenticate as.
+          kind: scalar
+          label: username
+          name: username
+          optional: true
+          path: basic_auth.username
+          type: string
+        - default: '""'
+          description: A password to authenticate with.
+          kind: scalar
+          label: password
+          name: password
+          optional: true
+          path: basic_auth.password
+          secret: true
+          type: string
+      kind: scalar
+      label: basic_auth
+      name: basic_auth
+      optional: false
+      path: basic_auth
+      type: object
+    - default: ""
+      description: Allows you to configure a xref:configuration:batching.adoc[batching policy].
+      examples:
+        - byte_size: 5000
+          count: 0
+          period: 1s
+        - count: 10
+          period: 1s
+        - check: this.contains("END BATCH")
+          count: 0
+          period: 1m
+      fields:
+        - default: "0"
+          description: A number of messages at which the batch should be flushed. If `0` disables count based batching.
+          kind: scalar
+          label: count
+          name: count
+          optional: true
+          path: batching.count
+          type: int
+        - default: "0"
+          description: An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
+          kind: scalar
+          label: byte_size
+          name: byte_size
+          optional: true
+          path: batching.byte_size
+          type: int
+        - default: '""'
+          description: A period in which an incomplete batch should be flushed regardless of its size.
+          examples:
+            - 1s
+            - 1m
+            - 500ms
+          kind: scalar
+          label: period
+          name: period
+          optional: true
+          path: batching.period
+          type: string
+        - default: '""'
+          description: A xref:guides:bloblang/about.adoc[Bloblang query] that should return a boolean value indicating whether a message should end a batch.
+          examples:
+            - this.type == "end_of_transaction"
+          kind: scalar
+          label: check
+          name: check
+          optional: true
+          path: batching.check
+          type: string
+        - default: ""
+          description: A list of xref:components:processors/about.adoc[processors] to apply to a batch as it is flushed. This allows you to aggregate and archive the batch however you see fit. Please note that all resulting messages are flushed as a single batch, therefore splitting the batch into smaller batches using these processors is a no-op.
+          examples:
+            - - archive:
+                    format: concatenate
+            - - archive:
+                    format: lines
+            - - archive:
+                    format: json_array
+          kind: scalar
+          label: processors
+          name: processors
+          optional: false
+          path: batching.processors
+          type: array
+      kind: scalar
+      label: batching
+      name: batching
+      optional: false
+      path: batching
+      type: object
+
+

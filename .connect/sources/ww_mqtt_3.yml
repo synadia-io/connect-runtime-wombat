@@ -1,0 +1,129 @@
+model_version: '1'
+kind: source
+label: MQTT3
+name: ww_mqtt_3
+status: preview
+description: |+
+    Subscribe to topics on MQTT brokers.
+
+    Uses mqtt input component found in [wombatwisdom/components](https://github.com/wombatwisdom/components). It differs from the `mqtt`
+    input in that it exposes `enable_auto_ack`, which is set to false by default.
+
+    ## MQTT Version
+
+    This component supports MQTT v3.1.1 protocol. For MQTT v5 support, use ww_mqtt_5 (coming soon).
+
+    ## Delivery guarantees
+
+    By default, this input disables auto acknowledgment to ensure at-least-once delivery semantics.
+
+    If message loss is acceptable, you can set `enable_auto_ack: true` to enable at-most-once delivery.
+
+    ### Example: At least once
+
+    ```yaml
+    input:
+      ww_mqtt_3:
+        urls:
+          - tcp://localhost:1883
+        filters:
+          sensor/+/data: 1
+        clean_session: false
+        enable_auto_ack: false # Ack will happen once output is done processing.
+    ```
+
+    ### Example: at most once
+
+    ```yaml
+    input:
+      ww_mqtt_3:
+        urls:
+          - tcp://localhost:1883
+        filters:
+          metrics/#: 0
+        clean_session: true
+        enable_auto_ack: true # Ack will happen once input receives message
+    ```
+
+fields:
+    - default: '["tcp://localhost:1883"]'
+      description: List of MQTT broker URLs to connect to.
+      kind: scalar
+      label: urls
+      name: urls
+      optional: true
+      path: urls
+      type: array
+    - default: '""'
+      description: Unique client identifier. If empty, one will be generated.
+      kind: scalar
+      label: client_id
+      name: client_id
+      optional: true
+      path: client_id
+      type: string
+    - default: '{}'
+      description: Map of topic patterns to QoS levels to subscribe to.
+      kind: scalar
+      label: filters
+      name: filters
+      optional: true
+      path: filters
+      type: object
+    - default: "true"
+      description: Start with a clean session
+      kind: scalar
+      label: clean_session
+      name: clean_session
+      optional: true
+      path: clean_session
+      type: bool
+    - default: '"30s"'
+      description: Connection timeout
+      kind: scalar
+      label: connect_timeout
+      name: connect_timeout
+      optional: true
+      path: connect_timeout
+      type: string
+    - default: '"60s"'
+      description: Keep alive interval
+      kind: scalar
+      label: keepalive
+      name: keepalive
+      optional: true
+      path: keepalive
+      type: string
+    - default: ""
+      description: Authentication configuration
+      fields:
+        - default: '""'
+          description: Username for authentication
+          kind: scalar
+          label: username
+          name: username
+          optional: true
+          path: auth.username
+          type: string
+        - default: '""'
+          description: Password for authentication
+          kind: scalar
+          label: password
+          name: password
+          optional: true
+          path: auth.password
+          type: string
+      kind: scalar
+      label: auth
+      name: auth
+      optional: false
+      path: auth
+      type: object
+    - default: "false"
+      description: Enable automatic acknowledgment (paho SetAutoAckDisabled). When false (default), messages are ACK'd after processing (at-least-once). When true, messages are ACK'd immediately (at-most-once with higher throughput but message loss risk).
+      kind: scalar
+      label: enable_auto_ack
+      name: enable_auto_ack
+      optional: true
+      path: enable_auto_ack
+      type: bool
