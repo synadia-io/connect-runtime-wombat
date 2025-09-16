@@ -18,12 +18,12 @@ fields:
       description: A list of URLs to connect to. If an item of the list contains commas it will be expanded into multiple URLs.
       examples:
         - - http://localhost:9200
-      kind: scalar
+      kind: list
       label: urls
       name: urls
       optional: false
       path: urls
-      type: array
+      type: string
     - default: ""
       description: The index to place messages.
       kind: scalar
@@ -181,12 +181,12 @@ fields:
               path: tls.client_certs[].password
               secret: true
               type: string
-          kind: scalar
+          kind: list
           label: client_certs
           name: client_certs
           optional: true
           path: tls.client_certs
-          type: array
+          type: object
       kind: scalar
       label: tls
       name: tls
@@ -294,12 +294,12 @@ fields:
                     format: lines
             - - archive:
                     format: json_array
-          kind: scalar
+          kind: list
           label: processors
           name: processors
           optional: false
           path: batching.processors
-          type: array
+          type: object
       kind: scalar
       label: batching
       name: batching

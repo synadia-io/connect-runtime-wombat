@@ -21,6 +21,8 @@ var _ = Describe("Component Validation", func() {
 	var (
 		componentsDir string
 		testConfigDir string
+		validTypes    = []string{"bool", "int", "object", "scanner", "string", "expression", "condition"}
+		validKinds    = []string{"scalar", "map", "list"}
 	)
 
 	BeforeEach(func() {
@@ -82,6 +84,40 @@ var _ = Describe("Component Validation", func() {
 		})
 	})
 
+	Describe("Field Type and Kind Validation", func() {
+		It("should reject invalid type values in all component specs", func() {
+			// Test all component directories
+			componentDirs := []string{
+				filepath.Join(componentsDir, "scanners"),
+				filepath.Join(componentsDir, "sources"),
+				filepath.Join(componentsDir, "sinks"),
+			}
+
+			var allErrors []string
+
+			for _, dir := range componentDirs {
+				files, err := os.ReadDir(dir)
+				if err != nil {
+					continue
+				}
+
+				for _, file := range files {
+					if !strings.HasSuffix(file.Name(), ".yml") && !strings.HasSuffix(file.Name(), ".yaml") {
+						continue
+					}
+
+					componentPath := filepath.Join(dir, file.Name())
+					errors := validateComponentSpec(componentPath, validTypes, validKinds)
+					allErrors = append(allErrors, errors...)
+				}
+			}
+
+			if len(allErrors) > 0 {
+				Fail(fmt.Sprintf("Found %d validation errors:\n%s", len(allErrors), strings.Join(allErrors, "\n")))
+			}
+		})
+	})
+
 	It("should generate a comprehensive test report", func() {
 		allResults := []TestResult{}
 
@@ -137,6 +173,17 @@ type TestResult struct {
 	Error      string        `json:"error,omitempty"`
 	ConfigPath string        `json:"config_path"`
 	Duration   time.Duration `json:"duration"`
+}
+
+type ComponentSpecValidation struct {
+	Fields []FieldSpecValidation `yaml:"fields"`
+}
+
+type FieldSpecValidation struct {
+	Name   string                `yaml:"name"`
+	Type   string                `yaml:"type"`
+	Kind   string                `yaml:"kind"`
+	Fields []FieldSpecValidation `yaml:"fields,omitempty"`
 }
 
 func testComponents(dir string, wombatType string, testConfigDir string) []TestResult {
@@ -646,4 +693,65 @@ func testWombatConfig(configPath string) error {
 
 	// The config is valid if we reach here
 	return nil
+}
+
+func validateComponentSpec(path string, validTypes, validKinds []string) []string {
+	var errors []string
+
+	file, err := os.Open(path)
+	if err != nil {
+		return []string{fmt.Sprintf("Failed to open %s: %v", path, err)}
+	}
+	defer file.Close()
+
+	var spec ComponentSpecValidation
+	decoder := yaml.NewDecoder(file)
+	if err := decoder.Decode(&spec); err != nil {
+		return []string{fmt.Sprintf("Failed to parse %s: %v", path, err)}
+	}
+
+	fieldErrors := validateFields(spec.Fields, path, validTypes, validKinds, "")
+	errors = append(errors, fieldErrors...)
+
+	return errors
+}
+
+func validateFields(fields []FieldSpecValidation, filePath string, validTypes, validKinds []string, parentPath string) []string {
+	var errors []string
+
+	for _, field := range fields {
+		fieldPath := field.Name
+		if parentPath != "" {
+			fieldPath = parentPath + "." + field.Name
+		}
+
+		// Validate type
+		if field.Type != "" && !contains(validTypes, field.Type) {
+			errors = append(errors, fmt.Sprintf("%s: Field '%s' has invalid type '%s'. Valid types are: %v",
+				filepath.Base(filePath), fieldPath, field.Type, validTypes))
+		}
+
+		// Validate kind
+		if field.Kind != "" && !contains(validKinds, field.Kind) {
+			errors = append(errors, fmt.Sprintf("%s: Field '%s' has invalid kind '%s'. Valid kinds are: %v",
+				filepath.Base(filePath), fieldPath, field.Kind, validKinds))
+		}
+
+		// Recursively validate nested fields
+		if len(field.Fields) > 0 {
+			nestedErrors := validateFields(field.Fields, filePath, validTypes, validKinds, fieldPath)
+			errors = append(errors, nestedErrors...)
+		}
+	}
+
+	return errors
+}
+
+func contains(slice []string, item string) bool {
+	for _, s := range slice {
+		if s == item {
+			return true
+		}
+	}
+	return false
 }
