@@ -7,12 +7,12 @@ description: "Pushes messages to an MQTT broker.\n\nUses mqtt output component f
 fields:
     - default: '["tcp://localhost:1883"]'
       description: List of MQTT broker URLs to connect to.
-      kind: scalar
+      kind: list
       label: urls
       name: urls
       optional: true
       path: urls
-      type: array
+      type: string
     - default: '""'
       description: Unique client identifier. If empty, one will be generated.
       kind: scalar
