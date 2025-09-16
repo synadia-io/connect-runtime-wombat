@@ -702,7 +702,11 @@ func validateComponentSpec(path string, validTypes, validKinds []string) []strin
 	if err != nil {
 		return []string{fmt.Sprintf("Failed to open %s: %v", path, err)}
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			GinkgoLogr.Error(err, "failed to close file", "path", path)
+		}
+	}()
 
 	var spec ComponentSpecValidation
 	decoder := yaml.NewDecoder(file)
