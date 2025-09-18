@@ -5,6 +5,14 @@ ENV GOOS=linux
 RUN useradd -u 10001 wombat
 RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
+ARG VERSION=dev
+ARG COMMIT_HASH=unknown
+ARG BUILD_DATE=unknown
+
+ENV VERSION=${VERSION}
+ENV COMMIT_HASH=${COMMIT_HASH}
+ENV BUILD_DATE=${BUILD_DATE}
+
 WORKDIR /go/src/github.com/synadia-io/connect-runtime-wombat/
 # Update dependencies: On unchanged dependencies, cached layer will be reused
 COPY . /go/src/github.com/synadia-io/connect-runtime-wombat/
