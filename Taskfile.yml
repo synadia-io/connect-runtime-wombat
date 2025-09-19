@@ -1,10 +1,21 @@
 version: "3"
+
+vars:
+  VERSION:
+    sh: echo "${VERSION:-$(git describe --tags --always --abbrev=0 --match='v[0-9]*.[0-9]*.[0-9]*' 2> /dev/null | sed 's/^.//' || echo 'dev')}"
+  COMMIT_HASH:
+    sh: echo "${COMMIT_HASH:-$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')}"
+  BUILD_DATE:
+    sh: echo "${BUILD_DATE:-$(date '+%Y-%m-%dT%H:%M:%S')}"
+  LD_FLAGS:
+    sh: echo "-X main.Version={{.VERSION}} -X main.CommitHash={{.COMMIT_HASH}} -X main.BuildTimestamp={{.BUILD_DATE}}"
+
 tasks:
   build:
     desc: Build the wombat runtime
     cmds:
       - go mod tidy
-      - go build -tags "{{.TAGS}}" -o ./target/connect-runtime-wombat *.go
+      - go build -tags "{{.TAGS}}" -ldflags="{{.LD_FLAGS}}" -o ./target/connect-runtime-wombat *.go
 
   test:
     desc: Run all tests (excluding stress tests)
@@ -100,8 +111,16 @@ tasks:
       - npx --yes ajv-cli validate -s component-spec-v1.schema.json -d "{{.DIR}}/*/*.yml" --verbose
 
   docker:local:
+    desc: Build Docker image locally with version information
+    vars:
+      LOCAL_VERSION:
+        sh: git describe --tags --always --abbrev=0 --match='v[0-9]*.[0-9]*.[0-9]*' 2> /dev/null | sed 's/^.//' || echo "dev"
+      LOCAL_COMMIT:
+        sh: git rev-parse --short HEAD 2>/dev/null || echo "unknown"
+      LOCAL_DATE:
+        sh: date '+%Y-%m-%dT%H:%M:%S'
     cmds:
-      - docker build --no-cache -t connect-runtime-wombat:local .
+      - docker build --no-cache -t connect-runtime-wombat:local --build-arg VERSION={{.LOCAL_VERSION}} --build-arg COMMIT_HASH={{.LOCAL_COMMIT}} --build-arg BUILD_DATE={{.LOCAL_DATE}} .
 
   # Do not edit. Shared with wombatwisdom/components.
   setup:
