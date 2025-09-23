@@ -12,8 +12,10 @@ fields:
     name: storage_connection_string
     label: Storage Connection String
     type: string
-    description: >-
-      The connection string for the Azure Storage Account.
+    description: |-
+      A storage account connection string. This must contain the `AccountName`.
+    constraints:
+      - regex: ".*AccountName=.*"
   - path: table_name
     name: table_name
     label: Table

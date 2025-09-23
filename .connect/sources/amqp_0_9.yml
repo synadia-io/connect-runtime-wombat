@@ -118,9 +118,9 @@ fields:
   - path: bindings_declare
     name: bindings_declare
     label: Bindings Declare
-    kind: list
-    type: string
-    optional: false
+    kind: object
+    optional: true
+    default: {}
     examples:
       - - exchange: foo
           key: bar

@@ -48,86 +48,77 @@ description: |+
     ```
 
 fields:
-    - default: '["tcp://localhost:1883"]'
-      description: List of MQTT broker URLs to connect to.
-      kind: list
-      label: urls
+    - path: urls
       name: urls
-      optional: true
-      path: urls
+      label: urls
+      kind: list
       type: string
-    - default: '""'
-      description: Unique client identifier. If empty, one will be generated.
-      kind: scalar
-      label: client_id
+      default: ["tcp://localhost:1883"]
+      description: List of MQTT broker URLs to connect to.
+    - path: client_id
       name: client_id
-      optional: true
-      path: client_id
-      type: string
-    - default: '{}'
-      description: Map of topic patterns to QoS levels to subscribe to.
+      label: client_id
       kind: scalar
-      label: filters
+      type: string
+      default: ""
+      description: Unique client identifier. If empty, one will be generated.
+    - path: filters
       name: filters
-      optional: true
-      path: filters
+      label: filters
+      kind: scalar
       type: object
-    - default: "true"
-      description: Start with a clean session
-      kind: scalar
-      label: clean_session
+      default: {}
+      description: Map of topic patterns to QoS levels to subscribe to.
+    - path: clean_session
       name: clean_session
-      optional: true
-      path: clean_session
+      label: clean_session
+      kind: scalar
       type: bool
-    - default: '"30s"'
-      description: Connection timeout
-      kind: scalar
-      label: connect_timeout
+      default: true
+      description: Start with a clean session
+    - path: connect_timeout
       name: connect_timeout
-      optional: true
-      path: connect_timeout
-      type: string
-    - default: '"60s"'
-      description: Keep alive interval
+      label: connect_timeout
       kind: scalar
-      label: keepalive
-      name: keepalive
-      optional: true
-      path: keepalive
       type: string
-    - default: ""
+      default: "30s"
+      description: Connection timeout
+    - path: keepalive
+      name: keepalive
+      label: keepalive
+      kind: scalar
+      type: string
+      default: "60s"
+      description: Keep alive interval
+    - path: auth
+      name: auth
+      label: auth
+      kind: scalar
+      type: object
+      default: {}
       description: Authentication configuration
       fields:
-        - default: '""'
-          description: Username for authentication
-          kind: scalar
-          label: username
+        - path: auth.username
           name: username
-          optional: true
-          path: auth.username
-          type: string
-        - default: '""'
-          description: Password for authentication
+          label: username
           kind: scalar
-          label: password
-          name: password
-          optional: true
-          path: auth.password
           type: string
-      kind: scalar
-      label: auth
-      name: auth
-      optional: false
-      path: auth
-      type: object
+          default: ""
+          description: Username for authentication
+        - path: auth.password
+          name: password
+          label: password
+          kind: scalar
+          type: string
+          default: ""
+          description: Password for authentication
     - path: tls
       name: tls
       label: TLS
       kind: scalar
       type: object
-      default: ''
-      optional: false
+      default: {}
+      optional: true
       description: |-
         TLS configuration for secure connections
       fields:
@@ -136,7 +127,7 @@ fields:
           label: Enabled
           kind: scalar
           type: bool
-          default: 'false'
+          default: false
           optional: true
           description: |-
             Whether custom TLS settings are enabled.
@@ -145,7 +136,7 @@ fields:
           label: Skip Cert Verify
           kind: scalar
           type: bool
-          default: 'false'
+          default: false
           optional: true
           description: |-
             Whether to skip server side certificate verification.
@@ -154,7 +145,7 @@ fields:
           label: Enable Renegotiation
           kind: scalar
           type: bool
-          default: 'false'
+          default: false
           optional: true
           description: |-
             Whether to allow the remote server to repeatedly request renegotiation. Enable this option if you're seeing the error message `local error: tls: no renegotiation`.
@@ -163,7 +154,7 @@ fields:
           label: Root Cas
           kind: scalar
           type: string
-          default: '""'
+          default: ""
           optional: true
           examples:
             - |-
@@ -178,7 +169,7 @@ fields:
           label: Root Cas File
           kind: scalar
           type: string
-          default: '""'
+          default: ""
           optional: true
           examples:
             - ./root_cas.pem
@@ -189,7 +180,7 @@ fields:
           label: Client Certs
           kind: list
           type: object
-          default: '[]'
+          default: []
           optional: true
           examples:
             - - cert: foo
@@ -204,7 +195,7 @@ fields:
               label: Cert
               kind: scalar
               type: string
-              default: '""'
+              default: ""
               optional: true
               description: |-
                 A plain text certificate to use.
@@ -213,7 +204,7 @@ fields:
               label: Key
               kind: scalar
               type: string
-              default: '""'
+              default: ""
               optional: true
               description: |-
                 A plain text certificate key to use.
@@ -223,7 +214,7 @@ fields:
               label: Cert File
               kind: scalar
               type: string
-              default: '""'
+              default: ""
               optional: true
               description: |-
                 The path of a certificate to use.
@@ -232,7 +223,7 @@ fields:
               label: Key File
               kind: scalar
               type: string
-              default: '""'
+              default: ""
               optional: true
               description: |-
                 The path of a certificate key to use.
@@ -241,7 +232,7 @@ fields:
               label: Password
               kind: scalar
               type: string
-              default: '""'
+              default: ""
               optional: true
               examples:
                 - foo
@@ -256,8 +247,9 @@ fields:
       label: Will
       kind: scalar
       type: object
-      default: ''
-      optional: false
+      default: {
+        topic: ""
+      }
       description: |-
         Last Will and Testament configuration
       fields:
@@ -266,8 +258,6 @@ fields:
           label: Topic
           kind: scalar
           type: string
-          default: ''
-          optional: false
           description: |-
             Topic for will message
         - path: will.payload
@@ -275,8 +265,7 @@ fields:
           label: Payload
           kind: scalar
           type: string
-          default: '""'
-          optional: true
+          default: ""
           description: |-
             Payload for will message
         - path: will.qos
@@ -284,8 +273,7 @@ fields:
           label: QoS
           kind: scalar
           type: int
-          default: '0'
-          optional: true
+          default: 0
           description: |-
             QoS level for will message (0, 1, or 2)
         - path: will.retained
@@ -293,15 +281,14 @@ fields:
           label: Retained
           kind: scalar
           type: bool
-          default: 'false'
-          optional: true
+          default: false
           description: |-
             Retained flag for will message
-    - default: "false"
-      description: Enable automatic acknowledgment (paho SetAutoAckDisabled). When false (default), messages are ACK'd after processing (at-least-once). When true, messages are ACK'd immediately (at-most-once with higher throughput but message loss risk).
-      kind: scalar
-      label: enable_auto_ack
+    - path: enable_auto_ack
       name: enable_auto_ack
-      optional: true
-      path: enable_auto_ack
+      label: enable_auto_ack
+      kind: scalar
       type: bool
+      default: false
+      optional: true
+      description: Enable automatic acknowledgment (paho SetAutoAckDisabled). When false (default), messages are ACK'd after processing (at-least-once). When true, messages are ACK'd immediately (at-most-once with higher throughput but message loss risk).
