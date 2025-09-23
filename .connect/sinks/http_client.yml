@@ -60,7 +60,7 @@ fields:
     label: Metadata
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Specify optional matching rules to determine which metadata keys should be added to the HTTP request as headers.
     fields:
@@ -113,7 +113,7 @@ fields:
     label: OAuth
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to specify open authentication via OAuth version 1.
     fields:
@@ -169,7 +169,7 @@ fields:
     label: OAuth2
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to specify open authentication via OAuth version 2 using the client credentials token flow.
     fields:
@@ -239,7 +239,7 @@ fields:
     label: Basic Auth
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to specify basic authentication.
     fields:
@@ -275,7 +275,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -379,7 +379,7 @@ fields:
     label: Extract Headers
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Specify which response headers should be added to resulting synchronous response messages as metadata. Header keys are lowercased before matching, so ensure that your patterns target lowercased versions of the header keys that you expect. This field is not applicable unless `propagate_response` is set to `true`.
     fields:
@@ -530,7 +530,7 @@ fields:
     label: Batching
     kind: scalar
     type: object
-    optional: false
+    optional: true
     examples:
       - byte_size: 5000
         count: 0

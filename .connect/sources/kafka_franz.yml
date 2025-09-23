@@ -50,7 +50,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -211,7 +211,7 @@ fields:
         label: Extensions
         kind: map
         type: string
-        optional: false
+        optional: true
         description: |-
           Key/value pairs to add to OAUTHBEARER authentication requests.
       - path: sasl[].aws
@@ -219,7 +219,7 @@ fields:
         label: AWS
         kind: scalar
         type: object
-        optional: false
+        optional: true
         description: |-
           Contains AWS specific fields for when the `mechanism` is set to `AWS_MSK_IAM`.
         fields:
@@ -449,7 +449,7 @@ fields:
     label: Batching
     kind: scalar
     type: object
-    optional: false
+    optional: true
     examples:
       - byte_size: 5000
         count: 0

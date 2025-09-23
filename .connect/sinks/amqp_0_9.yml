@@ -159,6 +159,7 @@ fields:
   - path: metadata
     name: metadata
     label: Metadata
+    optional: true
     type: object
     description: >-
       Specify criteria for which metadata values are attached to messages as headers.
@@ -236,7 +237,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:

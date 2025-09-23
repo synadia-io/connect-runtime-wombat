@@ -112,7 +112,7 @@ fields:
     label: Batching
     kind: scalar
     type: object
-    optional: false
+    optional: true
     examples:
       - byte_size: 5000
         count: 0

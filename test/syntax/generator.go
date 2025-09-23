@@ -106,7 +106,7 @@ func isRequired(fld model.ComponentField) bool {
 func generateFieldValue(fld model.ComponentField) (any, error) {
 	switch fld.Kind {
 	case model.ComponentFieldKindList:
-		length := rand.IntN(10)
+		length := 1 + rand.IntN(5)
 		result := make([]any, length)
 		for i := 0; i < length; i++ {
 			v, err := generateFieldScalarValue(fld)
@@ -118,7 +118,7 @@ func generateFieldValue(fld model.ComponentField) (any, error) {
 
 		return result, nil
 	case model.ComponentFieldKindMap:
-		length := rand.IntN(10)
+		length := 1 + rand.IntN(5)
 		result := make(map[string]any, length)
 		for i := 0; i < length; i++ {
 			key := "key" + fmt.Sprint(i)

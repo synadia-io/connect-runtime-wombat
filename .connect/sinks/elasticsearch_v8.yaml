@@ -197,7 +197,7 @@ fields:
       label: basic_auth
       kind: scalar
       type: object
-      optional: false
+      optional: true
       default: { }
       description: Allows you to specify basic authentication.
       fields:
@@ -231,7 +231,7 @@ fields:
       label: batching
       kind: scalar
       type: object
-      optional: false
+      optional: true
       default: {}
       description: Allows you to configure a xref:configuration:batching.adoc[batching policy].
       examples:

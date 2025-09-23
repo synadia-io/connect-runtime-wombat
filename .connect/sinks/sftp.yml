@@ -44,7 +44,7 @@ fields:
     label: Credentials
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       The credentials to use to log into the target server.
     fields:

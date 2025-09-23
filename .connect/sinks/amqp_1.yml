@@ -49,7 +49,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -196,7 +196,7 @@ fields:
     name: metadata
     label: Metadata
     type: object
-    optional: false
+    optional: true
     description: |-
       Specify criteria for which metadata values are attached to messages as headers.
     fields:

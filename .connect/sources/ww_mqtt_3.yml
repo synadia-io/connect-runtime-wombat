@@ -67,7 +67,7 @@ fields:
       label: filters
       kind: scalar
       type: object
-      default: {}
+      optional: true
       description: Map of topic patterns to QoS levels to subscribe to.
     - path: clean_session
       name: clean_session
@@ -95,7 +95,7 @@ fields:
       label: auth
       kind: scalar
       type: object
-      default: {}
+      optional: true
       description: Authentication configuration
       fields:
         - path: auth.username

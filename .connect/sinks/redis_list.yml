@@ -51,7 +51,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -177,7 +177,7 @@ fields:
     label: Batching
     kind: scalar
     type: object
-    optional: false
+    optional: true
     examples:
       - byte_size: 5000
         count: 0

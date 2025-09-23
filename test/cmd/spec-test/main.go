@@ -55,6 +55,10 @@ func run(dir string) {
 		}(tester, filename)
 	}
 	wg.Wait()
+
+	fmt.Printf("🆗All done! Checked %d specs\n", len(filenames))
+	fmt.Printf("🆗Error artifacts (if any) are in %s\n", errDir)
+	fmt.Printf("🆗All compiled artifacts are in %s\n", dumpDir)
 }
 
 func generateSpecFilenames(dir string) ([]string, error) {

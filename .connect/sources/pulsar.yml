@@ -93,7 +93,7 @@ fields:
     label: Auth
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Optional configuration of Pulsar authentication methods.
     fields:
@@ -102,7 +102,7 @@ fields:
         label: OAuth2
         kind: scalar
         type: object
-        optional: false
+        optional: true
         description: |-
           Parameters for Pulsar OAuth2 authentication.
         fields:
@@ -147,7 +147,7 @@ fields:
         label: Token
         kind: scalar
         type: object
-        optional: false
+        optional: true
         description: |-
           Parameters for Pulsar Token authentication.
         fields:

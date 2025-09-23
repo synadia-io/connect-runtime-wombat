@@ -16,7 +16,6 @@ fields:
     label: Addresses
     kind: list
     type: string
-    optional: false
     examples:
       -   - localhost:9042
       -   - foo:9042
@@ -28,7 +27,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -132,7 +131,7 @@ fields:
     label: Password Authenticator
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Optional configuration of Cassandra authentication parameters.
     fields:
@@ -187,7 +186,7 @@ fields:
     label: Backoff
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Control time intervals between retry attempts.
     fields:
@@ -277,7 +276,7 @@ fields:
     label: Batching
     kind: scalar
     type: object
-    optional: false
+    optional: true
     examples:
       - byte_size: 5000
         count: 0
