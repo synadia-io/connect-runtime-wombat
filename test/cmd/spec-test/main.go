@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"sync"
+
+	"github.com/synadia-io/connect-runtime-wombat/test/syntax"
 )
 
 func main() {
@@ -23,7 +25,16 @@ func run(dir string) {
 		os.Exit(1)
 	}
 
-	tester := NewTester(errDir)
+	dumpDir, err := os.MkdirTemp("", "syntax-dumps-")
+	if err != nil {
+		fmt.Printf("❌Error creating temp dir for dumps: %v\n", err)
+		os.Exit(1)
+	}
+
+	tester := syntax.NewTester(syntax.TesterConfig{
+		DumpOnErrorDirectory: errDir,
+		DumpDirectory:        dumpDir,
+	})
 
 	var wg sync.WaitGroup
 	sem := make(chan struct{}, 5)
@@ -31,7 +42,7 @@ func run(dir string) {
 	for _, filename := range filenames {
 		wg.Add(1)
 		sem <- struct{}{} // acquire a slot
-		go func(tester *Tester, fn string) {
+		go func(tester *syntax.Tester, fn string) {
 			defer wg.Done()
 			defer func() { <-sem }() // release the slot
 

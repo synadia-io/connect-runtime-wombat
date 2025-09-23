@@ -1,4 +1,4 @@
-package main
+package syntax
 
 import (
 	"context"
@@ -17,9 +17,17 @@ const NatsUrl = "nats://localhost:4222"
 const NatsJWT = "ey...."
 const NatsSeed = "SU...."
 
-func NewTester(errorDir string) *Tester {
+type TesterConfig struct {
+	// DumpOnErrorDirectory is the directory to dump artifacts to when an error occurs during testing. If empty, no artifacts are dumped on error
+	DumpOnErrorDirectory string
+
+	// DumpDirectory is the directory to dump all compiled artifacts to. If empty, no artifacts are dumped
+	DumpDirectory string
+}
+
+func NewTester(cfg TesterConfig) *Tester {
 	return &Tester{
-		errorDir: errorDir,
+		cfg: cfg,
 		rt: &runtime.Runtime{
 			Namespace: "test-namespace",
 			Instance:  "test-instance",
@@ -34,8 +42,8 @@ func NewTester(errorDir string) *Tester {
 }
 
 type Tester struct {
-	errorDir string
-	rt       *runtime.Runtime
+	cfg TesterConfig
+	rt  *runtime.Runtime
 }
 
 func (t *Tester) TestComponent(specFile string) error {
@@ -63,12 +71,31 @@ func (t *Tester) TestComponent(specFile string) error {
 		return fmt.Errorf("%s: compile: %w", comp.Name, err)
 	}
 
+	// -- optionally dump the artifact
+	if t.cfg.DumpDirectory != "" {
+		if err := os.MkdirAll(t.cfg.DumpDirectory, 0755); err != nil {
+			return fmt.Errorf("failed to create dump directory %s: %w", t.cfg.DumpDirectory, err)
+		}
+
+		dumpFile := fmt.Sprintf("%s/%s-%s.yaml", t.cfg.DumpDirectory, comp.Kind, comp.Name)
+
+		if err := os.WriteFile(dumpFile, []byte(artifact), 0644); err != nil {
+			return fmt.Errorf("failed to write dump file %s: %w", dumpFile, err)
+		}
+	}
+
 	// -- lint the artifact
 	if err := service.NewStreamBuilder().SetYAML(artifact); err != nil {
-		// write the artifact to the error dir for inspection
-		errFile := fmt.Sprintf("%s/%s-%s.yaml", t.errorDir, comp.Kind, comp.Name)
-		_ = os.WriteFile(errFile, []byte(artifact), 0644)
-		return fmt.Errorf("%s: %s: validate: %w (artifact written to %s)", comp.Kind, comp.Name, err, errFile)
+		if t.cfg.DumpOnErrorDirectory != "" {
+			// write the artifact to the error dir for inspection
+			errFile := fmt.Sprintf("%s/%s-%s.yaml", t.cfg.DumpOnErrorDirectory, comp.Kind, comp.Name)
+
+			_ = os.WriteFile(errFile, []byte(artifact), 0644)
+
+			return fmt.Errorf("%s: %s: validate: %w (artifact written to %s)", comp.Kind, comp.Name, err, errFile)
+		}
+
+		return fmt.Errorf("%s: %s: validate: %w", comp.Kind, comp.Name, err)
 	}
 
 	return nil
