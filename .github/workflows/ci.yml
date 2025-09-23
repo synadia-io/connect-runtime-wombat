@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: '1.24.6'
+          go-version-file: 'go.mod'
           cache: true
 
       - name: Check formatting
@@ -33,13 +33,11 @@ jobs:
           fi
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v8
         with:
           version: latest
           args: --timeout=10m
           skip-cache: true
-          skip-pkg-cache: true
-          skip-build-cache: true
 
       - name: Run go vet
         run: go vet ./...
@@ -49,12 +47,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: '1.24.6'
+          go-version-file: 'go.mod'
           cache: true
 
       - name: Install Ginkgo
@@ -73,25 +71,17 @@ jobs:
           go test -coverprofile=coverage.out -covermode=atomic $(go list ./... | grep -v /stress_tests)
           go tool cover -func=coverage.out
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage.out
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: '1.24.6'
+          go-version-file: 'go.mod'
           cache: true
 
       - name: Build
@@ -111,10 +101,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
 
