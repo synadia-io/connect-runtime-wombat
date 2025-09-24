@@ -143,6 +143,6 @@ func CompileWithContext(ctx context.Context, rt *runtime.Runtime, steps model.St
 	}
 
 	RecordCompilationMetrics(start, true, connectorType)
-	logger.Info().Int("config_length", len(b)).Msg("Compilation completed successfully")
+	logger.Debug().Int("config_length", len(b)).Msg("Compilation completed successfully")
 	return string(b), nil
 }

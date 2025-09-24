@@ -13,7 +13,9 @@ fields:
     label: Connection String
     type: string
     description: |-
-      A storage account connection string. This field is required if `storage_account` and `storage_access_key` / `storage_sas_token` are not set.
+      A storage account connection string. This must contain the `AccountName`.
+    constraints:
+      - regex: ".*AccountName=.*"
   - path: table_name
     name: table_name
     label: Table

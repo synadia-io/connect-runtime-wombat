@@ -13,7 +13,9 @@ fields:
     label: Connection String
     type: string
     description: |-
-      A storage account connection string.
+      A storage account connection string. This must contain the `AccountName`.
+    constraints:
+      - regex: ".*AccountName=.*"
   - path: queue_name
     name: queue_name
     label: Queue

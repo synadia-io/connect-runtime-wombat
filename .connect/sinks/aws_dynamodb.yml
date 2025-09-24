@@ -19,12 +19,12 @@ fields:
     label: String Columns
     kind: map
     type: expression
+    optional: true
     examples:
       - full_content: ${!content()}
         id: ${!json("id")}
         title: ${!json("body.title")}
         topic: ${!meta("kafka_topic")}
-
     description: >-
       A map of column keys to string values to store.
   - path: json_map_columns
@@ -80,6 +80,7 @@ fields:
     name: credentials
     label: Credentials
     type: object
+    optional: true
     description: >-
       Optional manual configuration of AWS credentials to use. More information
       can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).

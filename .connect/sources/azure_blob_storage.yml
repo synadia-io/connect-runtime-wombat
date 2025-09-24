@@ -9,11 +9,13 @@ description: |-
   Downloads objects within an Azure Blob Storage container, optionally filtered by a prefix.
 fields:
   - path: storage_connection_string
-    name: connection_string
+    name: storage_connection_string
     label: Connection String
     type: string
     description: |-
-      A storage account connection string.
+      A storage account connection string. This must contain the `AccountName`.
+    constraints:
+      - regex: ".*AccountName=.*"
   - path: container
     name: container
     label: Container

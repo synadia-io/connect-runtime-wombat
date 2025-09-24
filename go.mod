@@ -1,11 +1,12 @@
 module github.com/synadia-io/connect-runtime-wombat
 
-go 1.24.6
+go 1.25.1
 
 require (
 	cuelang.org/go v0.13.2
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/google/uuid v1.6.0
+	github.com/lucasjones/reggen v0.0.0-20200904144131-37ba4fa293bb
 	github.com/nats-io/nats-server/v2 v2.11.6
 	github.com/nats-io/nats.go v1.43.0
 	github.com/nats-io/nuid v1.0.1

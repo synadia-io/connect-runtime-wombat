@@ -1,6 +1,7 @@
 model_version: "1"
 label: HTTP
 name: http_client
+kind: sink
 status: stable
 icon: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cgo8IS0tIExpY2Vuc2U6IEFwYWNoZS4gTWFkZSBieSB2YWFkaW46IGh0dHBzOi8vZ2l0aHViLmNvbS92YWFkaW4vdmFhZGluLWljb25zIC0tPgo8c3ZnIHdpZHRoPSI4MDBweCIgaGVpZ2h0PSI4MDBweCIgdmlld0JveD0iMCAwIDE2IDE2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8cGF0aCBmaWxsPSIjZmZmIiBkPSJNOCAwYy00LjQgMC04IDMuNi04IDhzMy42IDggOCA4IDgtMy42IDgtOC0zLjYtOC04LTh6TTEzLjIgNS4zYzAuNCAwIDAuNyAwLjMgMS4xIDAuMy0wLjMgMC40LTEuNiAwLjQtMi0wLjEgMC4zLTAuMSAwLjUtMC4yIDAuOS0wLjJ6TTEgOGMwLTAuNCAwLTAuOCAwLjEtMS4zIDAuMSAwIDAuMiAwLjEgMC4zIDAuMSAwIDAgMC4xIDAuMSAwLjEgMC4yIDAgMC4zIDAuMyAwLjUgMC41IDAuNSAwLjggMC4xIDEuMSAwLjggMS44IDEgMC4yIDAuMSAwLjEgMC4zIDAgMC41LTAuNiAwLjgtMC4xIDEuNCAwLjQgMS45IDAuNSAwLjQgMC41IDAuOCAwLjYgMS40IDAgMC43IDAuMSAxLjUgMC40IDIuMi0yLjUtMS4yLTQuMi0zLjYtNC4yLTYuNXpNOCAxNWMtMC43IDAtMS41LTAuMS0yLjEtMC4zLTAuMS0wLjItMC4xLTAuNCAwLTAuNiAwLjQtMC44IDAuOC0xLjUgMS4zLTIuMiAwLjItMC4yIDAuNC0wLjQgMC40LTAuNyAwLTAuMiAwLjEtMC41IDAuMi0wLjcgMC4zLTAuNSAwLjItMC44LTAuMi0wLjktMC44LTAuMi0xLjItMC45LTEuOC0xLjJzLTEuMi0wLjUtMS43LTAuMmMtMC4yIDAuMS0wLjUgMC4yLTAuNS0wLjEgMC0wLjQtMC41LTAuNy0wLjQtMS4xLTAuMSAwLTAuMiAwLTAuMyAwLjFzLTAuMiAwLjItMC40IDAuMWMtMC4yLTAuMi0wLjEtMC40LTAuMS0wLjYgMC4xLTAuMiAwLjItMC4zIDAuNC0wLjQgMC40LTAuMSAwLjgtMC4xIDEgMC40IDAuMy0wLjkgMC45LTEuNCAxLjUtMS44IDAgMCAwLjgtMC43IDAuOS0wLjdzMC4yIDAuMiAwLjQgMC4zYzAuMiAwIDAuMyAwIDAuMy0wLjIgMC4xLTAuNS0wLjItMS4xLTAuNi0xLjIgMC0wLjEgMC4xLTAuMSAwLjEtMC4xIDAuMy0wLjEgMC43LTAuMyAwLjYtMC42IDAtMC40LTAuNC0wLjYtMC44LTAuNi0wLjIgMC0wLjQgMC0wLjYgMC4xLTAuNCAwLjItMC45IDAuNC0xLjUgMC40IDEuMS0wLjggMi41LTEuMiAzLjktMS4yIDAuMyAwIDAuNSAwIDAuOCAwLTAuNiAwLjEtMS4yIDAuMy0xLjYgMC41IDAuNiAwLjEgMC43IDAuNCAwLjUgMC45LTAuMSAwLjIgMCAwLjQgMC4yIDAuNXMwLjQgMC4xIDAuNS0wLjFjMC4yLTAuMyAwLjYtMC40IDAuOS0wLjUgMC40LTAuMSAwLjctMC4zIDEtMC43IDAtMC4xIDAuMS0wLjEgMC4yLTAuMiAwLjYgMC4yIDEuMiAwLjYgMS44IDEtMC4xIDAtMC4xIDAuMS0wLjIgMC4xLTAuMiAwLjItMC41IDAuMy0wLjIgMC43IDAuMSAwLjIgMCAwLjMtMC4xIDAuNC0wLjIgMC4xLTAuMyAwLTAuNC0wLjFzLTAuMS0wLjMtMC40LTAuM2MtMC4xIDAuMi0wLjQgMC4zLTAuNCAwLjYgMC41IDAgMC40IDAuNCAwLjUgMC43LTAuNiAwLjEtMC44IDAuNC0wLjUgMC45IDAuMSAwLjItMC4xIDAuMy0wLjIgMC40LTAuNCAwLjYtMC44IDEtMC44IDEuN3MwLjUgMS40IDEuMyAxLjNjMC45LTAuMSAwLjktMC4xIDEuMiAwLjcgMCAwLjEgMC4xIDAuMiAwLjEgMC4zIDAuMSAwLjIgMC4yIDAuNCAwLjEgMC42LTAuMyAwLjggMC4xIDEuNCAwLjQgMiAwLjEgMC4yIDAuMiAwLjMgMC4zIDAuNC0xLjMgMS40LTMgMi4yLTUgMi4yeiI+PC9wYXRoPgo8L3N2Zz4=
 description: |-
@@ -59,7 +60,7 @@ fields:
     label: Metadata
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Specify optional matching rules to determine which metadata keys should be added to the HTTP request as headers.
     fields:
@@ -112,7 +113,7 @@ fields:
     label: OAuth
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to specify open authentication via OAuth version 1.
     fields:
@@ -168,7 +169,7 @@ fields:
     label: OAuth2
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to specify open authentication via OAuth version 2 using the client credentials token flow.
     fields:
@@ -238,7 +239,7 @@ fields:
     label: Basic Auth
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to specify basic authentication.
     fields:
@@ -274,7 +275,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:
@@ -378,7 +379,7 @@ fields:
     label: Extract Headers
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Specify which response headers should be added to resulting synchronous response messages as metadata. Header keys are lowercased before matching, so ensure that your patterns target lowercased versions of the header keys that you expect. This field is not applicable unless `propagate_response` is set to `true`.
     fields:
@@ -529,7 +530,7 @@ fields:
     label: Batching
     kind: scalar
     type: object
-    optional: false
+    optional: true
     examples:
       - byte_size: 5000
         count: 0

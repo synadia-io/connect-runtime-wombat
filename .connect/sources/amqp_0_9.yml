@@ -48,43 +48,15 @@ fields:
     label: Queue
     kind: scalar
     type: string
-    optional: false
     description: |-
       An AMQP queue to consume from.
-    fields:
-      - path: queue_declare.enabled
-        name: enabled
-        label: Enabled
-        kind: scalar
-        type: bool
-        default: false
-        optional: true
-        description: |-
-          Whether to enable queue declaration.
-      - path: queue_declare.durable
-        name: durable
-        label: Durable
-        kind: scalar
-        type: bool
-        default: true
-        optional: true
-        description: |-
-          Whether the declared queue is durable.
-      - path: queue_declare.auto_delete
-        name: auto_delete
-        label: Auto Delete
-        kind: scalar
-        type: bool
-        default: false
-        optional: true
-        description: |-
-          Whether the declared queue will auto-delete.
+
   - path: queue_declare
     name: queue_declare
-    label: Queue Declare
+    label: Declare Queue
     kind: scalar
     type: object
-    optional: false
+    optional: true
     description: |-
       Allows you to passively declare the target queue. If the queue already exists then the declaration passively verifies that they match the target fields.
     fields:
@@ -118,9 +90,10 @@ fields:
   - path: bindings_declare
     name: bindings_declare
     label: Bindings Declare
-    kind: list
-    type: string
-    optional: false
+    kind: scalar
+    type: object
+    optional: true
+    default: {}
     examples:
       - - exchange: foo
           key: bar
@@ -196,7 +169,7 @@ fields:
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:

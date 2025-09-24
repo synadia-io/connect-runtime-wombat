@@ -39,6 +39,7 @@ fields:
     name: credentials
     label: Credentials
     type: object
+    optional: true
     description: |-
       Optional manual configuration of AWS credentials to use. More information can be found in [the AWS Guide](https://wombat.dev/pipelines/deploy/cloud/aws/).
     fields:
@@ -89,6 +90,7 @@ fields:
     name: sqs
     label: SQS
     type: object
+    optional: true
     description: |-
       Consume SQS messages in order to trigger key downloads.
     fields:
