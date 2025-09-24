@@ -28,14 +28,14 @@ fields:
     label: Lookupd Http Addresses
     kind: list
     type: string
-    optional: false
+    optional: true
     description: |-
       A list of nsqlookupd addresses to connect to.
   - path: tls
     name: tls
     label: TLS Configuration
     type: object
-    optional: false
+    optional: true
     description: |-
       Custom TLS settings can be used to override system defaults.
     fields:

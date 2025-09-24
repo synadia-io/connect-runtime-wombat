@@ -1,0 +1,64 @@
+version: 2
+project_name: connect-runtime-wombat
+
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+
+git:
+  prerelease_suffix: "-"
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: connect-runtime-wombat
+    main: ./
+    binary: connect-runtime-wombat
+    ldflags:
+      - -w -s
+      - -X main.Version={{.Version}}
+      - -X main.DateBuilt={{.Date}}
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: connect-runtime-wombat
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+
+    files:
+      - README.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+dockers:
+  - image_templates:
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:{{ .Tag }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:latest"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/amd64,linux/arm64"
+      - "--push"
+
+changelog:
+  use: github
+  sort: asc
+  groups:
+    - title: 'Changes:'
+      order: 999
+  filters:
+    exclude:
+      - '^Merge pull request'
+      - '^Merge branch'

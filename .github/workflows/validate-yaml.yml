@@ -22,7 +22,7 @@ jobs:
     name: Validate YAML
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Validate YAML
         run: |
           curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/schemas/component.json -O

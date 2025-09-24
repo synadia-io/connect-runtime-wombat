@@ -23,6 +23,12 @@ import (
 	"github.com/synadia-io/connect/runtime"
 )
 
+var (
+	Version        = "dev"
+	CommitHash     = "unknown"
+	BuildTimestamp = "unknown"
+)
+
 // main is the entry point for the connect-runtime-wombat executable.
 // It expects exactly one argument: the path to a configuration file.
 // The runtime configuration is loaded from environment variables set by
@@ -33,7 +39,11 @@ func main() {
 	ctx := utils.WithCorrelationID(context.Background(), correlationID)
 
 	logger := utils.LoggerWithCorrelation(ctx)
-	logger.Info().Msg("Starting connect-runtime-wombat")
+	logger.Info().
+		Str("version", Version).
+		Str("commit", CommitHash).
+		Str("built", BuildTimestamp).
+		Msg("Starting connect-runtime-wombat")
 
 	args := os.Args[1:]
 	if len(args) != 1 {

@@ -172,6 +172,7 @@ fields:
   - path: credentials
     name: credentials
     label: Credentials
+    optional: true
     type: object
     description: >-
       Optional manual configuration of AWS credentials to use. More information
