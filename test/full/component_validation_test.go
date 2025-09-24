@@ -66,7 +66,7 @@ var _ = Describe("Component Validation", func() {
 				}
 			}
 
-			Expect(len(results)).To(Equal(32), "Expected 32 source components")
+			Expect(len(results)).To(Equal(33), "Expected 33 source components")
 		})
 	})
 
@@ -80,7 +80,7 @@ var _ = Describe("Component Validation", func() {
 				}
 			}
 
-			Expect(len(results)).To(Equal(38), "Expected 38 sink components")
+			Expect(len(results)).To(Equal(41), "Expected 41 sink components")
 		})
 	})
 
@@ -155,7 +155,7 @@ var _ = Describe("Component Validation", func() {
 
 		// All components should pass
 		Expect(successCount).To(Equal(len(allResults)), "All components should pass validation")
-		Expect(len(allResults)).To(Equal(75), "Expected 75 total components")
+		Expect(len(allResults)).To(Equal(79), "Expected 79 total components")
 	})
 })
 
@@ -424,6 +424,8 @@ func getMinimalConfig(componentName string, wombatType string) string {
 	case "elasticsearch_v8":
 		return `
     urls: ["http://localhost:9200"]
+    action: "index"
+    id: ${!counter()}-${!timestamp_unix()}
     index: "test-index"`
 	case "opensearch":
 		return `
@@ -670,6 +672,33 @@ func getMinimalConfig(componentName string, wombatType string) string {
     urls: ["tcp://localhost:1883"]
     topic: "test/topic"
     client_id: "test-client"`
+	case "sql_raw":
+		if wombatType == "input" {
+			return `
+    driver: "clickhouse"
+    dsn: clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms&max_execution_time=60
+    query: SELECT * FROM footable;
+    auto_replay_nacks: true`
+		}
+		return `
+    driver: "clickhouse"
+    dsn: clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms&max_execution_time=60
+    max_in_flight: 64`
+	case "snowflake_put":
+		return `
+    account: ""
+    user: ""
+    role: ""
+    database: ""
+    warehouse: ""
+    schema: test
+    stage: User
+    path: ""
+    file_name: ""
+    file_extension: ""
+    compression: AUTO
+    request_id: ""
+    max_in_flight: 1`
 	default:
 		// Return empty config for components we don't have defaults for
 		return " {}"

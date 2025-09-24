@@ -33,6 +33,13 @@ fields:
       label: action
       kind: scalar
       type: string
+      constraints:
+        - enum:
+            - index
+            - update
+            - delete
+            - create
+            - upsert
       description: 'The action to take on the document. This field must resolve to one of the following action types: `index`, `update`, `delete`, `create` or `upsert`. See the `Updating Documents` example for more on how the `update` action works and the `Create Documents` and `Upserting Documents` examples for how to use the `create` and `upsert` actions respectively.'
     - path: id
       name: id
