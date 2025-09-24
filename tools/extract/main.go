@@ -8,11 +8,10 @@ import (
 	"strings"
 
 	// Import components to register them
-	_ "github.com/wombatwisdom/wombat/public/components/all"
 	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/synadia-io/connect-runtime-wombat/tools/shared"
+	_ "github.com/wombatwisdom/wombat/public/components/all"
 )
-
 
 func main() {
 	fmt.Println("Extracting schemas from Benthos components...")
@@ -39,7 +38,7 @@ func main() {
 	})
 	fmt.Printf("Found %d output components\n", outputCount)
 
-	// Extract input specs (sources) 
+	// Extract input specs (sources)
 	var inputCount int
 	env.WalkInputs(func(name string, config *service.ConfigView) {
 		inputCount++
@@ -132,21 +131,21 @@ func extractFieldName(fullName string) string {
 	// Handle array notation: "tls.client_certs[].cert" -> "cert"
 	// Remove array notation first, then extract field name
 	cleanPath := strings.ReplaceAll(fullName, "[]", "")
-	
+
 	parts := []rune(cleanPath)
 	lastDot := -1
-	
+
 	for i := len(parts) - 1; i >= 0; i-- {
 		if parts[i] == '.' {
 			lastDot = i
 			break
 		}
 	}
-	
+
 	if lastDot == -1 {
 		return cleanPath
 	}
-	
+
 	return string(parts[lastDot+1:])
 }
 
@@ -158,7 +157,7 @@ func buildFieldHierarchy(flatFields []shared.FieldSchema) []shared.FieldSchema {
 	for _, field := range flatFields {
 		// Determine parent path
 		parentPath := getParentPath(field.FullName)
-		
+
 		if parentPath == "" {
 			// Root level field
 			rootFields = append(rootFields, field)
@@ -176,21 +175,21 @@ func getParentPath(fullName string) string {
 	// Handle array notation: "tls.client_certs[].cert" -> "tls.client_certs"
 	// Remove array notation first, then find parent
 	cleanPath := strings.ReplaceAll(fullName, "[]", "")
-	
+
 	parts := []rune(cleanPath)
 	lastDot := -1
-	
+
 	for i := len(parts) - 1; i >= 0; i-- {
 		if parts[i] == '.' {
 			lastDot = i
 			break
 		}
 	}
-	
+
 	if lastDot == -1 {
 		return ""
 	}
-	
+
 	return string(parts[:lastDot])
 }
 
