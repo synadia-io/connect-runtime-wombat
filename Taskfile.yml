@@ -140,9 +140,9 @@ tasks:
     desc: Validate .connect specs against upstream Benthos schemas
     cmds:
       - echo "Extracting schemas from Benthos dependencies..."
-      - go run ./tools/extract-schemas.go
+      - go run ./tools/extract/
       - echo "Validating .connect specs against extracted schemas..."
-      - go run ./tools/validate-schemas.go
+      - go run ./tools/validate/
 
   docker:local:
     desc: Build Docker image locally with version information

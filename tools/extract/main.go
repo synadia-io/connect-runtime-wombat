@@ -10,25 +10,9 @@ import (
 	// Import components to register them
 	_ "github.com/wombatwisdom/wombat/public/components/all"
 	"github.com/redpanda-data/benthos/v4/public/service"
+	"github.com/synadia-io/connect-runtime-wombat/tools/shared"
 )
 
-// ComponentSchema represents the extracted schema structure
-type ComponentSchema struct {
-	Name   string                 `json:"name"`
-	Type   string                 `json:"type"`
-	Fields []FieldSchema          `json:"fields"`
-}
-
-// FieldSchema represents a field in the component configuration
-type FieldSchema struct {
-	Name        string                 `json:"name"`
-	Type        string                 `json:"type"`
-	Description string                 `json:"description"`
-	Default     interface{}            `json:"default,omitempty"`
-	Required    bool                   `json:"required"`
-	Children    []FieldSchema          `json:"children,omitempty"`
-	FullName    string                 `json:"full_name"`
-}
 
 func main() {
 	fmt.Println("Extracting schemas from Benthos components...")
@@ -90,7 +74,7 @@ func extractAndSaveComponentSchema(name, componentType string, spec *service.Con
 	}
 
 	// Convert template data to our schema format
-	schema := ComponentSchema{
+	schema := shared.ComponentSchema{
 		Name:   name,
 		Type:   componentType,
 		Fields: convertTemplateFieldsToSchema(templateData.Fields),
@@ -102,7 +86,11 @@ func extractAndSaveComponentSchema(name, componentType string, spec *service.Con
 	if err != nil {
 		return fmt.Errorf("failed to create file %s: %w", filename, err)
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			fmt.Printf("Warning: failed to close file %s: %v\n", filename, err)
+		}
+	}()
 
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
@@ -113,11 +101,11 @@ func extractAndSaveComponentSchema(name, componentType string, spec *service.Con
 	return nil
 }
 
-func convertTemplateFieldsToSchema(templateFields []service.TemplateDataPluginField) []FieldSchema {
-	var fields []FieldSchema
+func convertTemplateFieldsToSchema(templateFields []service.TemplateDataPluginField) []shared.FieldSchema {
+	var fields []shared.FieldSchema
 
 	for _, tf := range templateFields {
-		field := FieldSchema{
+		field := shared.FieldSchema{
 			Name:        extractFieldName(tf.FullName),
 			FullName:    tf.FullName,
 			Type:        tf.Type,
@@ -143,7 +131,7 @@ func convertTemplateFieldsToSchema(templateFields []service.TemplateDataPluginFi
 func extractFieldName(fullName string) string {
 	// Handle array notation: "tls.client_certs[].cert" -> "cert"
 	// Remove array notation first, then extract field name
-	cleanPath := strings.Replace(fullName, "[]", "", -1)
+	cleanPath := strings.ReplaceAll(fullName, "[]", "")
 	
 	parts := []rune(cleanPath)
 	lastDot := -1
@@ -162,10 +150,10 @@ func extractFieldName(fullName string) string {
 	return string(parts[lastDot+1:])
 }
 
-func buildFieldHierarchy(flatFields []FieldSchema) []FieldSchema {
+func buildFieldHierarchy(flatFields []shared.FieldSchema) []shared.FieldSchema {
 	// Group fields by their parent path
-	fieldMap := make(map[string][]FieldSchema)
-	rootFields := []FieldSchema{}
+	fieldMap := make(map[string][]shared.FieldSchema)
+	rootFields := []shared.FieldSchema{}
 
 	for _, field := range flatFields {
 		// Determine parent path
@@ -187,7 +175,7 @@ func buildFieldHierarchy(flatFields []FieldSchema) []FieldSchema {
 func getParentPath(fullName string) string {
 	// Handle array notation: "tls.client_certs[].cert" -> "tls.client_certs"
 	// Remove array notation first, then find parent
-	cleanPath := strings.Replace(fullName, "[]", "", -1)
+	cleanPath := strings.ReplaceAll(fullName, "[]", "")
 	
 	parts := []rune(cleanPath)
 	lastDot := -1
@@ -206,7 +194,7 @@ func getParentPath(fullName string) string {
 	return string(parts[:lastDot])
 }
 
-func attachChildren(fields []FieldSchema, fieldMap map[string][]FieldSchema) []FieldSchema {
+func attachChildren(fields []shared.FieldSchema, fieldMap map[string][]shared.FieldSchema) []shared.FieldSchema {
 	for i := range fields {
 		if children, exists := fieldMap[fields[i].FullName]; exists {
 			fields[i].Children = attachChildren(children, fieldMap)

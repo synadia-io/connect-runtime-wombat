@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/synadia-io/connect-runtime-wombat/tools/shared"
 	"gopkg.in/yaml.v3"
 )
 
@@ -118,23 +119,6 @@ type ConnectField struct {
 	Description string         `yaml:"description,omitempty"`
 	Default     interface{}    `yaml:"default,omitempty"`
 	Fields      []ConnectField `yaml:"fields,omitempty"`
-}
-
-// ComponentSchema matches the structure from extract-schemas.go
-type ComponentSchema struct {
-	Name   string        `json:"name"`
-	Type   string        `json:"type"`
-	Fields []FieldSchema `json:"fields"`
-}
-
-type FieldSchema struct {
-	Name        string        `json:"name"`
-	Type        string        `json:"type"`
-	Description string        `json:"description"`
-	Default     interface{}   `json:"default,omitempty"`
-	Required    bool          `json:"required"`
-	Children    []FieldSchema `json:"children,omitempty"`
-	FullName    string        `json:"full_name"`
 }
 
 // ValidationResult tracks validation issues
@@ -302,13 +286,13 @@ func loadConnectSpec(filename string) (*ConnectSpec, error) {
 	return &spec, nil
 }
 
-func loadBenthosSchema(filename string) (*ComponentSchema, error) {
+func loadBenthosSchema(filename string) (*shared.ComponentSchema, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	var schema ComponentSchema
+	var schema shared.ComponentSchema
 	if err := json.Unmarshal(data, &schema); err != nil {
 		return nil, err
 	}
@@ -316,12 +300,12 @@ func loadBenthosSchema(filename string) (*ComponentSchema, error) {
 	return &schema, nil
 }
 
-func validateFields(connectFields []ConnectField, benthosFields []FieldSchema, parentPath string) []ValidationIssue {
+func validateFields(connectFields []ConnectField, benthosFields []shared.FieldSchema, parentPath string) []ValidationIssue {
 	var issues []ValidationIssue
 
 	// Build maps for easier lookup
 	connectMap := make(map[string]ConnectField)
-	benthosMap := make(map[string]FieldSchema)
+	benthosMap := make(map[string]shared.FieldSchema)
 
 	for _, cf := range connectFields {
 		connectMap[cf.Path] = cf
@@ -457,7 +441,7 @@ func extractLastPathComponent(path string) string {
 
 // findMatchingBenthosField uses multiple strategies to find the best matching Benthos field
 // for a given Connect field, handling nested paths and different naming conventions
-func findMatchingBenthosField(connectField ConnectField, benthosFields []FieldSchema, parentPath string) (FieldSchema, bool) {
+func findMatchingBenthosField(connectField ConnectField, benthosFields []shared.FieldSchema, parentPath string) (shared.FieldSchema, bool) {
 	connectFieldName := extractLastPathComponent(connectField.Path)
 	fullConnectPath := buildFieldPath(parentPath, connectField.Path)
 
@@ -476,9 +460,9 @@ func findMatchingBenthosField(connectField ConnectField, benthosFields []FieldSc
 	}
 
 	// Strategy 3: Handle array notation differences - Connect uses "field" while Benthos may use "field[]"
-	cleanConnectPath := strings.Replace(connectField.Path, "[]", "", -1)
+	cleanConnectPath := strings.ReplaceAll(connectField.Path, "[]", "")
 	for _, bf := range benthosFields {
-		cleanBenthosPath := strings.Replace(bf.FullName, "[]", "", -1)
+		cleanBenthosPath := strings.ReplaceAll(bf.FullName, "[]", "")
 		if cleanBenthosPath == cleanConnectPath {
 			return bf, true
 		}
@@ -491,7 +475,7 @@ func findMatchingBenthosField(connectField ConnectField, benthosFields []FieldSc
 		}
 	}
 
-	return FieldSchema{}, false
+	return shared.FieldSchema{}, false
 }
 
 func mapConnectTypeToBenthos(field ConnectField) string {
