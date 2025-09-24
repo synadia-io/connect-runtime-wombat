@@ -258,6 +258,9 @@
           "type": "string",
           "description": "The URL path to the icon. Can be a data: URL."
         },
+        "kind": {
+          "$ref": "#/$defs/ComponentKindSpec"
+        },
         "fields": {
           "type": "array",
           "items": {
@@ -269,7 +272,8 @@
         "name",
         "label",
         "description",
-        "status"
+        "status",
+        "kind"
       ]
     }
   }

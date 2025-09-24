@@ -15,7 +15,7 @@ type AsciidocToMd struct {
 func (a AsciidocToMd) Correct(doc *gabs.Container) (*gabs.Container, error) {
 	v := doc.Path(a.Path)
 	if v == nil {
-		return nil, nil
+		return doc, nil
 	}
 
 	str, ok := v.Data().(string)

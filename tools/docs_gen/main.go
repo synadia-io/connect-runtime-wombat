@@ -19,14 +19,6 @@ import (
 	_ "embed"
 )
 
-var IncludedInputs = []string{
-	"amqp_0_9", "amqp_1",
-}
-
-var IncludedOutputs = []string{
-	"amqp_0_9", "amqp_1",
-}
-
 var Version = "0.0.1"
 var DateBuilt = "1970-01-01T00:00:00Z"
 
@@ -80,12 +72,12 @@ func main() {
 	}
 
 	env := getSchema().Environment()
-	env.WalkInputs(viewForDir(config, path.Join(docsDir, "./components/inputs")))
-	env.WalkScanners(viewForDir(config, path.Join(docsDir, "./components/scanners")))
-	env.WalkOutputs(viewForDir(config, path.Join(docsDir, "./components/outputs")))
+	env.WalkInputs(viewForDir(config, path.Join(docsDir, "./sources"), "input"))
+	env.WalkScanners(viewForDir(config, path.Join(docsDir, "./scanners"), "scanner"))
+	env.WalkOutputs(viewForDir(config, path.Join(docsDir, "./sinks"), "output"))
 }
 
-func viewForDir(cfg *Config, docsDir string) func(string, *service.ConfigView) {
+func viewForDir(cfg *Config, docsDir string, componentType string) func(string, *service.ConfigView) {
 	return func(name string, view *service.ConfigView) {
 
 		data, err := view.TemplateData()
@@ -98,9 +90,14 @@ func viewForDir(cfg *Config, docsDir string) func(string, *service.ConfigView) {
 			return
 		}
 
-		result, err := Generate(data)
+		result, err := Generate(data, componentType)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to generate docs for '%v': %v", name, err))
+		}
+
+		// Set icon from config if available
+		if icon := cfg.GetIcon(componentType, name); icon != "" {
+			result.Icon = &icon
 		}
 		if err := os.MkdirAll(docsDir, 0755); err != nil {
 			panic(fmt.Sprintf("Failed to create docs directory path '%v': %v", docsDir, err))
@@ -111,22 +108,51 @@ func viewForDir(cfg *Config, docsDir string) func(string, *service.ConfigView) {
 			panic(fmt.Sprintf("Failed to marshal docs for '%v': %v", name, err))
 		}
 
+		// For SQL components, the YAML may have complex multiline strings that cause unmarshal issues
+		// Let's try to work around this
 		var root map[string]any
-		_ = yaml.Unmarshal(b, &root)
+		if err := yaml.Unmarshal(b, &root); err != nil {
+			// If unmarshal fails for SQL components, skip the AsciidocToMd processing
+			if name == "sql_raw" || name == "sql_insert" || name == "sql_select" {
+				fmt.Printf("WARNING: Failed to unmarshal %s, skipping AsciidocToMd: %v\n", name, err)
+				// Just prepend model_version and save the original YAML
+				modelVersionYAML := []byte("model_version: \"1\"\n")
+				b = append(modelVersionYAML, b...)
+				create(name, path.Join(docsDir, name+".yml"), b)
+				return
+			}
+			panic(fmt.Sprintf("Failed to unmarshal docs for '%v': %v", name, err))
+		}
 
 		doc := gabs.Wrap(root)
 
 		a2m := corrections.AsciidocToMd{Path: "description"}
-		doc, err = a2m.Correct(doc)
+		correctedDoc, err := a2m.Correct(doc)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to correct docs for '%v': %v", name, err))
 		}
 
+		// If correction returned nil, keep the original doc
+		if correctedDoc != nil {
+			doc = correctedDoc
+		}
+
+		// Marshal the corrected doc first
 		b, err = yaml.Marshal(doc.Data())
 		if err != nil {
 			panic(fmt.Sprintf("Failed to marshal corrected docs for '%v': %v", name, err))
 		}
 
-		create(name, path.Join(docsDir, name+".yaml"), b)
+		// Skip if the result is just "null"
+		if string(b) == "null\n" {
+			fmt.Printf("Skipping '%v' as it generated null content\n", name)
+			return
+		}
+
+		// Prepend model_version: "1" to the YAML
+		modelVersionYAML := []byte("model_version: \"1\"\n")
+		b = append(modelVersionYAML, b...)
+
+		create(name, path.Join(docsDir, name+".yml"), b)
 	}
 }

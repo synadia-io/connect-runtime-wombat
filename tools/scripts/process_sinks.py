@@ -64,20 +64,30 @@ def process_yaml_files(source_dir, target_dir):
             source_path = os.path.join(source_dir, filename)
             target_path = os.path.join(target_dir, filename)
 
-            # Read and parse source file
-            with open(source_path, 'r') as f:
+            try:
+                # Read file content
+                with open(source_path, 'r') as f:
+                    content_str = f.read()
+                
+                # Preprocess YAML to handle |4 syntax
+                # Replace '- |4' with '- |-' to make it parseable
+                content_str = content_str.replace('- |4\n', '- |-\n')
+                
+                # Parse the preprocessed content
                 yaml = YAML()
-                content = yaml.load(f)
+                content = yaml.load(content_str)
 
-            # Sort the content
-            sorted_content = sort_definition(content)
+                # Sort the content
+                sorted_content = sort_definition(content)
 
-            # Write to target file
-            with open(target_path, 'w') as f:
-                yaml = YAML()
-                yaml.indent(mapping=2, sequence=4, offset=2)
-                yaml.dump(sorted_content, f)
-            print(f"Processed {filename}")
+                # Write to target file
+                with open(target_path, 'w') as f:
+                    yaml = YAML()
+                    yaml.indent(mapping=2, sequence=4, offset=2)
+                    yaml.dump(sorted_content, f)
+                print(f"Processed {filename}")
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
 
 if __name__ == '__main__':
     # Get the project root directory (two levels up from the script)
