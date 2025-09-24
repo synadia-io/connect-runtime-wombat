@@ -92,10 +92,36 @@ tasks:
       - task: test
 
   test:crawl:
+    desc: Crawl component definitions and validate results
     cmds:
+      # Setup
       - nats kv add TMP > /dev/null
       - defer: nats kv del --force TMP
+
+      # Pre-crawl validation
+      - task: validate
+      - echo "Pre-crawl count:" && find .connect -name '*.yml' -not -path '.connect/runtime.yml' | wc -l
+
+      # Run crawler
       - cd ../connect-node && go run ./cmd/connect-node crawl ../connect-runtime-wombat --bucket=TMP
+
+      # Post-crawl validation
+      - echo "Validating crawled data..."
+      - nats kv ls TMP --no-headers || true
+      - |
+        # Verify all components were crawled
+        CRAWLED_COUNT=$(nats kv ls TMP --no-headers 2>/dev/null | wc -l)
+        SOURCE_COUNT=$(find .connect -name '*.yml' -not -path '.connect/runtime.yml' | wc -l)
+        echo "Crawled: $CRAWLED_COUNT entries, Expected: $SOURCE_COUNT entries"
+        if [ "$CRAWLED_COUNT" -eq 0 ]; then
+          echo "ERROR: No entries found in KV bucket"
+          exit 1
+        fi
+        if [ "$CRAWLED_COUNT" -lt "$SOURCE_COUNT" ]; then
+          echo "WARNING: Some components may not have been crawled"
+          echo "This could be expected if some files are not component specs"
+        fi
+      - echo "✓ Crawl validation complete"
 
   validate:
     cmds:
@@ -109,6 +135,14 @@ tasks:
     cmds:
       - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/model/schemas/component-spec-v1.schema.json -O
       - npx --yes ajv-cli validate -s component-spec-v1.schema.json -d "{{.DIR}}/*/*.yml" --verbose
+
+  test:spec:
+    desc: Validate .connect specs against upstream Benthos schemas
+    cmds:
+      - echo "Extracting schemas from Benthos dependencies..."
+      - go run ./tools/extract-schemas.go
+      - echo "Validating .connect specs against extracted schemas..."
+      - go run ./tools/validate-schemas.go
 
   docker:local:
     desc: Build Docker image locally with version information
