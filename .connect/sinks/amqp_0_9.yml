@@ -44,6 +44,16 @@ fields:
     description: >-
       Optionally declare the target exchange (passive).
     fields:
+      - path: exchange_declare.arguments
+        name: arguments
+        label: Arguments
+        kind: map
+        type: string
+        default: ""
+        optional: true
+        description: Optional arguments specific to the server's implementation of the exchange that can be sent for exchange types which require extra parameters.
+        examples:
+          - alternate-exchange: my-ae
       - path: exchange_declare.enabled
         name: enabled
         label: Enabled

@@ -48,6 +48,22 @@ fields:
     description: |-
       An optional Bloblang mapping which should evaluate to an array of values matching in size to the number  of placeholder arguments in the field where.
     render_hint: sourcecode
+  - path: prefix
+    name: prefix
+    label: Prefix
+    kind: scalar
+    type: string
+    optional: true
+    default: ""
+    description: An optional prefix to prepend to the select query (before SELECT).
+  - path: suffix
+    name: suffix
+    label: Suffix
+    kind: scalar
+    type: string
+    optional: true
+    default: ""
+    description: An optional suffix to append to the select query.
   - path: auto_replay_nacks
     name: auto_replay_nacks
     label: Auto Replay Nacks
