@@ -2,12 +2,10 @@
 
 package model
 
-import (
-	"encoding/json"
-	"fmt"
-	"reflect"
-	"regexp"
-)
+import "encoding/json"
+import "fmt"
+import "reflect"
+import "regexp"
 
 type AuthorSpec struct {
 	// The email address of the author
@@ -80,6 +78,9 @@ type ComponentSpec struct {
 	// The URL path to the icon. Can be a data: URL.
 	Icon *string `json:"icon,omitempty" yaml:"icon,omitempty" mapstructure:"icon,omitempty"`
 
+	// Kind corresponds to the JSON schema field "kind".
+	Kind ComponentKindSpec `json:"kind" yaml:"kind" mapstructure:"kind"`
+
 	// A human readable label for the component
 	Label string `json:"label" yaml:"label" mapstructure:"label"`
 
@@ -99,6 +100,9 @@ func (j *ComponentSpec) UnmarshalJSON(value []byte) error {
 	}
 	if _, ok := raw["description"]; raw != nil && !ok {
 		return fmt.Errorf("field description in ComponentSpec: required")
+	}
+	if _, ok := raw["kind"]; raw != nil && !ok {
+		return fmt.Errorf("field kind in ComponentSpec: required")
 	}
 	if _, ok := raw["label"]; raw != nil && !ok {
 		return fmt.Errorf("field label in ComponentSpec: required")
