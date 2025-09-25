@@ -136,13 +136,11 @@ tasks:
       - curl --silent https://raw.githubusercontent.com/synadia-io/connect/refs/heads/main/model/schemas/component-spec-v1.schema.json -O
       - npx --yes ajv-cli validate -s component-spec-v1.schema.json -d "{{.DIR}}/*/*.yml" --verbose
 
-  test:spec:
+  test:spec:drift:
     desc: Validate .connect specs against upstream Benthos schemas
     cmds:
-      - echo "Extracting schemas from Benthos dependencies..."
-      - go run ./tools/extract/
-      - echo "Validating .connect specs against extracted schemas..."
-      - go run ./tools/validate/
+      - echo "Running spec drift validation..."
+      - go run ./test/cmd/spec-drift/
 
   docker:local:
     desc: Build Docker image locally with version information

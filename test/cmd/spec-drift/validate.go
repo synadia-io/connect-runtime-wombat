@@ -7,230 +7,62 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/synadia-io/connect-runtime-wombat/tools/shared"
 	"gopkg.in/yaml.v3"
 )
 
-// Field patterns to ignore during validation - vendor-specific and advanced features
-var ignoredFieldPatterns = []string{
-	// Synadia NATS-specific authentication extensions
-	//"auth.nkey_file",
-	//"auth.nkey",
-	//"auth.user_credentials_file",
-	//
-	//// Advanced/experimental features outside Connect Runtime scope
-	//"inject_tracing_map",
-	//"extract_tracing_map",
-	//
-	//// Enterprise features
-	//"batching.processors", // Complex batching processors
-	//
-	//// TLS configurations - Connect Runtime uses simplified TLS configuration
-	//// Many components have their own TLS implementation that differs from Benthos
-	//"tls", // General TLS config for NATS, MQTT, Pulsar, etc.
-	//"tls.enabled",
-	//"tls.skip_cert_verify",
-	//"tls.enable_renegotiation",
-	//"tls.root_cas",
-	//"tls.client_certs",
-	//"tls.client_certs[].cert",
-	//"tls.client_certs[].key",
-	//"tls.client_certs[].password",
-	//
-	//// Complex batching and database-specific configurations
-	//"write_concern", // MongoDB write concern - advanced configuration
-	//"write_concern.w",
-	//"write_concern.j",
-	//"write_concern.w_timeout",
-	//"batching", // Complex batching configurations not exposed in Connect
-	//"batching.count",
-	//"batching.byte_size",
-	//"batching.period",
-	//"batching.check",
-	//
-	//// Vendor-specific extensions not in base Benthos schema
-	//// AWS-specific SASL extensions
-	//"sasl[].aws.region",
-	//"sasl[].aws.endpoint",
-	//"sasl[].aws.credentials",
-	//"region",      // AWS region fields
-	//"endpoint",    // AWS endpoint fields
-	//"credentials", // AWS credentials fields
-	//
-	//// Azure-specific configurations
-	//"targets_input", // Azure blob storage specific
-	//"endpoint",      // Azure endpoint configurations
-	//"account_key",   // Azure account key
-	//
-	//// BigQuery-specific fields
-	//"prefix", // GCP BigQuery prefix
-	//"suffix", // GCP BigQuery suffix
-	//
-	//// GCP PubSub specific
-	//"create_subscription", // GCP PubSub subscription creation
-	//
-	//// Enterprise and advanced features not exposed in Connect Runtime
-	//"jwt", // JWT authentication - advanced feature
-	//"jwt.enabled",
-	//"jwt.private_key_file",
-	//"jwt.signing_method",
-	//"jwt.claims",
-	//"rate_limit", // Rate limiting - advanced feature
-	//"rate_limit.count",
-	//"rate_limit.interval",
-	//
-	//// Component-specific edge cases
-	//// AMQP queue declaration differences between Connect and Benthos
-	//"queue.queue_declare.enabled",
-	//"queue.queue_declare.durable",
-	//"queue.queue_declare.auto_delete",
-	//
-	//// HTTP client OAuth endpoint parameters not in base schema
-	//"oauth.oauth2.endpoint_params",
-	//"oauth2.endpoint_params",
-	//
-	//// Additional AWS and GCP specific advanced configurations
-	//"backoff", // AWS backoff configuration - advanced feature
-	//"backoff.initial_interval",
-	//"backoff.max_interval",
-	//"backoff.max_elapsed_time",
-	//"csv", // GCP BigQuery CSV format - advanced feature
-	//"csv.header",
-	//"csv.delimiter",
-	//"flow_control", // GCP PubSub flow control - advanced feature
-	//"flow_control.max_messages",
-	//"flow_control.max_bytes",
-}
-
-// ConnectSpec represents our .connect YAML specification
-type ConnectSpec struct {
-	Name        string         `yaml:"name"`
-	Type        string         `yaml:"type"`
-	Summary     string         `yaml:"summary,omitempty"`
-	Description string         `yaml:"description,omitempty"`
-	Fields      []ConnectField `yaml:"fields"`
-}
-
-// ConnectField represents a field in our .connect specification
-type ConnectField struct {
-	Path        string         `yaml:"path"`
-	Kind        string         `yaml:"kind,omitempty"`
-	Type        string         `yaml:"type,omitempty"`
-	Description string         `yaml:"description,omitempty"`
-	Default     interface{}    `yaml:"default,omitempty"`
-	Fields      []ConnectField `yaml:"fields,omitempty"`
-}
-
-// ValidationResult tracks validation issues
-type ValidationResult struct {
-	ComponentName string
-	ComponentType string
-	Issues        []ValidationIssue
-}
-
-type ValidationIssue struct {
-	Severity string // "error", "warning", "info"
-	Path     string
-	Message  string
-}
-
-func main() {
+func validate(connectPath, schemasDir string) error {
 	fmt.Println("Validating .connect specs against extracted Benthos schemas...")
 
 	var allResults []ValidationResult
 	hasErrors := false
 
 	// Validate sinks (outputs)
-	sinkResults, err := validateComponentType("sinks", "output")
+	sinkResults, err := validateComponentType(connectPath, "sinks", schemasDir, "output")
 	if err != nil {
-		fmt.Printf("Error validating sinks: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error validating sinks: %w", err)
 	}
 	allResults = append(allResults, sinkResults...)
 
 	// Validate sources (inputs)
-	sourceResults, err := validateComponentType("sources", "input")
+	sourceResults, err := validateComponentType(connectPath, "sources", schemasDir, "input")
 	if err != nil {
-		fmt.Printf("Error validating sources: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error validating sources: %w", err)
 	}
 	allResults = append(allResults, sourceResults...)
 
 	// Validate processors
-	processorResults, err := validateComponentType("processors", "processor")
+	processorResults, err := validateComponentType(connectPath, "processors", schemasDir, "processor")
 	if err != nil {
-		fmt.Printf("Error validating processors: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error validating processors: %w", err)
 	}
 	allResults = append(allResults, processorResults...)
 
-	// Report results
-	fmt.Printf("\n=== VALIDATION RESULTS ===\n\n")
-
-	for _, result := range allResults {
-		if len(result.Issues) == 0 {
-			fmt.Printf("✅ %s/%s: OK\n", result.ComponentType, result.ComponentName)
-			continue
-		}
-
-		fmt.Printf("❌ %s/%s: %d issues found\n", result.ComponentType, result.ComponentName, len(result.Issues))
-
-		for _, issue := range result.Issues {
-			icon := getIssueIcon(issue.Severity)
-			if issue.Severity == "error" {
-				hasErrors = true
-			}
-			fmt.Printf("   %s [%s] %s: %s\n", icon, strings.ToUpper(issue.Severity), issue.Path, issue.Message)
-		}
-		fmt.Println()
-	}
-
-	// Summary
-	totalComponents := len(allResults)
-	componentsWithIssues := 0
-	totalIssues := 0
-
-	for _, result := range allResults {
-		if len(result.Issues) > 0 {
-			componentsWithIssues++
-		}
-		totalIssues += len(result.Issues)
-	}
-
-	fmt.Printf("=== SUMMARY ===\n")
-	fmt.Printf("Total components validated: %d\n", totalComponents)
-	fmt.Printf("Components with issues: %d\n", componentsWithIssues)
-	fmt.Printf("Total issues found: %d\n", totalIssues)
-
+	hasErrors = outputText(allResults)
 	if hasErrors {
-		fmt.Printf("\n❌ Validation failed with errors\n")
-		os.Exit(1)
-	} else if totalIssues > 0 {
-		fmt.Printf("\n⚠️  Validation completed with warnings\n")
-	} else {
-		fmt.Printf("\n✅ All validations passed\n")
+		return fmt.Errorf("validation failed with errors")
 	}
+	return nil
 }
 
-func validateComponentType(connectDir, schemaType string) ([]ValidationResult, error) {
+func validateComponentType(connectBasePath, connectDir, schemasDir, schemaType string) ([]ValidationResult, error) {
 	var results []ValidationResult
 
-	connectPath := filepath.Join(".connect", connectDir)
+	fullConnectPath := filepath.Join(connectBasePath, connectDir)
 
 	// Check if directory exists
-	if _, err := os.Stat(connectPath); os.IsNotExist(err) {
-		fmt.Printf("Directory %s does not exist, skipping...\n", connectPath)
+	if _, err := os.Stat(fullConnectPath); os.IsNotExist(err) {
+		fmt.Printf("Directory %s does not exist, skipping...\n", fullConnectPath)
 		return results, nil
 	}
 
 	// Read all YAML files in the directory
-	files, err := filepath.Glob(filepath.Join(connectPath, "*.yml"))
+	files, err := filepath.Glob(filepath.Join(fullConnectPath, "*.yml"))
 	if err != nil {
-		return nil, fmt.Errorf("failed to glob YAML files in %s: %w", connectPath, err)
+		return nil, fmt.Errorf("failed to glob YAML files in %s: %w", fullConnectPath, err)
 	}
 
 	for _, file := range files {
-		result, err := validateSingleComponent(file, schemaType)
+		result, err := validateSingleComponent(file, schemasDir, schemaType)
 		if err != nil {
 			fmt.Printf("Warning: failed to validate %s: %v\n", file, err)
 			continue
@@ -241,7 +73,7 @@ func validateComponentType(connectDir, schemaType string) ([]ValidationResult, e
 	return results, nil
 }
 
-func validateSingleComponent(connectFile, schemaType string) (ValidationResult, error) {
+func validateSingleComponent(connectFile, schemasDir, schemaType string) (ValidationResult, error) {
 	// Load .connect spec
 	connectSpec, err := loadConnectSpec(connectFile)
 	if err != nil {
@@ -255,7 +87,7 @@ func validateSingleComponent(connectFile, schemaType string) (ValidationResult, 
 	}
 
 	// Load corresponding Benthos schema
-	schemaFile := filepath.Join("schemas", fmt.Sprintf("%s_%s.json", schemaType, connectSpec.Name))
+	schemaFile := filepath.Join(schemasDir, fmt.Sprintf("%s_%s.json", schemaType, connectSpec.Name))
 	benthos, err := loadBenthosSchema(schemaFile)
 	if err != nil {
 		result.Issues = append(result.Issues, ValidationIssue{
@@ -286,13 +118,13 @@ func loadConnectSpec(filename string) (*ConnectSpec, error) {
 	return &spec, nil
 }
 
-func loadBenthosSchema(filename string) (*shared.ComponentSchema, error) {
+func loadBenthosSchema(filename string) (*ComponentSchema, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	var schema shared.ComponentSchema
+	var schema ComponentSchema
 	if err := json.Unmarshal(data, &schema); err != nil {
 		return nil, err
 	}
@@ -300,12 +132,12 @@ func loadBenthosSchema(filename string) (*shared.ComponentSchema, error) {
 	return &schema, nil
 }
 
-func validateFields(connectFields []ConnectField, benthosFields []shared.FieldSchema, parentPath string) []ValidationIssue {
+func validateFields(connectFields []ConnectField, benthosFields []FieldSchema, parentPath string) []ValidationIssue {
 	var issues []ValidationIssue
 
 	// Build maps for easier lookup
 	connectMap := make(map[string]ConnectField)
-	benthosMap := make(map[string]shared.FieldSchema)
+	benthosMap := make(map[string]FieldSchema)
 
 	for _, cf := range connectFields {
 		connectMap[cf.Path] = cf
@@ -325,11 +157,6 @@ func validateFields(connectFields []ConnectField, benthosFields []shared.FieldSc
 		// Try multiple matching strategies for better field resolution
 		benthosField, exists := findMatchingBenthosField(connectField, benthosFields, parentPath)
 		if !exists {
-			// Check if this field should be ignored (vendor-specific, advanced features, etc.)
-			if shouldIgnoreField(connectField.Path) || shouldIgnoreField(fieldPath) {
-				continue
-			}
-
 			fieldName := extractLastPathComponent(connectField.Path)
 			issues = append(issues, ValidationIssue{
 				Severity: "warning",
@@ -380,11 +207,6 @@ func validateFields(connectFields []ConnectField, benthosFields []shared.FieldSc
 			}
 
 			if !found {
-				// Skip ignored vendor-specific and advanced fields
-				if shouldIgnoreField(benthosField.FullName) {
-					continue
-				}
-
 				issues = append(issues, ValidationIssue{
 					Severity: "warning",
 					Path:     fieldPath,
@@ -441,7 +263,7 @@ func extractLastPathComponent(path string) string {
 
 // findMatchingBenthosField uses multiple strategies to find the best matching Benthos field
 // for a given Connect field, handling nested paths and different naming conventions
-func findMatchingBenthosField(connectField ConnectField, benthosFields []shared.FieldSchema, parentPath string) (shared.FieldSchema, bool) {
+func findMatchingBenthosField(connectField ConnectField, benthosFields []FieldSchema, parentPath string) (FieldSchema, bool) {
 	connectFieldName := extractLastPathComponent(connectField.Path)
 	fullConnectPath := buildFieldPath(parentPath, connectField.Path)
 
@@ -475,7 +297,7 @@ func findMatchingBenthosField(connectField ConnectField, benthosFields []shared.
 		}
 	}
 
-	return shared.FieldSchema{}, false
+	return FieldSchema{}, false
 }
 
 func mapConnectTypeToBenthos(field ConnectField) string {
@@ -500,17 +322,6 @@ func mapConnectTypeToBenthos(field ConnectField) string {
 	}
 }
 
-// shouldIgnoreField checks if a field should be ignored during validation
-// Returns true for vendor-specific extensions and advanced features outside Connect Runtime scope
-func shouldIgnoreField(fullName string) bool {
-	for _, pattern := range ignoredFieldPatterns {
-		if fullName == pattern {
-			return true
-		}
-	}
-	return false
-}
-
 func getIssueIcon(severity string) string {
 	switch severity {
 	case "error":
@@ -522,4 +333,56 @@ func getIssueIcon(severity string) string {
 	default:
 		return "⚪"
 	}
+}
+
+func outputText(allResults []ValidationResult) bool {
+	hasErrors := false
+
+	// Report results
+	fmt.Printf("\n=== VALIDATION RESULTS ===\n\n")
+
+	for _, result := range allResults {
+		if len(result.Issues) == 0 {
+			fmt.Printf("✅ %s/%s: OK\n", result.ComponentType, result.ComponentName)
+			continue
+		}
+
+		fmt.Printf("❌ %s/%s: %d issues found\n", result.ComponentType, result.ComponentName, len(result.Issues))
+
+		for _, issue := range result.Issues {
+			icon := getIssueIcon(issue.Severity)
+			if issue.Severity == "error" {
+				hasErrors = true
+			}
+			fmt.Printf("   %s [%s] %s: %s\n", icon, strings.ToUpper(issue.Severity), issue.Path, issue.Message)
+		}
+		fmt.Println()
+	}
+
+	// Summary
+	totalComponents := len(allResults)
+	componentsWithIssues := 0
+	totalIssues := 0
+
+	for _, result := range allResults {
+		if len(result.Issues) > 0 {
+			componentsWithIssues++
+		}
+		totalIssues += len(result.Issues)
+	}
+
+	fmt.Printf("=== SUMMARY ===\n")
+	fmt.Printf("Total components validated: %d\n", totalComponents)
+	fmt.Printf("Components with issues: %d\n", componentsWithIssues)
+	fmt.Printf("Total issues found: %d\n", totalIssues)
+
+	if hasErrors {
+		fmt.Printf("\n❌ Validation failed with errors\n")
+	} else if totalIssues > 0 {
+		fmt.Printf("\n⚠️  Validation completed with warnings\n")
+	} else {
+		fmt.Printf("\n✅ All validations passed\n")
+	}
+
+	return hasErrors
 }

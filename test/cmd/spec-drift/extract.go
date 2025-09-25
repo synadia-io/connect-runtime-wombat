@@ -7,26 +7,24 @@ import (
 	"path/filepath"
 	"strings"
 
-	// Import components to register them
 	"github.com/redpanda-data/benthos/v4/public/service"
-	"github.com/synadia-io/connect-runtime-wombat/tools/shared"
 	_ "github.com/wombatwisdom/wombat/public/components/all"
 )
 
-func main() {
+func extract() (string, error) {
 	fmt.Println("Extracting schemas from Benthos components...")
 
-	// Get the global environment with all registered components
 	env := service.GlobalEnvironment()
 
-	// Create schemas directory
-	schemasDir := "schemas"
-	if err := os.MkdirAll(schemasDir, 0755); err != nil {
-		fmt.Printf("Error creating schemas directory: %v\n", err)
+	schemasDir, err := os.MkdirTemp("", "wombat-schema-")
+	if err != nil {
+		fmt.Printf("❌Error creating temp dir for schemas: %v\n", err)
 		os.Exit(1)
+	} else {
+		fmt.Printf("Using dir: %v\n", schemasDir)
+
 	}
 
-	// Extract output specs (sinks)
 	var outputCount int
 	env.WalkOutputs(func(name string, config *service.ConfigView) {
 		outputCount++
@@ -38,7 +36,6 @@ func main() {
 	})
 	fmt.Printf("Found %d output components\n", outputCount)
 
-	// Extract input specs (sources)
 	var inputCount int
 	env.WalkInputs(func(name string, config *service.ConfigView) {
 		inputCount++
@@ -63,6 +60,7 @@ func main() {
 	fmt.Printf("Found %d processor components\n", processorCount)
 
 	fmt.Printf("\nSchema extraction completed. Files saved to %s/\n", schemasDir)
+	return schemasDir, nil
 }
 
 func extractAndSaveComponentSchema(name, componentType string, spec *service.ConfigView, schemasDir string) error {
@@ -73,7 +71,7 @@ func extractAndSaveComponentSchema(name, componentType string, spec *service.Con
 	}
 
 	// Convert template data to our schema format
-	schema := shared.ComponentSchema{
+	schema := ComponentSchema{
 		Name:   name,
 		Type:   componentType,
 		Fields: convertTemplateFieldsToSchema(templateData.Fields),
@@ -100,11 +98,11 @@ func extractAndSaveComponentSchema(name, componentType string, spec *service.Con
 	return nil
 }
 
-func convertTemplateFieldsToSchema(templateFields []service.TemplateDataPluginField) []shared.FieldSchema {
-	var fields []shared.FieldSchema
+func convertTemplateFieldsToSchema(templateFields []service.TemplateDataPluginField) []FieldSchema {
+	var fields []FieldSchema
 
 	for _, tf := range templateFields {
-		field := shared.FieldSchema{
+		field := FieldSchema{
 			Name:        extractFieldName(tf.FullName),
 			FullName:    tf.FullName,
 			Type:        tf.Type,
@@ -149,10 +147,10 @@ func extractFieldName(fullName string) string {
 	return string(parts[lastDot+1:])
 }
 
-func buildFieldHierarchy(flatFields []shared.FieldSchema) []shared.FieldSchema {
+func buildFieldHierarchy(flatFields []FieldSchema) []FieldSchema {
 	// Group fields by their parent path
-	fieldMap := make(map[string][]shared.FieldSchema)
-	rootFields := []shared.FieldSchema{}
+	fieldMap := make(map[string][]FieldSchema)
+	rootFields := []FieldSchema{}
 
 	for _, field := range flatFields {
 		// Determine parent path
@@ -193,7 +191,7 @@ func getParentPath(fullName string) string {
 	return string(parts[:lastDot])
 }
 
-func attachChildren(fields []shared.FieldSchema, fieldMap map[string][]shared.FieldSchema) []shared.FieldSchema {
+func attachChildren(fields []FieldSchema, fieldMap map[string][]FieldSchema) []FieldSchema {
 	for i := range fields {
 		if children, exists := fieldMap[fields[i].FullName]; exists {
 			fields[i].Children = attachChildren(children, fieldMap)
