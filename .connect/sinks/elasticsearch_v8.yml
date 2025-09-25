@@ -287,7 +287,7 @@ fields:
           type: string
           optional: true
           default: ""
-          description: A xref:guides:bloblang/about.adoc[Bloblang query] that should return a boolean value indicating whether a message should end a batch.
+          description: A Bloblang query that should return a boolean value indicating whether a message should end a batch.
           examples:
             - this.type == "end_of_transaction"
         - path: batching.processors
