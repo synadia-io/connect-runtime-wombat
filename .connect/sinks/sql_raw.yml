@@ -11,6 +11,7 @@ fields:
       kind: scalar
       type: string
       optional: false
+      description: A database driver to use.
       constraints:
         - enum:
             - mysql
@@ -23,14 +24,14 @@ fields:
             - trino
             - gocosmos
             - spanner
-      description: A database driver to use.
     - path: dsn
       name: dsn
       label: DSN
       kind: scalar
       type: string
       optional: false
-      description: "A Data Source Name to identify the target database."
+      description: |-
+        The Data Source Name (DSN) connection string that identifies the target database. The DSN format varies by database type and typically includes connection details like host, port, database name, and authentication parameters.
       examples:
         - clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms&max_execution_time=60
         - foouser:foopassword@tcp(localhost:3306)/foodb
@@ -41,18 +42,17 @@ fields:
       label: Query
       kind: scalar
       type: string
-      default: ""
+      optional: false
       description: |-
         The query to execute. The style of placeholder to use depends on the driver, some drivers require question marks (`?`) whereas others expect incrementing dollar signs (`$1`, `$2`, and so on) or colons (`:1`, `:2` and so on).
       examples:
         - SELECT * FROM footable WHERE user_id = $1;
-      optional: false
     - path: unsafe_dynamic_query
       name: unsafe_dynamic_query
       label: Unsafe Dynamic Query
       kind: scalar
       type: bool
-      default: "false"
+      default: false
       optional: true
       description: Whether to enable interpolation functions in the query. Great care should be made to ensure your queries are defended against injection attacks.
     - path: args_mapping
@@ -60,8 +60,7 @@ fields:
       label: Args Mapping
       kind: scalar
       type: string
-      optional: false
-      default: ""
+      optional: true
       description: An optional bloblang mapping which should evaluate to an array of values matching in size to the number of placeholder arguments in the field `query`.
       examples:
         - root = [ this.cat.meow, this.doc.woofs[0] ]
@@ -97,7 +96,7 @@ fields:
       label: Max In Flight
       kind: scalar
       type: int
-      default: "64"
+      default: 64
       optional: true
       description: The maximum number of statements to execute in parallel.
     - path: init_files
@@ -105,20 +104,19 @@ fields:
       label: Init Files
       kind: list
       type: string
+      optional: true
       description: |-
         An optional list of file paths containing SQL statements to execute immediately upon the first connection to the target database. This is a useful way to initialise tables before processing data. Glob patterns are supported, including super globs (double star).
       examples:
         - - ./init/*.sql
         - - ./foo.sql
           - ./bar.sql
-      optional: false
     - path: init_statement
       name: init_statement
       label: Init Statement
       kind: scalar
       type: string
       optional: true
-      default: ""
       description: |-
         An optional SQL statement to execute immediately upon the first connection to the target database. This is a useful way to initialise tables before processing data. Care should be taken to ensure that the statement is idempotent, and therefore would not cause issues when run multiple times after service restarts.
 
@@ -153,7 +151,7 @@ fields:
       kind: scalar
       type: int
       optional: true
-      default: "2"
+      default: 2
       description: An optional maximum number of connections in the idle connection pool. If conn_max_open is greater than 0 but less than the new conn_max_idle, then the new conn_max_idle will be reduced to match the conn_max_open limit. If `value <= 0`, no idle connections are retained. The default max idle connections is currently 2. This may change in a future release.
     - path: conn_max_open
       name: conn_max_open
@@ -161,6 +159,7 @@ fields:
       kind: scalar
       type: int
       optional: true
+      default: 0
       description: An optional maximum number of open connections to the database. If conn_max_idle is greater than 0 and the new conn_max_open is less than conn_max_idle, then conn_max_idle will be reduced to match the new conn_max_open limit. If `value <= 0`, then there is no limit on the number of open connections. The default is 0 (unlimited).
     - path: batching
       name: batching
@@ -168,7 +167,7 @@ fields:
       kind: scalar
       type: object
       description: Allows you to configure a batching policy
-      optional: false
+      optional: true
       examples:
         - byte_size: 5000
           count: 0
@@ -184,17 +183,17 @@ fields:
           label: Count
           kind: scalar
           type: int
-          default: "0"
-          description: A number of messages at which the batch should be flushed. If `0` disables count based batching.
           optional: true
+          default: 0
+          description: A number of messages at which the batch should be flushed. If `0` disables count based batching.
         - path: batching.byte_size
           name: byte_size
           label: Byte Size
           kind: scalar
           type: int
-          default: "0"
-          description: An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
           optional: true
+          default: 0
+          description: An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
         - path: batching.period
           name: period
           label: Period
