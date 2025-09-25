@@ -11,13 +11,10 @@ fields:
       name: account
       label: Account
       kind: scalar
-      optional: false
       type: string
-      default: ""
+      optional: false
       description: |-
-        Account name, which is the same as the Account Identifier
-        as described [here](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#where-are-account-identifiers-used).
-        However, when using an [Account Locator](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#using-an-account-locator-as-an-identifier),
+        Account name, which is the same as the Account Identifier.However, when using an Account Locator,
         the Account Identifier is formatted as `<account_locator>.<region_id>.<cloud>` and this field needs to be
         populated using the `<account_locator>` part.
     - path: region
@@ -25,26 +22,22 @@ fields:
       label: Region
       kind: scalar
       type: string
-      default: ""
+      optional: true
       description: |-
         Optional region field which needs to be populated when using
-        an [Account Locator](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#using-an-account-locator-as-an-identifier)
-        and it must be set to the `<region_id>` part of the Account Identifier
+        an Account Locator and it must be set to the `<region_id>` part of the Account Identifier
         (`<account_locator>.<region_id>.<cloud>`).
       examples:
         - us-west-2
-      optional: false
     - path: cloud
       name: cloud
       label: Cloud
       kind: scalar
       type: string
-      default: ""
-      optional: false
+      optional: true
       description: |-
         Optional cloud platform field which needs to be populated
-        when using an [Account Locator](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#using-an-account-locator-as-an-identifier)
-        and it must be set to the `<cloud>` part of the Account Identifier
+        when using an Account Locator and it must be set to the `<cloud>` part of the Account Identifier
         (`<account_locator>.<region_id>.<cloud>`).
       examples:
         - aws
@@ -55,40 +48,35 @@ fields:
       label: User
       kind: scalar
       type: string
-      description: Username.
-      default: ""
       optional: false
+      description: Username.
     - path: password
       name: password
       label: Password
       kind: scalar
       type: string
-      default: ""
+      optional: true
       description: An optional password.
-      optional: false
       secret: true
     - path: role
       name: role
       label: Role
       kind: scalar
       type: string
-      default: ""
-      description: Role.
       optional: false
+      description: Role.
     - path: database
       name: database
       label: Database
       kind: scalar
       type: string
-      default: ""
-      description: Database.
       optional: false
+      description: Database.
     - path: warehouse
       name: warehouse
       label: Warehouse
       kind: scalar
       type: string
-      default: ""
       optional: false
       description: Warehouse.
     - path: schema
@@ -96,7 +84,6 @@ fields:
       label: Schema
       kind: scalar
       type: string
-      default: ""
       optional: false
       description: Schema.
     - path: stage
@@ -104,52 +91,51 @@ fields:
       label: Stage
       kind: scalar
       type: string
-      default: ""
-      description: |-
-        Stage name. Use either one of the
-        [supported](https://docs.snowflake.com/en/user-guide/data-load-local-file-system-create-stage.html) stage types.
       optional: false
+      description: |-
+        Stage name. Use either one of the supported stage types: User, Table or Named.
     - path: path
       name: path
       label: Path
       kind: scalar
       type: string
-      default: ""
-      description: Stage path.
       optional: true
+      default: ""
+      description: Stage path. This field supports interpolation functions using Bloblang queries.
     - path: file_name
       name: file_name
+      label: File Name
       kind: scalar
       type: string
-      default: ""
-      description: Stage file name. Will be equal to the Request ID if not set or empty.
-      label: File Name
       optional: true
+      default: ""
+      description: Stage file name. Will be equal to the Request ID if not set or empty. This field supports interpolation using Bloblang queries.
     - path: file_extension
       name: file_extension
       label: File Extension
       kind: scalar
       type: string
+      optional: true
       default: ""
-      description: Stage file extension. Will be derived from the configured `compression` if not set or empty.
+      description: Stage file extension. Will be derived from the configured `compression` if not set or empty. This field supports interpolation using Bloblang queries.
       examples:
         - csv
         - parquet
-      optional: true
     - path: upload_parallel_threads
       name: upload_parallel_threads
       label: Upload Parallel Threads
       kind: scalar
       type: int
-      default: "4"
-      description: Specifies the number of threads to use for uploading files.
+      default: 4
       optional: true
+      description: Specifies the number of threads to use for uploading files. This field supports interpolation using Bloblang queries.
     - path: compression
       name: compression
       label: Compression
       kind: scalar
       type: string
-      default: "AUTO"
+      optional: true
+      default: AUTO
       constraints:
         - enum:
             - AUTO
@@ -159,38 +145,36 @@ fields:
             - RAW_DEFLATE
             - ZSTD
       description: Compression type.
-      optional: true
     - path: request_id
       name: request_id
       label: Request ID
       kind: scalar
       type: string
-      default: ""
-      description: Request ID. Will be assigned a random UUID (v4) string if not set or empty.
       optional: true
+      default: ""
+      description: Request ID. Will be assigned a random UUID (v4) string if not set or empty. This field supports interpolation using Bloblang queries.
     - path: snowpipe
       name: snowpipe
       label: Snowpipe
       kind: scalar
       type: string
-      default: ""
-      description: An optional Snowpipe name. Use the `<snowpipe>` part from `<database>.<schema>.<snowpipe>`.
-      optional: false
+      optional: true
+      description: An optional Snowpipe name. Use the `<snowpipe>` part from `<database>.<schema>.<snowpipe>`. This field supports interpolation using Bloblang queries.
     - path: client_session_keep_alive
       name: client_session_keep_alive
       label: Client Session Keep Alive
       kind: scalar
       type: bool
-      default: "false"
-      description: Enable Snowflake keepalive mechanism to prevent the client session from expiring after 4 hours (error 390114).
       optional: true
+      default: false
+      description: Enable Snowflake keepalive mechanism to prevent the client session from expiring after 4 hours (error 390114).
     - path: batching
       name: batching
       label: Batching
       kind: scalar
       type: object
       description: Allows you to configure a batching policy
-      optional: false
+      optional: true
       examples:
         - byte_size: 5000
           count: 0
@@ -206,17 +190,17 @@ fields:
           label: Count
           kind: scalar
           type: int
-          default: "0"
-          description: A number of messages at which the batch should be flushed. If `0` disables count based batching.
+          default: 0
           optional: true
+          description: A number of messages at which the batch should be flushed. If `0` disables count based batching.
         - path: batching.byte_size
           name: byte_size
           label: Byte Size
           kind: scalar
           type: int
-          default: "0"
-          description: An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
           optional: true
+          default: 0
+          description: An amount of bytes at which the batch should be flushed. If `0` disables size based batching.
         - path: batching.period
           name: period
           label: Period
@@ -244,7 +228,7 @@ fields:
       label: Max In Flight
       kind: scalar
       type: int
-      default: "1"
-      description: The maximum number of parallel message batches to have in flight at any given time.
       optional: true
+      default: 1
+      description: The maximum number of parallel message batches to have in flight at any given time.
 
