@@ -677,8 +677,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
 			return `
     driver: "clickhouse"
     dsn: clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms&max_execution_time=60
-    query: SELECT * FROM footable;
-    auto_replay_nacks: true`
+    query: SELECT * FROM footable;`
 		}
 		return `
     driver: "clickhouse"
@@ -686,19 +685,14 @@ func getMinimalConfig(componentName string, wombatType string) string {
     max_in_flight: 64`
 	case "snowflake_put":
 		return `
-    account: ""
-    user: ""
-    role: ""
-    database: ""
-    warehouse: ""
-    schema: test
-    stage: User
-    path: ""
-    file_name: ""
-    file_extension: ""
-    compression: AUTO
-    request_id: ""
-    max_in_flight: 1`
+    account: wombat
+    user: foobar
+    role: test_role
+    database: test_db
+    warehouse: test_warehouse
+    schema: test_schema
+    stage: "@%MY_TABLE"
+    path: "foo/bar/baz"`
 	default:
 		// Return empty config for components we don't have defaults for
 		return " {}"
