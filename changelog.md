@@ -9,7 +9,7 @@ Definitions:
 
 ## outputs
 ### amqp_0_9
-* added `exchange_declare.arguments` ([docs](https://docs.redpanda.com/redpanda-connect/components/outputs/amqp_0_9/#exchange_declare-arguments))
+* added `exchange_declare.arguments` ([docs](https://wombat.dev/reference/components/outputs/amqp_0_9/#exchange_declarearguments))
 
 ### aws_s3, aws_sns, aws_sqs, gcp_pubsub
 * changed type of `metadata.metadata.exclude_prefixes` from `string` to `list(string)` ([source](https://github.com/redpanda-data/benthos/blob/70b2d1fe4fa5eb2e0de38d1d42460f70a7bae5ec/internal/metadata/exclude_filter.go#L14))
@@ -23,10 +23,10 @@ Definitions:
 ## inputs
 
 ### amqp_0_9
-* added `queue_declare.arguments` ([docs](https://docs.redpanda.com/redpanda-connect/components/inputs/amqp_0_9/#queue_declare-arguments))
+* added `queue_declare.arguments` ([docs](https://wombat.dev/reference/components/inputs/amqp_0_9/#queue_declarearguments))
 
 ### gcp_bigquery_select
-* added `prefix` ([docs](https://docs.redpanda.com/redpanda-connect/components/inputs/gcp_bigquery_select/#prefix))
+* added `prefix` ([docs](https://wombat.dev/reference/components/inputs/gcp_bigquery_select/#prefix))
 * added `suffix`
 
 ### sql_raw
@@ -38,32 +38,32 @@ Definitions:
 ## outputs 
 
 ### azure_cosmosdb
-* ignored `endpoint` ([docs](https://docs.redpanda.com/redpanda-connect/components/outputs/azure_cosmosdb/#endpoint))
+* ignored `endpoint` ([docs](https://wombat.dev/reference/components/outputs/azure_cosmosdb/#endpoint))
 * ignored `account_key`
 
 ### aws_dynamodb
-* ignored aws credential options `credentials.profile`, `credentials.role`, `credentials.from_ec2_role`, `credentials.role_external_id` [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/aws_dynamodb/#credentials-2)
+* ignored aws credential options `credentials.profile`, `credentials.role`, `credentials.from_ec2_role`, `credentials.role_external_id` [docs](https://wombat.dev/reference/components/outputs/aws_dynamodb/#credentials-1)
 * ignored `batching` config [docs](https://docs.redpanda.com/redpanda-connect/configuration/batching/)
-* ignored `backoff` config [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/aws_dynamodb/#backoff)
+* ignored `backoff` config [docs](https://wombat.dev/reference/components/outputs/aws_dynamodb/#backoff)
 
 ### cassandra
-* ignored `batching.processors` [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/cassandra/#batching-processors)
-* ignored `host_selection_policy` [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/cassandra/#host_selection_policy)
+* ignored `batching.processors` [docs](https://wombat.dev/reference/components/outputs/cassandra/#batchingprocessors)
+* ignored `host_selection_policy` [docs](https://wombat.dev/reference/components/outputs/cassandra/#host_selection_policy)
 
 ### couchbase
 * ignored `batching.processors`
-* added `scope` [docs](https://docs.redpanda.com/redpanda-connect/components/caches/couchbase/#scope)
+* added `scope` [docs](https://wombat.dev/reference/components/outputs/couchbase/#scope)
 
 ### cypher
 * ignored `batching.processors`
 * deprecated `tls.tls.enabled` [source](https://github.com/redpanda-data/benthos/blob/v4.56.0/public/service/config_tls.go#L24)
 
 ### gcp_bigquery
-* ignored `csv` [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/gcp_bigquery/#csv-2)
+* ignored `csv` [docs](https://wombat.dev/reference/components/outputs/gcp_bigquery/#csv-1)
 
 
 ### gcp_pubsub
-* ignored flow_control [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/gcp_pubsub/#flow_control)
+* ignored flow_control [docs](https://wombat.dev/reference/components/outputs/gcp_pubsub/#flow_control)
 
 ### hdfs
 * ignored `batching.processors`
@@ -78,7 +78,7 @@ Definitions:
 
 
 ### mongodb
-* ignored `write_concern` [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/mongodb/#write_concern)
+* ignored `write_concern` [docs](https://wombat.dev/reference/components/outputs/mongodb/#write_concern)
 
 ### nats
 * ignored `auth`
@@ -139,7 +139,7 @@ Definitions:
 ## Inputs
 
 ### azure_cosmosdb
-* ignored `endpoint` ([docs](https://docs.redpanda.com/redpanda-connect/components/outputs/azure_cosmosdb/#endpoint))
+* ignored `endpoint` ([docs](https://wombat.dev/reference/components/inputs/azure_cosmosdb/#endpoint))
 * ignored `account_key`
 
 ### cockroachdb_changefeed
@@ -157,10 +157,10 @@ Definitions:
 * ignored `targets_input`
 
 ### cassandra
-* ignored `host_selection_policy` [docs](https://docs.redpanda.com/redpanda-connect/components/outputs/cassandra/#host_selection_policy)
+* ignored `host_selection_policy` [docs](https://wombat.dev/reference/components/inputs/cassandra/#host_selection_policy)
 
 ### gcp_pubsub
-* ignored `create_subscription` [docs](https://docs.redpanda.com/redpanda-connect/components/inputs/gcp_pubsub/#create_subscription)
+* ignored `create_subscription` [docs](https://wombat.dev/reference/components/inputs/gcp_pubsub/#create_subscription)
 
 ### http_client
 * ignored `jwt`
@@ -168,7 +168,7 @@ Definitions:
 
 ### kafka_franz
 * ignored `batching.processors`
-* deprecated `start_from_oldest` (replaced by `start_offset`) ([docs](https://docs.redpanda.com/redpanda-connect/components/inputs/kafka_franz/#start_offset))
+* deprecated `start_from_oldest` (replaced by `start_offset`) ([docs](https://wombat.dev/reference/components/inputs/kafka_franz/#start_offset))
 
 ### mqtt
 * ignored `tls` 
