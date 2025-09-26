@@ -2,6 +2,7 @@ model_version: "1"
 kind: sink
 label: Elasticsearch V8
 name: elasticsearch_v8
+icon: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij4KICAgIDxwYXRoIGZpbGw9IiMzNDM3NDEiIGQ9Ik00IDY0YzAgNS41MzUuNzc3IDEwLjg3OSAyLjA5OCAxNkg4NGM4LjgzNiAwIDE2LTcuMTY0IDE2LTE2cy03LjE2NC0xNi0xNi0xNkg2LjA5OEE2My43MzggNjMuNzM4IDAgMCAwIDQgNjQiLz4KICAgIDxwYXRoIGZpbGw9IiNmZWM1MTQiIGQ9Ik0xMTEuNjk1IDMwLjY0OEE2MS40ODUgNjEuNDg1IDAgMCAwIDExNy45MjIgMjRDMTA2LjE4OCA5LjM3OSA4OC4xOTkgMCA2OCAwIDQyLjcxNSAwIDIwLjk1NyAxNC43MSAxMC41NzQgMzZIOTguMDRhMjAuMTIzIDIwLjEyMyAwIDAgMCAxMy42NTItNS4zNTIiLz4KICAgIDxwYXRoIGZpbGw9IiMwMGJmYjMiIGQ9Ik05OC4wNCA5MkgxMC41NzdDMjAuOTYxIDExMy4yOSA0Mi43MTUgMTI4IDY4IDEyOGMyMC4yIDAgMzguMTg4LTkuMzgzIDQ5LjkyMi0yNGE2MS4xIDYxLjEgMCAwIDAtNi4yMjctNi42NDhBMjAuMTMzIDIwLjEzMyAwIDAgMCA5OC4wNCA5MiIvPgo8L3N2Zz4K
 status: experimental
 description: |
     Publishes messages into an Elasticsearch index. If the index does not exist then it is created with a dynamic mapping.
@@ -33,6 +34,13 @@ fields:
       label: action
       kind: scalar
       type: string
+      constraints:
+        - enum:
+            - index
+            - update
+            - delete
+            - create
+            - upsert
       description: 'The action to take on the document. This field must resolve to one of the following action types: `index`, `update`, `delete`, `create` or `upsert`. See the `Updating Documents` example for more on how the `update` action works and the `Create Documents` and `Upserting Documents` examples for how to use the `create` and `upsert` actions respectively.'
     - path: id
       name: id
@@ -279,7 +287,7 @@ fields:
           type: string
           optional: true
           default: ""
-          description: A xref:guides:bloblang/about.adoc[Bloblang query] that should return a boolean value indicating whether a message should end a batch.
+          description: A Bloblang query that should return a boolean value indicating whether a message should end a batch.
           examples:
             - this.type == "end_of_transaction"
         - path: batching.processors

@@ -87,6 +87,19 @@ fields:
         optional: true
         description: |-
           Whether the declared queue will auto-delete.
+      - path: queue_declare.arguments
+        name: arguments
+        label: Arguments
+        kind: map
+        type: string
+        default: ""
+        optional: true
+        description: |-
+          Optional arguments specific to the server's implementation of the queue that can be sent for queue types which require extra parameters.
+        examples:
+          - x-max-length: 1000
+            x-max-length-bytes: 4096
+            x-queue-type: quorum
   - path: bindings_declare
     name: bindings_declare
     label: Bindings Declare

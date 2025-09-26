@@ -53,6 +53,14 @@ fields:
     optional: true
     description: |-
       Bucket collection.
+  - path: scope
+    name: scope
+    label: Scope
+    kind: scalar
+    type: string
+    optional: true
+    default: ""
+    description: Bucket scope.
   - path: transcoder
     name: transcoder
     label: Transcoder

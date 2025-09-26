@@ -56,6 +56,7 @@ fields:
       - path: metadata.exclude_prefixes
         name: exclude_prefixes
         label: Exclude Prefixes
+        kind: list
         type: string
         optional: true
         description: >-
