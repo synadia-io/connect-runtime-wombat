@@ -40,6 +40,7 @@ fields:
       kind: scalar
       type: bool
       default: false
+      optional: true
       description: Set the retained flag on published messages
     - path: write_timeout
       name: write_timeout
@@ -87,6 +88,7 @@ fields:
           type: string
           default: ""
           description: Password for authentication
+          secret: true
     - path: tls
       name: tls
       label: TLS
@@ -225,6 +227,7 @@ fields:
       default: {
         topic: ""
       }
+      optional: true
       description: |-
         Last Will and Testament configuration
       fields:
