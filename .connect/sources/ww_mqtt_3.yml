@@ -112,6 +112,7 @@ fields:
           type: string
           default: ""
           description: Password for authentication
+          secret: true
     - path: tls
       name: tls
       label: TLS
@@ -250,6 +251,7 @@ fields:
       default: {
         topic: ""
       }
+      optional: true
       description: |-
         Last Will and Testament configuration
       fields:
