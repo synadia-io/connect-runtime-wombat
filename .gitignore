@@ -17,3 +17,6 @@ coverage.html
 
 .claude
 *.tar
+
+# Generated schema files
+/schemas
