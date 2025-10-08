@@ -43,28 +43,40 @@ fields:
       optional: true
       description: Set the retained flag on published messages
     - path: write_timeout
+      render_hint: duration
       name: write_timeout
       label: write_timeout
       kind: scalar
       type: string
       default: "5s"
       optional: true
+      examples:
+        - 5s
+        - 1m
       description: Timeout for write operations
     - path: connect_timeout
+      render_hint: duration
       name: connect_timeout
       label: connect_timeout
       kind: scalar
       type: string
       default: "30s"
       optional: true
+      examples:
+        - 5s
+        - 1m
       description: Connection timeout
     - path: keepalive
+      render_hint: duration
       name: keepalive
       label: keepalive
       kind: scalar
       type: string
       default: "60s"
       optional: true
+      examples:
+        - 5s
+        - 1m
       description: Keep alive interval
     - path: auth
       name: auth

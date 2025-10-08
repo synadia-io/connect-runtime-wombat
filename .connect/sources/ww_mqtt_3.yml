@@ -80,18 +80,26 @@ fields:
       default: true
       description: Start with a clean session
     - path: connect_timeout
+      render_hint: duration
       name: connect_timeout
       label: connect_timeout
       kind: scalar
       type: string
       default: "30s"
+      examples:
+        - 5s
+        - 1m
       description: Connection timeout
     - path: keepalive
+      render_hint: duration
       name: keepalive
       label: keepalive
       kind: scalar
       type: string
       default: "60s"
+      examples:
+        - 5s
+        - 1m
       description: Keep alive interval
     - path: auth
       name: auth
