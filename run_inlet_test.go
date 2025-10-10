@@ -28,7 +28,7 @@ var _ = Describe("Running an inlet", func() {
 		It("should return an error", func() {
 			invalidInlet := Steps().
 				Source(SourceStep("invalid")).
-				Producer(test.CoreProducer(NatsConfig(DefaultNatsUrl))).
+				Producer(test.CoreProducer(NatsConfig().Url(DefaultNatsUrl))).
 				Build()
 
 			ctx, cancel := context.WithCancel(context.Background())

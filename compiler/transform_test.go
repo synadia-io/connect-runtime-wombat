@@ -59,8 +59,8 @@ var _ = Describe("Compiling an inlet", func() {
 		BeforeEach(func() {
 			v = Steps().
 				Source(SourceStep("stdin")).
-				Transformer(TransformerStep().Service(ServiceTransformerStep("my.service", NatsConfig(DefaultNatsUrl)))).
-				Producer(ProducerStep(NatsConfig(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
+				Transformer(TransformerStep().Service(ServiceTransformerStep("my.service", NatsConfig().Url(DefaultNatsUrl)))).
+				Producer(ProducerStep(NatsConfig().Url(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
 				Build()
 		})
 
@@ -96,7 +96,7 @@ var _ = Describe("Compiling an inlet", func() {
 			v = Steps().
 				Source(SourceStep("stdin")).
 				Transformer(TransformerStep().Explode(ExplodeTransformerStep().Format(model.ExplodeTransformerStepFormatCsv).Delimiter("\t"))).
-				Producer(ProducerStep(NatsConfig(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
+				Producer(ProducerStep(NatsConfig().Url(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
 				Build()
 		})
 
@@ -129,7 +129,7 @@ var _ = Describe("Compiling an inlet", func() {
 			v = Steps().
 				Source(SourceStep("stdin")).
 				Transformer(TransformerStep().Combine(CombineTransformerStep().Format(model.CombineTransformerStepFormatLines))).
-				Producer(ProducerStep(NatsConfig(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
+				Producer(ProducerStep(NatsConfig().Url(DefaultNatsUrl)).Core(ProducerStepCore("foo.bar"))).
 				Build()
 		})
 
