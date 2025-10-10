@@ -48,7 +48,7 @@ echo
 
 # Run stress tests (only run a subset for quick validation)
 echo -e "${YELLOW}Running Stress Tests (subset)...${NC}"
-if go run github.com/onsi/ginkgo/v2/ginkgo -v --focus="should handle 100K messages" ./stress_tests --timeout=60s; then
+if go run github.com/onsi/ginkgo/v2/ginkgo -v --focus="should handle 100K messages" --timeout=60s ./stress_tests; then
     echo -e "${GREEN}✓ Stress Tests passed${NC}"
 else
     echo -e "${RED}✗ Stress Tests failed${NC}"

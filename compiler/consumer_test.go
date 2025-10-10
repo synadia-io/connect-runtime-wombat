@@ -7,7 +7,7 @@ import (
 	"github.com/synadia-io/connect/model"
 )
 
-var ncb = NatsConfig(DefaultNatsUrl)
+var ncb = NatsConfig().Url(DefaultNatsUrl)
 
 type consumerStepTest struct {
 	name        string
