@@ -183,12 +183,12 @@ tasks:
         sh: |
           # Get the most recent tag
           current_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          
+
           # If no tags exist and we got a commit hash, use v0.0.0
           if ! echo "$current_tag" | grep -q '^v[0-9]'; then
             current_tag="v0.0.0"
           fi
-          
+
           if echo "$current_tag" | grep -q "\-rc"; then
             # Extract base version and RC number
             base=$(echo "$current_tag" | sed 's/-rc.*//')
@@ -201,7 +201,7 @@ tasks:
             major=$(echo "$version" | cut -d. -f1)
             minor=$(echo "$version" | cut -d. -f2)
             patch=$(echo "$version" | cut -d. -f3)
-          
+
             # Increment patch version
             next_patch=$((patch + 1))
             echo "${major}.${minor}.${next_patch}-rc1"
@@ -217,6 +217,17 @@ tasks:
         # Validate version format
         if ! echo "{{.NEXT_RC}}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-rc[0-9]+)?$'; then
           echo "Error: Invalid version format. Expected: X.Y.Z or X.Y.Z-rcN"
+          exit 1
+        fi
+
+        # Check that runtime.yml default_version matches the tag we're about to create
+        RUNTIME_VERSION=$(grep "^default_version:" .connect/runtime.yml | awk '{print $2}' | tr -d '"' | tr -d "'")
+        if [ "$RUNTIME_VERSION" != "{{.TAG_VERSION}}" ]; then
+          echo "Error: Version mismatch!"
+          echo "  runtime.yml default_version: $RUNTIME_VERSION"
+          echo "  Tag to be created: {{.TAG_VERSION}}"
+          echo ""
+          echo "Please update .connect/runtime.yml default_version to {{.TAG_VERSION}} before creating the release."
           exit 1
         fi
 
@@ -250,23 +261,34 @@ tasks:
       - task: test
       - |
         echo "Creating final release: {{.TAG_VERSION}}"
-        
+
         # Validate version format (no RC suffix allowed)
         if ! echo "{{.FINAL_VERSION}}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
           echo "Error: Invalid version format. Expected: X.Y.Z (no RC suffix)"
           exit 1
         fi
-        
+
+        # Check that runtime.yml default_version matches the tag we're about to create
+        RUNTIME_VERSION=$(grep "^default_version:" .connect/runtime.yml | awk '{print $2}' | tr -d '"' | tr -d "'")
+        if [ "$RUNTIME_VERSION" != "{{.TAG_VERSION}}" ]; then
+          echo "Error: Version mismatch!"
+          echo "  runtime.yml default_version: $RUNTIME_VERSION"
+          echo "  Tag to be created: {{.TAG_VERSION}}"
+          echo ""
+          echo "Please update .connect/runtime.yml default_version to {{.TAG_VERSION}} before creating the release."
+          exit 1
+        fi
+
         # Check if tag already exists
         if git rev-parse "{{.TAG_VERSION}}" >/dev/null 2>&1; then
           echo "Error: Tag {{.TAG_VERSION}} already exists"
           exit 1
         fi
-        
+
         # Create and push tag
         git tag -a "{{.TAG_VERSION}}" -m "Release {{.TAG_VERSION}}"
         git push origin "{{.TAG_VERSION}}"
-        
+
         echo "✅ Tag {{.TAG_VERSION}} created and pushed"
         echo "GitHub Actions will now create the release using goreleaser"
 
