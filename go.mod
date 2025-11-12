@@ -1,6 +1,6 @@
 module github.com/synadia-io/connect-runtime-wombat
 
-go 1.25.1
+go 1.25.2
 
 require (
 	cuelang.org/go v0.13.2
