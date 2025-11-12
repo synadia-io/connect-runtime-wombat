@@ -28,11 +28,7 @@ builds:
 
 archives:
   - id: connect-runtime-wombat
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{ .Arch }}
-
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     files:
       - README.md
 
