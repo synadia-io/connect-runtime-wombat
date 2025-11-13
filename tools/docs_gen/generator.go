@@ -1,11 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/redpanda-data/benthos/v4/public/service"
+	"github.com/synadia-io/connect-runtime-wombat/tools/docs_gen/model"
 	"github.com/synadia-io/connect-runtime-wombat/utils"
-	"github.com/synadia-io/connect/model"
 	"gopkg.in/yaml.v3"
 )
 
@@ -17,11 +18,18 @@ var StatusMapping = map[string]model.ComponentStatusSpec{
 }
 
 var FieldTypes = map[string]model.FieldSpecType{
-	"string": model.FieldSpecTypeString,
-	"object": model.FieldSpecTypeObject,
+	"string":     model.FieldSpecTypeString,
+	"object":     model.FieldSpecTypeObject,
+	"array":      model.FieldSpecTypeObject, // Arrays are represented as objects with kind:list
+	"bool":       model.FieldSpecTypeBool,
+	"int":        model.FieldSpecTypeInt,
+	"scanner":    model.FieldSpecTypeScanner,
+	"expression": model.FieldSpecTypeExpression,
+	"condition":  model.FieldSpecTypeCondition,
+	"input":      model.FieldSpecTypeObject, // Inputs are complex objects
 }
 
-func Generate(data service.TemplateDataPlugin) (*model.ComponentSpec, error) {
+func Generate(data service.TemplateDataPlugin, componentType string) (*model.ComponentSpec, error) {
 	status, fnd := StatusMapping[data.Status]
 	if !fnd {
 		status = model.ComponentStatusSpecExperimental
@@ -32,7 +40,9 @@ func Generate(data service.TemplateDataPlugin) (*model.ComponentSpec, error) {
 	fields := generateFields(ft.children)
 	npFields := make([]model.FieldSpec, 0, len(fields))
 	for _, f := range fields {
-		npFields = append(npFields, *f)
+		if f != nil {
+			npFields = append(npFields, *f)
+		}
 	}
 
 	description := data.Summary
@@ -41,11 +51,26 @@ func Generate(data service.TemplateDataPlugin) (*model.ComponentSpec, error) {
 		description += data.Description
 	}
 
+	// Map component type to ComponentKindSpec
+	var kind model.ComponentKindSpec
+	switch componentType {
+	case "input":
+		kind = model.ComponentKindSpecSource
+	case "output":
+		kind = model.ComponentKindSpecSink
+	case "scanner":
+		kind = model.ComponentKindSpecScanner
+	default:
+		// If component type is not recognized, return an error
+		return nil, fmt.Errorf("unknown component type: %s", componentType)
+	}
+
 	return &model.ComponentSpec{
 		Description: description,
 		Name:        data.Name,
-		Label:       data.Name,
+		Label:       toHumanReadableLabel(data.Name),
 		Status:      status,
+		Kind:        kind,
 		Fields:      npFields,
 		Icon:        nil,
 	}, nil
@@ -180,6 +205,22 @@ func generateFields(fields []*fieldContainer) []*model.FieldSpec {
 			ft = model.FieldSpecType(field.Field.Type)
 		}
 
+		// Determine the correct kind based on type
+		var kind model.FieldSpecKind
+		switch field.Field.Type {
+		case "array":
+			kind = model.FieldSpecKindList
+		case "object":
+			// Objects with defined fields are scalar, generic objects are maps
+			if len(field.children) > 0 {
+				kind = model.FieldSpecKindScalar
+			} else {
+				kind = model.FieldSpecKindMap
+			}
+		default:
+			kind = model.FieldSpecKindScalar
+		}
+
 		rf := &model.FieldSpec{
 			Name:        field.Name,
 			Type:        ft,
@@ -189,8 +230,8 @@ func generateFields(fields []*fieldContainer) []*model.FieldSpec {
 			Default:     field.Field.DefaultMarshalled,
 			Examples:    field.Field.Examples,
 			Fields:      nil,
-			Kind:        model.FieldSpecKindScalar,
-			Label:       field.Name,
+			Kind:        kind,
+			Label:       toHumanReadableFieldLabel(field.Name),
 			Optional:    utils.Ptr(false),
 			RenderHint:  nil,
 		}

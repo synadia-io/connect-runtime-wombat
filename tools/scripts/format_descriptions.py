@@ -32,23 +32,34 @@ def update_yaml_files(directory):
     for filename in os.listdir(directory):
         if filename.endswith(('.yml', '.yaml')):
             filepath = os.path.join(directory, filename)
-            with open(filepath, 'r') as f:
-                data = yaml.load(f)
+            try:
+                # Read file content
+                with open(filepath, 'r') as f:
+                    content_str = f.read()
+                
+                # Preprocess YAML to handle |4 syntax
+                # Replace '- |4' with '- |-' to make it parseable
+                content_str = content_str.replace('- |4\n', '- |-\n')
+                
+                # Parse the preprocessed content
+                data = yaml.load(content_str)
 
-            # Ensure model_version is the first key
-            if not isinstance(data, dict) or 'model_version' not in data:
-                new_data = {'model_version': '1'}
-                if isinstance(data, dict):
-                    new_data.update(data)
-                data = new_data
+                # Ensure model_version is the first key
+                if not isinstance(data, dict) or 'model_version' not in data:
+                    new_data = {'model_version': '1'}
+                    if isinstance(data, dict):
+                        new_data.update(data)
+                    data = new_data
 
-            # Format all descriptions
-            format_descriptions(data)
+                # Format all descriptions
+                format_descriptions(data)
 
-            # Write back to file, preserving the formatting
-            with open(filepath, 'w') as f:
-                yaml.dump(data, f)
-            print(f"Updated {filename}")
+                # Write back to file, preserving the formatting
+                with open(filepath, 'w') as f:
+                    yaml.dump(data, f)
+                print(f"Updated {filename}")
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
 
 if __name__ == '__main__':
     # Get the project root directory (two levels up from the script)

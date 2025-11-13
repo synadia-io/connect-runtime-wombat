@@ -43,7 +43,8 @@ func LoadConfig(base *Config, path string) error {
 }
 
 type Config struct {
-	Components map[string][]string `yaml:"components,omitempty"`
+	Components map[string][]string          `yaml:"components,omitempty"`
+	Icons      map[string]map[string]string `yaml:"icons,omitempty"`
 }
 
 func (c *Config) Contains(kind string, name string) bool {
@@ -58,16 +59,49 @@ func (c *Config) Contains(kind string, name string) bool {
 	return slices.Contains(c.Components[kind], name)
 }
 
+func (c *Config) GetIcon(kind string, name string) string {
+	if c.Icons == nil {
+		return ""
+	}
+
+	if kindIcons, ok := c.Icons[kind]; ok {
+		if icon, ok := kindIcons[name]; ok {
+			return icon
+		}
+	}
+
+	return ""
+}
+
 func (c *Config) Merge(other *Config) {
-	if other == nil || other.Components == nil {
+	if other == nil {
 		return
 	}
 
-	for kind, components := range other.Components {
-		if c.Components == nil {
-			c.Components = make(map[string][]string)
-		}
+	// Merge components
+	if other.Components != nil {
+		for kind, components := range other.Components {
+			if c.Components == nil {
+				c.Components = make(map[string][]string)
+			}
 
-		c.Components[kind] = append(c.Components[kind], components...)
+			c.Components[kind] = append(c.Components[kind], components...)
+		}
+	}
+
+	// Merge icons
+	if other.Icons != nil {
+		for kind, icons := range other.Icons {
+			if c.Icons == nil {
+				c.Icons = make(map[string]map[string]string)
+			}
+			if c.Icons[kind] == nil {
+				c.Icons[kind] = make(map[string]string)
+			}
+
+			for name, icon := range icons {
+				c.Icons[kind][name] = icon
+			}
+		}
 	}
 }
