@@ -128,7 +128,7 @@ jobs:
       - name: Extract version info
         id: version_info
         run: |
-          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           echo "commit=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
           echo "build_date=$(date '+%Y-%m-%dT%H:%M:%S')" >> $GITHUB_OUTPUT
 
