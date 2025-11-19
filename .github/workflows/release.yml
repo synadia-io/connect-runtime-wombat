@@ -114,7 +114,7 @@ jobs:
           images: |
             ${{ vars.PRD_AWS_ECR_ADDR }}/connect-runtime-wombat
           tags: |
-            type=raw,value={{raw}}
+            type=ref,event=tag
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
