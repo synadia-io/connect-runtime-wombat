@@ -1,5 +1,4 @@
 # .github/workflows/docker-build.yml
-# Reusable workflow for building Docker images
 # Can be called with push=false for testing or push=true for releases
 
 name: Docker Build
