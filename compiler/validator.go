@@ -11,7 +11,7 @@ import (
 
 	// Import custom NATS components for registration
 	_ "github.com/synadia-io/connect-runtime-wombat/components"
-	"github.com/synadia-io/connect/runtime"
+	"github.com/synadia-io/connect/v2/runtime"
 )
 
 // Validate takes a compiled Wombat YAML configuration string and validates it

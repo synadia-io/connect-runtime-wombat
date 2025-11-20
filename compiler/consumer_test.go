@@ -3,8 +3,8 @@ package compiler
 import (
 	"testing"
 
-	. "github.com/synadia-io/connect/builders"
-	"github.com/synadia-io/connect/model"
+	. "github.com/synadia-io/connect/v2/builders"
+	"github.com/synadia-io/connect/v2/model"
 )
 
 var ncb = NatsConfig().Url(DefaultNatsUrl)
