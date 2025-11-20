@@ -1,0 +1,26 @@
+# .github/workflows/test-docker-build.yml
+# Tests Docker build on PRs to catch issues before release
+
+name: Test Docker Build
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/release.yml'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/test-docker-build.yml'
+
+jobs:
+  test-docker:
+    name: Test Docker Build
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      push: false
+      tags: |
+        type=ref,event=pr
+        type=sha
+      platforms: linux/amd64,linux/arm64
+      image_name: connect-runtime-wombat-test
