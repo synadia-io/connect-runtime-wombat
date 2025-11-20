@@ -73,8 +73,6 @@ jobs:
           echo "=== Disk usage after cleanup ==="
           df -h
           echo
-          echo "=== Space freed ==="
-          echo "Approximately 15-25 GB freed"
 
       - name: Check Out Repo
         uses: actions/checkout@v5
