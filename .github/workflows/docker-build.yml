@@ -2,8 +2,6 @@
 # Can be called with push=false for testing or push=true for releases
 
 name: Docker Build
-permissions:
-  contents: read
 
 on:
   workflow_call:
