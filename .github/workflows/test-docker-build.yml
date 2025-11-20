@@ -2,6 +2,8 @@
 # Tests Docker build on PRs to catch issues before release
 
 name: Test Docker Build
+permissions:
+  contents: read
 
 on:
   pull_request:
