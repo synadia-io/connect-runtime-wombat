@@ -3,7 +3,7 @@ package compiler
 import (
 	"fmt"
 
-	"github.com/synadia-io/connect/model"
+	"github.com/synadia-io/connect/v2/model"
 )
 
 // compileProducer transforms a Connect producer specification into a Wombat output configuration.

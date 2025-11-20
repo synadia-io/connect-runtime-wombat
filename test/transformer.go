@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/synadia-io/connect/model"
+	"github.com/synadia-io/connect/v2/model"
 )
 
 func ServiceTransformer(natsConfig model.NatsConfig, svcSubject string) *model.TransformerStep {

@@ -1,7 +1,7 @@
 package compiler
 
 import (
-	"github.com/synadia-io/connect/model"
+	"github.com/synadia-io/connect/v2/model"
 )
 
 func natsBaseFragment(c model.NatsConfig) Fragment {

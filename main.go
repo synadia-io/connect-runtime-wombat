@@ -21,7 +21,7 @@ import (
 
 	"github.com/synadia-io/connect-runtime-wombat/runner"
 	"github.com/synadia-io/connect-runtime-wombat/utils"
-	"github.com/synadia-io/connect/runtime"
+	"github.com/synadia-io/connect/v2/runtime"
 )
 
 var (

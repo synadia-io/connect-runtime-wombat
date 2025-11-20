@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/synadia-io/connect/runtime"
+	"github.com/synadia-io/connect/v2/runtime"
 )
 
 func Runtime(opts ...runtime.Opt) *runtime.Runtime {
