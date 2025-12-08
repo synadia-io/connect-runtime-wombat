@@ -1,6 +1,6 @@
 module github.com/synadia-io/connect-runtime-wombat
 
-go 1.25.3
+go 1.25.5
 
 require (
 	cuelang.org/go v0.13.2
@@ -19,7 +19,7 @@ require (
 	github.com/redpanda-data/connect/v4 v4.61.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
-	github.com/synadia-io/connect/v2 v2.0.0-rc3
+	github.com/synadia-io/connect v1.0.8
 	github.com/wombatwisdom/wombat v1.0.6
 	go.opentelemetry.io/otel v1.37.0
 	go.opentelemetry.io/otel/trace v1.37.0

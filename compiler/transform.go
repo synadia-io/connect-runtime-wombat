@@ -1,7 +1,7 @@
 package compiler
 
 import (
-	"github.com/synadia-io/connect/v2/model"
+	"github.com/synadia-io/connect/model"
 )
 
 // compileTransformer transforms a Connect transformer specification into a Wombat processor configuration.

@@ -19,8 +19,8 @@ import (
 
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
 	"github.com/synadia-io/connect-runtime-wombat/utils"
-	"github.com/synadia-io/connect/v2/model"
-	"github.com/synadia-io/connect/v2/runtime"
+	"github.com/synadia-io/connect/model"
+	"github.com/synadia-io/connect/runtime"
 )
 
 // Run executes the main runtime logic for a Connect specification.

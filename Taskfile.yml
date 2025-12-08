@@ -220,14 +220,14 @@ tasks:
           exit 1
         fi
 
-        # Check that runtime.yml version matches the tag we're about to create
-        RUNTIME_VERSION=$(grep "^version:" .connect/runtime.yml | awk '{print $2}' | tr -d '"' | tr -d "'")
+        # Check that runtime.yml default_version matches the tag we're about to create
+        RUNTIME_VERSION=$(grep "^default_version:" .connect/runtime.yml | awk '{print $2}' | tr -d '"' | tr -d "'")
         if [ "$RUNTIME_VERSION" != "{{.TAG_VERSION}}" ]; then
           echo "Error: Version mismatch!"
-          echo "  runtime.yml version: $RUNTIME_VERSION"
+          echo "  runtime.yml default_version: $RUNTIME_VERSION"
           echo "  Tag to be created: {{.TAG_VERSION}}"
           echo ""
-          echo "Please update .connect/runtime.yml version to {{.TAG_VERSION}} before creating the release."
+          echo "Please update .connect/runtime.yml default_version to {{.TAG_VERSION}} before creating the release."
           exit 1
         fi
 
@@ -268,14 +268,14 @@ tasks:
           exit 1
         fi
 
-        # Check that runtime.yml version matches the tag we're about to create
-        RUNTIME_VERSION=$(grep "^version:" .connect/runtime.yml | awk '{print $2}' | tr -d '"' | tr -d "'")
+        # Check that runtime.yml default_version matches the tag we're about to create
+        RUNTIME_VERSION=$(grep "^default_version:" .connect/runtime.yml | awk '{print $2}' | tr -d '"' | tr -d "'")
         if [ "$RUNTIME_VERSION" != "{{.TAG_VERSION}}" ]; then
           echo "Error: Version mismatch!"
-          echo "  runtime.yml version: $RUNTIME_VERSION"
+          echo "  runtime.yml default_version: $RUNTIME_VERSION"
           echo "  Tag to be created: {{.TAG_VERSION}}"
           echo ""
-          echo "Please update .connect/runtime.yml version to {{.TAG_VERSION}} before creating the release."
+          echo "Please update .connect/runtime.yml default_version to {{.TAG_VERSION}} before creating the release."
           exit 1
         fi
 

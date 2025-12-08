@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/synadia-io/connect/v2/builders"
+	"github.com/synadia-io/connect/builders"
 )
 
 func InvalidSource() *builders.SourceStepBuilder {

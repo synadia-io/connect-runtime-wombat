@@ -3,7 +3,7 @@ package compiler
 import (
 	"fmt"
 
-	"github.com/synadia-io/connect/v2/model"
+	"github.com/synadia-io/connect/model"
 )
 
 // compileConsumer transforms a Connect consumer specification into a Wombat input configuration.
