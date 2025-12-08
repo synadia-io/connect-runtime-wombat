@@ -17,11 +17,10 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/synadia-io/connect-runtime-wombat/runner"
 	"github.com/synadia-io/connect-runtime-wombat/utils"
-	"github.com/synadia-io/connect/v2/runtime"
+	"github.com/synadia-io/connect/runtime"
 )
 
 var (
@@ -63,11 +62,6 @@ func main() {
 		panic(err)
 	}
 
-	preFlightErr := preFlightCheck(rt)
-	if preFlightErr != nil {
-		logger.Warn().Err(preFlightErr).Msg("Could not retrieve config required for metrics")
-	}
-
 	logger.Info().Msg("Runtime initialized successfully")
 
 	// Launch the workload with the provided configuration
@@ -78,25 +72,4 @@ func main() {
 		logger.Error().Err(err).Msg("Failed to launch workload")
 		panic(err)
 	}
-}
-
-// preFlightCheck checks if the runtime has all required values for metrics configuration
-func preFlightCheck(rt *runtime.Runtime) error {
-	var emptyFields []string
-
-	if rt.NatsUrl == "" {
-		emptyFields = append(emptyFields, "NatsUrl")
-	}
-	if rt.Namespace == "" {
-		emptyFields = append(emptyFields, "Namespace")
-	}
-	if rt.Instance == "" {
-		emptyFields = append(emptyFields, "Instance")
-	}
-
-	if len(emptyFields) > 0 {
-		return fmt.Errorf("the following required field(s) are empty: %s", strings.Join(emptyFields, ", "))
-	}
-
-	return nil
 }

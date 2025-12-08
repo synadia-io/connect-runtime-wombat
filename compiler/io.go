@@ -1,7 +1,7 @@
 package compiler
 
 import (
-	"github.com/synadia-io/connect/v2/model"
+	"github.com/synadia-io/connect/model"
 )
 
 // compileSource transforms a Connect source specification into a Wombat input configuration.

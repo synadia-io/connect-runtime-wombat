@@ -46,7 +46,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.3
+          go-version: 1.25.1
 
       - name: Install Task
         uses: arduino/setup-task@v2
@@ -101,18 +101,58 @@ jobs:
           GORELEASER_CURRENT_TAG: ${{ steps.release_info.outputs.tag }} # override tag b/c git does not offer a tag sort to make "v1.0.6" come out on top when "v1.0.6-rc1" is present on the same commit. Goreleaser fixes this, but only in paid version
           
   docker:
-    name: Build and Push Docker Image
-    uses: ./.github/workflows/docker-build.yml
-    with:
-      push: true
-      tags: |
-        type=ref,event=tag
-        type=semver,pattern={{major}}.{{minor}}
-        type=semver,pattern={{major}}
-        type=sha
-      platforms: linux/amd64,linux/arm64
-      image_name: connect-runtime-wombat
-    secrets:
-      AWS_REGION: ${{ vars.PRD_AWS_REGION }}
-      AWS_ECR_ADDR: ${{ vars.PRD_AWS_ECR_ADDR }}
-      AWS_ECR_PUSH_ROLE: ${{ vars.PRD_AWS_ECR_PUSH_ROLE }}
+    name: Build the docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v5
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ vars.PRD_AWS_ECR_ADDR }}/connect-runtime-wombat
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract version info
+        id: version_info
+        run: |
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "commit=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          echo "build_date=$(date '+%Y-%m-%dT%H:%M:%S')" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.PRD_AWS_ECR_PUSH_ROLE }}
+          aws-region: ${{ vars.PRD_AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          builder: ${{ steps.buildx.outputs.name }}
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ steps.version_info.outputs.version }}
+            COMMIT_HASH=${{ steps.version_info.outputs.commit }}
+            BUILD_DATE=${{ steps.version_info.outputs.build_date }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

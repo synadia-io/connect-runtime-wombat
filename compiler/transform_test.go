@@ -10,8 +10,8 @@ import (
 	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
 	"github.com/synadia-io/connect-runtime-wombat/test"
-	. "github.com/synadia-io/connect/v2/builders"
-	"github.com/synadia-io/connect/v2/model"
+	. "github.com/synadia-io/connect/builders"
+	"github.com/synadia-io/connect/model"
 	"gopkg.in/yaml.v3"
 
 	_ "github.com/synadia-io/connect-runtime-wombat/components"

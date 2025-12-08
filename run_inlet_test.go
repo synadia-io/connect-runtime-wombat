@@ -12,8 +12,8 @@ import (
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
 	"github.com/synadia-io/connect-runtime-wombat/runner"
 	"github.com/synadia-io/connect-runtime-wombat/test"
-	. "github.com/synadia-io/connect/v2/builders"
-	"github.com/synadia-io/connect/v2/runtime"
+	. "github.com/synadia-io/connect/builders"
+	"github.com/synadia-io/connect/runtime"
 	"gopkg.in/yaml.v3"
 
 	"github.com/google/uuid"

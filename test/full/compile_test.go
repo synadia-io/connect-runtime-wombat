@@ -7,8 +7,8 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/synadia-io/connect-runtime-wombat/compiler"
 	"github.com/synadia-io/connect-runtime-wombat/test"
-	"github.com/synadia-io/connect/v2/convert"
-	"github.com/synadia-io/connect/v2/spec"
+	"github.com/synadia-io/connect/convert"
+	"github.com/synadia-io/connect/spec"
 	"gopkg.in/yaml.v3"
 )
 

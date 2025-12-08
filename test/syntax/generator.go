@@ -6,7 +6,7 @@ import (
 	"math/rand/v2"
 
 	"github.com/lucasjones/reggen"
-	"github.com/synadia-io/connect/v2/model"
+	"github.com/synadia-io/connect/model"
 )
 
 const DefaultProduceSubject = "default.produce.subject"

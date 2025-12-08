@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/synadia-io/connect/v2/builders"
+	"github.com/synadia-io/connect/builders"
 )
 
 func UnauthenticatedNatsConfig() *builders.NatsConfigBuilder {
