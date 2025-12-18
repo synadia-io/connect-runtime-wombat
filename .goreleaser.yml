@@ -47,6 +47,16 @@ dockers:
       - "--platform=linux/amd64,linux/arm64"
       - "--push"
 
+sboms:
+  - id: "connect-runtime-wombat"
+    artifacts: binary
+
+release:
+  make_latest: false
+  prerelease: auto
+  extra_files:
+    - glob: dist/*.sbom*
+
 changelog:
   use: github
   sort: asc
