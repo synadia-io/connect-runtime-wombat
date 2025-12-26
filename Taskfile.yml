@@ -122,6 +122,33 @@ tasks:
     cmds:
       - docker build --no-cache -t connect-runtime-wombat:local --build-arg VERSION={{.LOCAL_VERSION}} --build-arg COMMIT_HASH={{.LOCAL_COMMIT}} --build-arg BUILD_DATE={{.LOCAL_DATE}} .
 
+  generate:connect:build:
+    desc: Build the docs generator tool
+    dir: ./tools/docs_gen
+    cmds:
+      - task build
+
+  generate:connect:run:
+    desc: Generate component specifications
+    deps: [generate:connect:build]
+    cmds:
+      - ./target/docs_gen -dir .connect ./tools/docs_gen/docs.yml
+
+  generate:connect:format:
+    desc: Format generated component specifications
+    deps: [generate:connect:run]
+    cmds:
+      - python3 tools/scripts/format_descriptions.py
+      - python3 tools/scripts/process_sinks.py
+
+  generate:connect:
+    desc: Generate and format .connect component specifications
+    cmds:
+      - task: generate:connect:build
+      - task: generate:connect:run
+      - task: generate:connect:format
+      - task: validate
+
   # Do not edit. Shared with wombatwisdom/components.
   setup:
     desc: Setup development environment
@@ -211,6 +238,7 @@ tasks:
       - task: release:check
       - task: check
       - task: test
+      - task: generate:connect
       - |
         echo "Creating release candidate: {{.TAG_VERSION}}"
 
@@ -259,6 +287,7 @@ tasks:
       - task: release:check
       - task: check
       - task: test
+      - task: generate:connect
       - |
         echo "Creating final release: {{.TAG_VERSION}}"
 
