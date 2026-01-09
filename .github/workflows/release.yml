@@ -99,7 +99,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
-          args: release --clean --skip=docker
+          args: release --clean ${{ steps.release_info.outputs.prerelease == 'true' && '--skip=docker,sbom' || '--skip=docker' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOTMPDIR: /mnt/tmp
