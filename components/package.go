@@ -1,10 +1,8 @@
 package components
 
 import (
-	// Local components
 	_ "github.com/synadia-io/connect-runtime-wombat/components/nats"
 
-	// Wombat-specific components (excluding redpanda which pulls in sql)
 	_ "github.com/wombatwisdom/wombat/public/components/gcp_bigtable"
 	_ "github.com/wombatwisdom/wombat/public/components/mongodb/all"
 	_ "github.com/wombatwisdom/wombat/public/components/nats"
@@ -13,7 +11,6 @@ import (
 	_ "github.com/wombatwisdom/wombat/public/components/wombatwisdom/mqtt3"
 	_ "github.com/wombatwisdom/wombat/public/components/zeromq"
 
-	// Redpanda Connect community components (all except sql)
 	_ "github.com/redpanda-data/connect/v4/public/components/amqp09"
 	_ "github.com/redpanda-data/connect/v4/public/components/amqp1"
 	_ "github.com/redpanda-data/connect/v4/public/components/avro"
