@@ -16,7 +16,6 @@ require (
 	github.com/prometheus/common v0.64.0
 	github.com/r3labs/diff/v3 v3.0.1
 	github.com/redpanda-data/benthos/v4 v4.57.1
-	github.com/redpanda-data/connect/v4 v4.61.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 	github.com/synadia-io/connect v1.0.8
@@ -313,6 +312,7 @@ require (
 	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/redis/go-redis/v9 v9.7.3 // indirect
+	github.com/redpanda-data/connect/v4 v4.61.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rickb777/period v1.0.15 // indirect
 	github.com/rickb777/plural v1.4.4 // indirect
