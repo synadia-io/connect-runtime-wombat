@@ -201,3 +201,61 @@ fields:
         description: >-
           The token for the credentials being used, required when using short
           term credentials.
+  - path: batching
+    name: batching
+    label: Batching
+    kind: scalar
+    type: object
+    optional: true
+    default: {}
+    description: >-
+      Upload messages to S3 as batched archives
+    examples:
+      - byte_size: 5000
+        count: 0
+        period: 1s
+      - count: 10
+        period: 1s
+    fields:
+      - path: batching.count
+        name: count
+        label: Count
+        kind: scalar
+        type: int
+        optional: true
+        default: 0
+        description: >-
+          A number of messages at which the batch should be flushed. If 0 disables count based batching.
+      - path: batching.byte_size
+        name: byte_size
+        label: Byte Size
+        kind: scalar
+        type: int
+        optional: true
+        default: 0
+        description: >-
+          An amount of bytes at which the batch should be flushed. If 0 disables size based batching.
+      - path: batching.period
+        name: period
+        label: Period
+        kind: scalar
+        type: string
+        optional: true
+        default: ""
+        description: >-
+          A period in which an incomplete batch should be flushed regardless of its size.
+      - name: processors
+        path: batching.processors
+        label: processors
+        kind: list
+        type: object
+        optional: true
+        default: { }
+        description: A list of processors to apply to a batch as it is flushed. This allows you to aggregate and archive the batch however you see fit.
+        examples:
+          - - archive:
+                format: concatenate
+          - - archive:
+                format: lines
+          - - archive:
+                format: json_array
