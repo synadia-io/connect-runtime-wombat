@@ -181,7 +181,7 @@ type Metrics struct {
 }
 
 func (m *Metrics) NewCounterCtor(path string, labelNames ...string) service.MetricsExporterCounterCtor {
-	if !model.IsValidMetricName(model.LabelValue(path)) {
+	if !model.LegacyValidation.IsValidMetricName(path) {
 		m.log.Errorf("Ignoring metric '%v' due to invalid name", path)
 		return func(labelValues ...string) service.MetricsExporterCounter {
 			return stats.NoopStat{}
@@ -210,7 +210,7 @@ func (m *Metrics) NewCounterCtor(path string, labelNames ...string) service.Metr
 }
 
 func (m *Metrics) NewTimerCtor(path string, labelNames ...string) service.MetricsExporterTimerCtor {
-	if !model.IsValidMetricName(model.LabelValue(path)) {
+	if !model.LegacyValidation.IsValidMetricName(path) {
 		m.log.Errorf("Ignoring metric '%v' due to invalid name", path)
 		return func(labelValues ...string) service.MetricsExporterTimer {
 			return stats.NoopStat{}
@@ -239,7 +239,7 @@ func (m *Metrics) NewTimerCtor(path string, labelNames ...string) service.Metric
 }
 
 func (m *Metrics) NewGaugeCtor(path string, labelNames ...string) service.MetricsExporterGaugeCtor {
-	if !model.IsValidMetricName(model.LabelValue(path)) {
+	if !model.LegacyValidation.IsValidMetricName(path) {
 		m.log.Errorf("Ignoring metric '%v' due to invalid name", path)
 		return func(labelValues ...string) service.MetricsExporterGauge {
 			return &stats.NoopStat{}
