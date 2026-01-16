@@ -11,6 +11,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/common/expfmt"
+	"github.com/prometheus/common/model"
 	"github.com/redpanda-data/benthos/v4/public/service"
 
 	_ "github.com/redpanda-data/benthos/v4/public/components/io"
@@ -63,7 +64,7 @@ metrics:
 
 		for _, msg := range messages {
 			b := bytes.NewBuffer(msg.Data)
-			tp := expfmt.TextParser{}
+			tp := expfmt.NewTextParser(model.LegacyValidation)
 			fams, err := tp.TextToMetricFamilies(b)
 			Expect(err).To(BeNil())
 
