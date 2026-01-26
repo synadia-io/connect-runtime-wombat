@@ -80,7 +80,7 @@ var _ = Describe("Component Validation", func() {
 				}
 			}
 
-			Expect(len(results)).To(Equal(40), "Expected 40 sink components")
+			Expect(len(results)).To(Equal(38), "Expected 38 sink components")
 		})
 	})
 
@@ -155,7 +155,7 @@ var _ = Describe("Component Validation", func() {
 
 		// All components should pass
 		Expect(successCount).To(Equal(len(allResults)), "All components should pass validation")
-		Expect(len(allResults)).To(Equal(77), "Expected 77 total components")
+		Expect(len(allResults)).To(Equal(75), "Expected 75 total components")
 	})
 })
 
@@ -420,13 +420,7 @@ func getMinimalConfig(componentName string, wombatType string) string {
     url: "redis://localhost:6379"
     key: "test-hash"`
 
-	// Elasticsearch/OpenSearch
-	case "elasticsearch_v8":
-		return `
-    urls: ["http://localhost:9200"]
-    action: "index"
-    id: ${!counter()}-${!timestamp_unix()}
-    index: "test-index"`
+	// OpenSearch
 	case "opensearch":
 		return `
     urls: ["http://localhost:9200"]
@@ -651,16 +645,10 @@ func getMinimalConfig(componentName string, wombatType string) string {
       username: "test"
       password: "test"`
 	case "timeplus":
-		if wombatType == "input" {
-			return `
-    url: "http://localhost:8000"
-    apikey: "test-key"
-    query: "SELECT * FROM test"`
-		}
 		return `
     url: "http://localhost:8000"
     apikey: "test-key"
-    stream: "test"`
+    query: "SELECT * FROM test"`
 	case "ww_mqtt_3":
 		if wombatType == "input" {
 			return `
