@@ -60,7 +60,7 @@ func main() {
 	rt, err := runtime.FromEnv()
 	if err != nil {
 		logger.Error().Err(err).Msg("Failed to initialize runtime from environment")
-		panic(err)
+		os.Exit(1)
 	}
 
 	preFlightErr := preFlightCheck(rt)
@@ -76,7 +76,7 @@ func main() {
 	logger.Info().Str("config", args[0]).Msg("Launching workload")
 	if err := rt.Launch(ctx, runner.Run, args[0]); err != nil {
 		logger.Error().Err(err).Msg("Failed to launch workload")
-		panic(err)
+		os.Exit(1)
 	}
 }
 
