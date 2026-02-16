@@ -64,7 +64,7 @@ fields:
     name: deliver
     label: Deliver
     type: string
-    default: all
+    default: new
     optional: true
     description: |-
       Determines which messages to deliver when consuming without a durable subscriber.
