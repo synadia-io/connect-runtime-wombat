@@ -1,10 +1,6 @@
 // Package runner provides the main execution logic for the Wombat runtime.
-// It orchestrates the compilation, validation, and execution of Connect
-// specifications as Wombat data pipelines.
 //
 // The runner handles:
-//   - Compilation of Connect models to Wombat configurations
-//   - Validation of the generated configurations
 //   - Concurrent management of the data stream and HTTP server
 //   - Graceful shutdown on signals or errors
 package runner
@@ -17,18 +13,16 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/synadia-io/connect-runtime-wombat/compiler"
+	_ "github.com/synadia-io/connect-runtime-wombat/components"
+
+	"github.com/redpanda-data/benthos/v4/public/service"
 	"github.com/synadia-io/connect-runtime-wombat/utils"
-	"github.com/synadia-io/connect/model"
-	"github.com/synadia-io/connect/runtime"
 )
 
-// Run executes the main runtime logic for a Connect specification.
-// It compiles the specification to Wombat format, validates it, and runs
-// the resulting data pipeline.
+// Run executes the main runtime logic for a Wombat configuration.
 //
 // The function manages two concurrent components:
-//   - A Wombat stream that processes data according to the specification
+//   - A Wombat stream that processes data according to the configuration
 //   - An HTTP server for health checks and metrics endpoints
 //
 // Shutdown is triggered by:
@@ -39,27 +33,25 @@ import (
 //
 // Parameters:
 //   - ctx: Context for cancellation and timeout control
-//   - runtime: Runtime configuration including component definitions
-//   - steps: The Connect model steps to execute
+//   - configYAML: The Wombat configuration as YAML/JSON string
 //
-// Returns an error if compilation, validation, or execution fails.
-func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error {
+// Returns an error if validation or execution fails.
+func Run(ctx context.Context, configYAML string) error {
 	logger := utils.LoggerWithCorrelation(ctx)
-	logger.Info().
-		Str("namespace", runtime.Namespace).
-		Str("instance", runtime.Instance).
-		Str("connector", runtime.Connector).
-		Msg("Starting wombat runner")
+	logger.Info().Msg("Starting wombat runner")
 
-	// Compile the Connect specification to Wombat YAML
-	logger.Debug().Msg("Compiling configuration")
-	art, err := compiler.CompileWithContext(ctx, runtime, steps)
-	if err != nil {
-		logger.Error().Err(err).Msg("Compilation failed")
-		return fmt.Errorf("compilation failed: %w", err)
+	// Create and configure stream builder
+	logger.Debug().Msg("Configuring stream builder")
+	builder := service.NewStreamBuilder()
+	builder.DisableLinting()
+
+	// Parse the configuration
+	if err := builder.SetYAML(configYAML); err != nil {
+		logger.Error().Err(err).Msg("Failed to parse configuration")
+		return fmt.Errorf("failed to parse configuration: %w", err)
 	}
 
-	logger.Debug().Int("config_bytes", len(art)).Msg("Configuration compiled successfully")
+	logger.Debug().Int("config_bytes", len(configYAML)).Msg("Configuration parsed successfully")
 
 	// Create HTTP server for health and metrics endpoints
 	// Using port 0 allows the OS to assign an available port
@@ -70,13 +62,12 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
 		Handler: mux,
 	}
 
-	// Validate the compiled configuration and create the stream
-	// The mux is passed to allow registration of HTTP endpoints
-	logger.Debug().Msg("Validating configuration and creating stream")
-	stream, err := compiler.Validate(ctx, runtime, art, mux)
+	// Build the stream
+	logger.Debug().Msg("Building stream")
+	stream, err := builder.Build()
 	if err != nil {
-		logger.Error().Err(err).Msg("Validation failed")
-		return compiler.NewValidationError("configuration", "failed to validate and create stream", err)
+		logger.Error().Err(err).Msg("Failed to build stream")
+		return fmt.Errorf("failed to build stream: %w", err)
 	}
 
 	logger.Info().Msg("Configuration validated, starting stream and HTTP server")
@@ -128,7 +119,7 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
 			logger.Error().Err(shutdownErr).Msg("Failed to shutdown server")
 		}
 		if err != nil {
-			return compiler.NewRuntimeError("stream", "stream execution failed", err)
+			return fmt.Errorf("stream execution failed: %w", err)
 		}
 		return nil
 	case err := <-httpChan:
@@ -138,7 +129,7 @@ func Run(ctx context.Context, runtime *runtime.Runtime, steps model.Steps) error
 			logger.Error().Err(stopErr).Msg("Failed to stop stream")
 		}
 		if err != nil {
-			return compiler.NewRuntimeError("http_server", "HTTP server failed", err)
+			return fmt.Errorf("HTTP server failed: %w", err)
 		}
 		return nil
 	}
