@@ -4,24 +4,24 @@
 //
 // Usage:
 //
-//	connect-runtime-wombat <config>
+//	connect-runtime-wombat --config=<json>
 //
-// Where <config> is the path to a JSON configuration file containing the
-// connector specification.
+// Where <json> is Wombat/Benthos configuration in JSON format.
 //
-// The runtime expects certain environment variables to be set by the Connect
-// platform for proper operation. See runtime.FromEnv() for details.
+// The runtime injects NATS credentials from environment variables
+// into any NATS components found in the configuration.
 package main
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 
 	"github.com/synadia-io/connect-runtime-wombat/runner"
 	"github.com/synadia-io/connect-runtime-wombat/utils"
-	"github.com/synadia-io/connect/runtime"
 )
 
 var (
@@ -31,9 +31,6 @@ var (
 )
 
 // main is the entry point for the connect-runtime-wombat executable.
-// It expects exactly one argument: the path to a configuration file.
-// The runtime configuration is loaded from environment variables set by
-// the Connect platform.
 func main() {
 	// Generate correlation ID for this application instance
 	correlationID := utils.GenerateCorrelationID()
@@ -46,57 +43,121 @@ func main() {
 		Str("built", BuildTimestamp).
 		Msg("Starting connect-runtime-wombat")
 
-	args := os.Args[1:]
-	if len(args) != 1 {
+	if len(os.Args) != 2 || !strings.HasPrefix(os.Args[1], "--config=") {
 		logger.Error().Msg("Invalid arguments provided")
-		fmt.Println("usage: wombat <config>")
+		fmt.Println("usage: --config=<json>")
 		os.Exit(1)
 	}
 
-	logger.Debug().Str("config", args[0]).Msg("Parsing configuration")
+	configJSON := os.Args[1][9:] // Skip "--config="
+	logger.Debug().Int("config_length", len(configJSON)).Msg("Parsing configuration")
 
-	// Initialize runtime from environment variables
-	// This includes NATS connection details and other platform configuration
-	rt, err := runtime.FromEnv()
-	if err != nil {
-		logger.Error().Err(err).Msg("Failed to initialize runtime from environment")
-		os.Exit(1)
-	}
-
-	preFlightErr := preFlightCheck(rt)
-	if preFlightErr != nil {
-		logger.Warn().Err(preFlightErr).Msg("Could not retrieve config required for metrics")
-	}
-
-	logger.Info().Msg("Runtime initialized successfully")
-
-	// Launch the workload with the provided configuration
-	// This will compile the Connect specification to Wombat format,
-	// start the data pipeline, and block until completion or error
-	logger.Info().Str("config", args[0]).Msg("Launching workload")
-	if err := rt.Launch(ctx, runner.Run, args[0]); err != nil {
-		logger.Error().Err(err).Msg("Failed to launch workload")
+	if err := runWithConfig(ctx, configJSON); err != nil {
+		logger.Error().Err(err).Msg("Failed to run connector")
 		os.Exit(1)
 	}
 }
 
-// preFlightCheck checks if the runtime has all required values for metrics configuration
-func preFlightCheck(rt *runtime.Runtime) error {
-	var emptyFields []string
+// runWithConfig parses the JSON config, injects NEX credentials, and runs the stream.
+func runWithConfig(ctx context.Context, configJSON string) error {
+	logger := utils.LoggerWithCorrelation(ctx)
 
-	if rt.NatsUrl == "" {
-		emptyFields = append(emptyFields, "NatsUrl")
-	}
-	if rt.Namespace == "" {
-		emptyFields = append(emptyFields, "Namespace")
-	}
-	if rt.Instance == "" {
-		emptyFields = append(emptyFields, "Instance")
+	var config map[string]any
+	if err := json.Unmarshal([]byte(configJSON), &config); err != nil {
+		return fmt.Errorf("failed to parse config JSON: %w", err)
 	}
 
-	if len(emptyFields) > 0 {
-		return fmt.Errorf("the following required field(s) are empty: %s", strings.Join(emptyFields, ", "))
+	injectNexCredentials(ctx, config)
+
+	finalConfig, err := json.Marshal(config)
+	if err != nil {
+		return fmt.Errorf("failed to marshal config: %w", err)
 	}
 
-	return nil
+	logger.Info().Msg("Configuration processed, launching runner")
+
+	return runner.Run(ctx, string(finalConfig))
+}
+
+// injectNexCredentials adds NEX workload NATS credentials to the config if applicable.
+func injectNexCredentials(ctx context.Context, config map[string]any) {
+	logger := utils.LoggerWithCorrelation(ctx)
+
+	natsServers := os.Getenv("NEX_WORKLOAD_NATS_SERVERS")
+	nkeySeed := os.Getenv("NEX_WORKLOAD_NATS_NKEY")
+	b64JWT := os.Getenv("NEX_WORKLOAD_NATS_B64_JWT")
+
+	// Check if input or output uses NATS variants
+	inputSection, _ := config["input"].(map[string]any)
+	outputSection, _ := config["output"].(map[string]any)
+
+	natsTypes := []string{"nats", "nats_jetstream", "nats_kv"}
+	var inputNatsType, outputNatsType string
+	var inputNatsConfig, outputNatsConfig map[string]any
+
+	for _, t := range natsTypes {
+		if cfg, ok := inputSection[t].(map[string]any); ok {
+			inputNatsType = t
+			inputNatsConfig = cfg
+			break
+		}
+	}
+	for _, t := range natsTypes {
+		if cfg, ok := outputSection[t].(map[string]any); ok {
+			outputNatsType = t
+			outputNatsConfig = cfg
+			break
+		}
+	}
+
+	hasNats := inputNatsType != "" || outputNatsType != ""
+	if hasNats {
+		if natsServers == "" {
+			logger.Warn().Msg("NEX_WORKLOAD_NATS_SERVERS not set, NATS connector may fail to connect")
+		}
+		if nkeySeed == "" && b64JWT == "" {
+			logger.Warn().Msg("NEX_WORKLOAD_NATS_NKEY and NEX_WORKLOAD_NATS_B64_JWT not set, NATS auth disabled")
+		}
+	}
+
+	// Inject credentials into NATS configs
+	if inputNatsConfig != nil {
+		if natsServers != "" {
+			inputNatsConfig["urls"] = []string{natsServers}
+		}
+		injectNatsAuth(ctx, inputNatsConfig, nkeySeed, b64JWT)
+	}
+	if outputNatsConfig != nil {
+		if natsServers != "" {
+			outputNatsConfig["urls"] = []string{natsServers}
+		}
+		injectNatsAuth(ctx, outputNatsConfig, nkeySeed, b64JWT)
+	}
+}
+
+// injectNatsAuth adds auth credentials to a NATS config section.
+func injectNatsAuth(ctx context.Context, cfg map[string]any, nkeySeed, b64JWT string) {
+	if nkeySeed == "" && b64JWT == "" {
+		return
+	}
+
+	logger := utils.LoggerWithCorrelation(ctx)
+
+	auth, ok := cfg["auth"].(map[string]any)
+	if !ok {
+		auth = make(map[string]any)
+		cfg["auth"] = auth
+	}
+
+	if nkeySeed != "" {
+		auth["user_nkey_seed"] = nkeySeed
+	}
+	if b64JWT != "" {
+		jwt, err := base64.StdEncoding.DecodeString(b64JWT)
+		if err != nil {
+			logger.Error().Err(err).Msg("Failed to decode JWT")
+			os.Exit(1)
+		}
+		auth["user_jwt"] = string(jwt)
+	}
 }

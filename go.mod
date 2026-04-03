@@ -3,10 +3,6 @@ module github.com/synadia-io/connect-runtime-wombat
 go 1.25.5
 
 require (
-	cuelang.org/go v0.14.1
-	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/google/uuid v1.6.0
-	github.com/lucasjones/reggen v0.0.0-20200904144131-37ba4fa293bb
 	github.com/nats-io/nats-server/v2 v2.12.1
 	github.com/nats-io/nats.go v1.47.0
 	github.com/nats-io/nuid v1.0.1
@@ -18,11 +14,7 @@ require (
 	github.com/redpanda-data/benthos/v4 v4.57.1
 	github.com/redpanda-data/connect/v4 v4.67.5
 	github.com/rs/zerolog v1.33.0
-	github.com/stretchr/testify v1.11.1
-	github.com/synadia-io/connect v1.0.8
 	github.com/wombatwisdom/wombat v1.0.7
-	go.opentelemetry.io/otel v1.38.0
-	go.opentelemetry.io/otel/trace v1.38.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -47,6 +39,7 @@ require (
 	cloud.google.com/go/trace v1.11.6 // indirect
 	cloud.google.com/go/vertexai v0.15.0 // indirect
 	connectrpc.com/connect v1.19.1 // indirect
+	cuelang.org/go v0.14.1 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.2 // indirect
@@ -70,6 +63,7 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect
 	github.com/IBM/sarama v1.46.2 // indirect
 	github.com/Jeffail/checkpoint v1.1.0 // indirect
+	github.com/Jeffail/gabs/v2 v2.7.0 // indirect
 	github.com/Jeffail/grok v1.1.0 // indirect
 	github.com/Jeffail/shutdown v1.0.0 // indirect
 	github.com/Masterminds/semver/v3 v3.4.0 // indirect
@@ -204,6 +198,7 @@ require (
 	github.com/google/pprof v0.0.0-20251002213607-436353cc1ee6 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.15.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
@@ -317,6 +312,7 @@ require (
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
+	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/tetratelabs/wazero v1.9.0 // indirect
 	github.com/theparanoids/crypki v1.20.9 // indirect
 	github.com/tilinna/z85 v1.0.0 // indirect
@@ -356,6 +352,7 @@ require (
 	go.opentelemetry.io/contrib/detectors/gcp v1.38.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.63.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.63.0 // indirect
+	go.opentelemetry.io/otel v1.38.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.17.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.38.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.38.0 // indirect
@@ -364,6 +361,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.38.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.38.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.38.0 // indirect
+	go.opentelemetry.io/otel/trace v1.38.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.8.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
