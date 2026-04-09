@@ -40,7 +40,6 @@ dockers:
       - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:{{ .Tag }}"
       - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}"
       - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}.{{ .Minor }}"
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:latest"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
