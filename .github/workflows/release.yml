@@ -105,20 +105,4 @@ jobs:
           GOTMPDIR: /mnt/tmp
           GOCACHE: /mnt/gocache
           GORELEASER_CURRENT_TAG: ${{ steps.release_info.outputs.tag }} # override tag b/c git does not offer a tag sort to make "v1.0.6" come out on top when "v1.0.6-rc1" is present on the same commit. Goreleaser fixes this, but only in paid version
-          
-  docker:
-    name: Build and Push Docker Image
-    uses: ./.github/workflows/docker-build.yml
-    with:
-      push: true
-      tags: |
-        type=ref,event=tag
-        type=semver,pattern={{major}}.{{minor}}
-        type=semver,pattern={{major}}
-        type=sha
-      platforms: linux/amd64,linux/arm64
-      image_name: connect-runtime-wombat
-    secrets:
-      AWS_REGION: ${{ vars.PRD_AWS_REGION }}
-      AWS_ECR_ADDR: ${{ vars.PRD_AWS_ECR_ADDR }}
-      AWS_ECR_PUSH_ROLE: ${{ vars.PRD_AWS_ECR_PUSH_ROLE }}
+
