@@ -3,6 +3,7 @@
 name: Release
 
 on:
+  workflow_dispatch: {}
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'      # Only final releases (v0.1.0)
@@ -80,6 +81,13 @@ jobs:
 
           echo "name=Release $TAG" >> $GITHUB_OUTPUT
 
+          # Detect manual trigger
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "manual=true" >> $GITHUB_OUTPUT
+          else
+            echo "manual=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run pre-release checks
         run: |
           task check
@@ -95,13 +103,35 @@ jobs:
           sudo chown $USER:$USER /mnt/tmp /mnt/gocache
           df -h
 
+      - name: Set up QEMU
+        if: steps.release_info.outputs.prerelease != 'true' || steps.release_info.outputs.manual == 'true'
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        if: steps.release_info.outputs.prerelease != 'true' || steps.release_info.outputs.manual == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials
+        if: steps.release_info.outputs.prerelease != 'true' || steps.release_info.outputs.manual == 'true'
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.PRD_AWS_ECR_PUSH_ROLE }}
+          aws-region: ${{ vars.PRD_AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        if: steps.release_info.outputs.prerelease != 'true' || steps.release_info.outputs.manual == 'true'
+        uses: aws-actions/amazon-ecr-login@v2
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
-          args: release --clean ${{ steps.release_info.outputs.prerelease == 'true' && '--skip=docker,sbom' || '--skip=docker' }}
+          args: >-
+            release --clean
+            ${{ steps.release_info.outputs.manual == 'true' && '--snapshot --skip=publish' || (steps.release_info.outputs.prerelease == 'true' && '--skip=docker,sbom' || '') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ECR_ADDR: ${{ vars.PRD_AWS_ECR_ADDR }}
           GOTMPDIR: /mnt/tmp
           GOCACHE: /mnt/gocache
           GORELEASER_CURRENT_TAG: ${{ steps.release_info.outputs.tag }} # override tag b/c git does not offer a tag sort to make "v1.0.6" come out on top when "v1.0.6-rc1" is present on the same commit. Goreleaser fixes this, but only in paid version

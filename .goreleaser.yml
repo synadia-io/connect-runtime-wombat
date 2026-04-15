@@ -19,7 +19,8 @@ builds:
     ldflags:
       - -w -s
       - -X main.Version={{.Version}}
-      - -X main.DateBuilt={{.Date}}
+      - -X main.CommitHash={{.ShortCommit}}
+      - -X main.BuildTimestamp={{.Date}}
     goos:
       - linux
     goarch:
@@ -36,15 +37,48 @@ checksum:
   name_template: 'checksums.txt'
 
 dockers:
-  - image_templates:
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}"
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/connect-runtime-wombat:v{{ .Major }}.{{ .Minor }}"
-    dockerfile: Dockerfile
+  - id: ecr-amd64
+    ids:
+      - connect-runtime-wombat
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Tag }}-amd64"
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Version }}-amd64"
+    dockerfile: Dockerfile.goreleaser
     use: buildx
     build_flag_templates:
-      - "--platform=linux/amd64,linux/arm64"
-      - "--push"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+
+  - id: ecr-arm64
+    ids:
+      - connect-runtime-wombat
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Tag }}-arm64"
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Version }}-arm64"
+    dockerfile: Dockerfile.goreleaser
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+
+docker_manifests:
+  - name_template: "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Tag }}"
+    image_templates:
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Tag }}-amd64"
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Tag }}-arm64"
+
+  - name_template: "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Version }}"
+    image_templates:
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Version }}-amd64"
+      - "{{ .Env.AWS_ECR_ADDR }}/connect-runtime-wombat:{{ .Version }}-arm64"
 
 sboms:
   - id: "connect-runtime-wombat"

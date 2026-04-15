@@ -1,0 +1,20 @@
+FROM alpine:latest AS certs
+RUN apk add --no-cache ca-certificates
+
+FROM busybox
+
+LABEL maintainer="Synadia <code@synadia.com>"
+LABEL org.opencontainers.image.source="https://github.com/synadia-io/connect-runtime-wombat"
+
+WORKDIR /
+
+RUN adduser -D -u 10001 wombat
+
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY connect-runtime-wombat /connect-runtime-wombat
+
+USER wombat
+
+EXPOSE 4195
+
+ENTRYPOINT ["/connect-runtime-wombat"]
