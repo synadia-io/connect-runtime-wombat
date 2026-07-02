@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -48,6 +49,72 @@ var MetricsConfigSpec = service.NewConfigSpec().
 		service.NewStringMapField(headersField).Description("A list of headers to add to the NATS server").Optional(),
 	)
 
+// natsCredsFileEnvVar mirrors compiler.natsCredsFileEnvVar. It is duplicated here
+// rather than imported because the components package cannot depend on the
+// compiler package without an import cycle (the compiler imports components).
+//
+// When set to a non-empty path it points at a reloadable NATS user credentials
+// file (user JWT + NKey seed) provisioned by the runtime (nex agent). The metrics
+// connection then authenticates via nats.UserCredentials, whose callbacks re-read
+// the file on every (re)connect and signature challenge, so a rotated/refreshed
+// JWT is picked up automatically. When unset, the inline jwt/seed captured at
+// compile time is used (backward compatible). Compile and stream run in the same
+// process/container, so the env var is available at connection time.
+const natsCredsFileEnvVar = "NEX_WORKLOAD_NATS_CREDS_FILE"
+
+// metricsAuthConfig is the resolved NATS authentication source for the metrics
+// connection. At most one of CredsFile or (Jwt, Seed) is populated.
+type metricsAuthConfig struct {
+	CredsFile string
+	Jwt       string
+	Seed      string
+}
+
+// resolveMetricsAuth selects the metrics NATS auth source. A non-empty reloadable
+// creds file takes precedence over the inline jwt/seed; inline auth is only used
+// when both jwt and seed are present (matching the previous behaviour).
+func resolveMetricsAuth(credsFile, jwt, seed string) metricsAuthConfig {
+	if credsFile != "" {
+		return metricsAuthConfig{CredsFile: credsFile}
+	}
+	if jwt != "" && seed != "" {
+		return metricsAuthConfig{Jwt: jwt, Seed: seed}
+	}
+	return metricsAuthConfig{}
+}
+
+// option returns the nats.Option for the resolved auth source, or nil when no
+// authentication is configured.
+func (a metricsAuthConfig) option() nats.Option {
+	switch {
+	case a.CredsFile != "":
+		return nats.UserCredentials(a.CredsFile)
+	case a.Jwt != "" && a.Seed != "":
+		return nats.UserJWTAndSeed(a.Jwt, a.Seed)
+	default:
+		return nil
+	}
+}
+
+// buildMetricsConnOptions assembles the nats connection options for the metrics
+// exporter. The resilience options are always applied so that a rotated or
+// expired JWT cannot permanently kill the metrics connection: without them,
+// repeated auth errors make nats.go abort the connection for good, leaving the
+// connector moving data while silently no longer publishing metrics.
+// IgnoreAuthErrorAbort keeps retrying through auth errors and MaxReconnects(-1)
+// never stops trying to reconnect.
+func buildMetricsConnOptions(credsFile, jwt, seed string) []nats.Option {
+	opts := []nats.Option{
+		nats.Name("MetricsOps"),
+		nats.IgnoreAuthErrorAbort(),
+		nats.MaxReconnects(-1),
+	}
+	if opt := resolveMetricsAuth(credsFile, jwt, seed).option(); opt != nil {
+		opts = append(opts, opt)
+	}
+	return opts
+}
+
 // NewMetrics creates a new NATS metrics exporter from the provided configuration.
 // It establishes a connection to NATS and sets up periodic publishing of metrics.
 //
@@ -64,17 +131,15 @@ func NewMetrics(conf *service.ParsedConfig, log *service.Logger) (m *Metrics, er
 		return nil, fmt.Errorf("failed to get nats url field: %w", err)
 	}
 
-	opts := []nats.Option{
-		nats.Name("MetricsOps"),
+	var jwt, seed string
+	if conf.Contains(metricJwtField) {
+		jwt, _ = conf.FieldString(metricJwtField)
+	}
+	if conf.Contains(metricSeedField) {
+		seed, _ = conf.FieldString(metricSeedField)
 	}
 
-	if conf.Contains(metricJwtField) && conf.Contains(metricSeedField) {
-		jwt, _ := conf.FieldString(metricJwtField)
-		seed, _ := conf.FieldString(metricSeedField)
-		if jwt != "" && seed != "" {
-			opts = append(opts, nats.UserJWTAndSeed(jwt, seed))
-		}
-	}
+	opts := buildMetricsConnOptions(os.Getenv(natsCredsFileEnvVar), jwt, seed)
 
 	nc, err := nats.Connect(url, opts...)
 	if err != nil {
